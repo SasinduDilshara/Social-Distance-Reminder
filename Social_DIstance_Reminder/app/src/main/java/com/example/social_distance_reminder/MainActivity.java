@@ -1,11 +1,17 @@
 package com.example.social_distance_reminder;
 
+import android.app.Activity;
 import android.os.Bundle;
 
+import com.example.social_distance_reminder.auth.FirebaseAuthHelper;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.navigation.NavController;
@@ -14,63 +20,75 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.social_distance_reminder.databinding.ActivityMainBinding;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.FirebaseTooManyRequestsException;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import static android.content.ContentValues.TAG;
 
-    private AppBarConfiguration appBarConfiguration;
-    private ActivityMainBinding binding;
+public class MainActivity extends AppCompatActivity implements AuthRedirectHandler {
+
+    EditText phntext, codeText;
+    Button addPhone, verifyPhone;
+    LinearLayout container, container2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        phntext = (EditText)findViewById(R.id.phonenumber);
+        addPhone = (Button)findViewById(R.id.addphone);
+        container = (LinearLayout)findViewById(R.id.container);
 
-        setSupportActionBar(binding.toolbar);
+        codeText = (EditText)findViewById(R.id.code);
+        verifyPhone = (Button)findViewById(R.id.verify);
+        container2 = (LinearLayout)findViewById(R.id.container2);
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        codeText.setVisibility(View.INVISIBLE);
+        verifyPhone.setVisibility(View.INVISIBLE);
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        phntext.setText("+1 650-555-3434");
+
+    }
+
+    public void verifyPhone(View view) {
+//        Toast.makeText(getApplicationContext(),codeText.getText(),Toast.LENGTH_SHORT).show();
+        FirebaseAuthHelper.verifyUsingCode(codeText.getText().toString(), this, this);
+    }
+
+    public void addPhone(View view) {
+//        Toast.makeText(getApplicationContext(),phntext.getText(),Toast.LENGTH_SHORT).show();
+//        this.popupVerifyActivity();
+        FirebaseAuthHelper.verifyUsingPhoneNumber(phntext.getText().toString(), this, this);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    public void onAuthComplete() {
+        Toast.makeText(getApplicationContext()," YOU SUCCESSFULLY COMPLETED THE AUTHENTICATION ",Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    public void onAuthFail(String message) {
+        Toast.makeText(getApplicationContext(),"YOU FAIL TO CPMPLETE THE AUTHENTICATION",Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
+    public void popupVerifyActivity() {
+        codeText.setVisibility(View.VISIBLE);
+        verifyPhone.setVisibility(View.VISIBLE);
     }
 }
+
