@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
         verifyPhone.setVisibility(View.INVISIBLE);
 
         phntext.setText("+1 650-555-3434");
-
+        codeText.setText("123456");
     }
 
     public void verifyPhone(View view) {
