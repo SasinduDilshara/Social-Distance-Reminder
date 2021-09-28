@@ -5,7 +5,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.social_distance_reminder.AuthRedirectHandler;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -134,4 +133,7 @@ public class FirebaseAuthHelper {
         }
     }
 
+    public static FirebaseUser getCurrentUser() {
+        return getmAuth().getCurrentUser();
+    }
 }
