@@ -14,6 +14,12 @@
             android:name=".services.BackgroundServiceHandler"
             android:enabled="true"
             android:exported="true"></service>
+        <activity android:name=".UI.ViewNotificationsActivity"></activity>
+
+        <service
+            android:name=".services.NotificationHelperService"
+            android:enabled="true"
+            android:exported="true" />
 
         <activity android:name=".UI.LandingActivity" />
         <activity android:name=".UI.HomeActivity" />
