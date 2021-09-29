@@ -21,9 +21,11 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         if (!closed) {
-            startService(new Intent(this, BackgroundServiceHandler.class));
+//            startService(new Intent(this, BackgroundServiceHandler.class));
             try {
                 Thread.sleep(1000);
+                closed = true;
+//                stopService(new Intent(this, BackgroundServiceHandler.class));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

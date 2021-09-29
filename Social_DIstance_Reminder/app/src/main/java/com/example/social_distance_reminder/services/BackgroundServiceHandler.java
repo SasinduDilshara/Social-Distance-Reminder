@@ -57,12 +57,13 @@ public class BackgroundServiceHandler extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
+        int value = super.onStartCommand(intent, flags, startId);
         if (!stillRunning) {
             startForeground(getApplicationContext());
             test();
             stillRunning = true;
         }
-        return super.onStartCommand(intent, flags, startId);
+        return value;
     }
 
     private void startForeground(Context context) {
