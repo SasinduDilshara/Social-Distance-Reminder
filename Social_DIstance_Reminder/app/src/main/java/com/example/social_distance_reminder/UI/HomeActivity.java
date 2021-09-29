@@ -13,7 +13,7 @@ import com.example.social_distance_reminder.auth.FirebaseAuthHelper;
 import com.example.social_distance_reminder.services.NotificationHelperService;
 
 public class HomeActivity extends AppCompatActivity {
-    private static boolean closed = false;
+    private static boolean closed = true;
     private int notificatoionId = 0;
 
     @Override
@@ -54,5 +54,10 @@ public class HomeActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void redirectToBluetoothTestPage(View view) {
+        Intent bluetoothTestPage = new Intent(this, BluetoothTestActivity.class);
+        startActivity(bluetoothTestPage);
     }
 }
