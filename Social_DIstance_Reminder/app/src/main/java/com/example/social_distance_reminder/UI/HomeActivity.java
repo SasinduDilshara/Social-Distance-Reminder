@@ -8,17 +8,20 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.social_distance_reminder.R;
+import com.example.social_distance_reminder.services.BackgroundServiceHandler;
 import com.example.social_distance_reminder.auth.FirebaseAuthHelper;
 import com.example.social_distance_reminder.services.NotificationHelperService;
 
 public class HomeActivity extends AppCompatActivity {
+    private static boolean closed = false;
     private int notificatoionId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-//        startService(new Intent(this, NotificationHelperService.class));
+        if(!closed) startService(new Intent(this, BackgroundServiceHandler.class));
+        closed = true;
     }
 
     public void sendTestNotification(View view) {

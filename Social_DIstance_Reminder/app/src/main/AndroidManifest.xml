@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.social_distance_reminder">
-
+    package="com.example.social_distance_reminder"
+    >
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,6 +10,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Social_Distance_Reminder">
+        <service
+            android:name=".services.BackgroundServiceHandler"
+            android:enabled="true"
+            android:exported="true"></service>
         <activity android:name=".UI.ViewNotificationsActivity"></activity>
 
         <service
