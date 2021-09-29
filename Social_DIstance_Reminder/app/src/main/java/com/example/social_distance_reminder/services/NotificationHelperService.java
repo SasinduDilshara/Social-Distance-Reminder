@@ -35,6 +35,7 @@ public class NotificationHelperService extends Service {
 
     private static boolean isNormalNotificationChannelActive = false;
     private static boolean identifiedNotificationChannelActive = false;
+    private static boolean isbackgroundNotificationChannelActive = false;
 
     private static int normalNotoficationLockScreenVisiblity = Notification.VISIBILITY_PRIVATE;
     private static int normalNotificationLightColor = Color.BLUE;
@@ -51,6 +52,14 @@ public class NotificationHelperService extends Service {
     private static String identifiedNotificationChannelDescription = "IDENTIFIED_NOTIFICATION_CHANNEL_DESCRIPTION";
     private static int identifiedNotificationChannelImportance = NotificationManager.IMPORTANCE_HIGH;
     private static Uri identifiedNotificationChannelSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+    private static int backgroundNotoficationLockScreenVisiblity = Notification.VISIBILITY_PRIVATE;
+    private static int backgroundNotificationLightColor = Color.BLUE;
+    private static String backgroundNotificationID= "BACKGROUND_NOTIFICATION_CHANNEL_ID";
+    private static CharSequence backgroundNotificationChannelName = "BACKGROUND_NOTIFICATION_CHANNEL_NAME";
+    private static String backgroundNotificationChannelDescription = "BACKGROUND_NOTIFICATION_CHANNEL_DESCRIPTION";
+    private static int backgroundNotificationChannelImportance = NotificationManager.IMPORTANCE_DEFAULT;
+    private static Uri backgroundNotificationChannelSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
     private NotificationManager createNotificationManager() {
         if (notificationManager == null) {
@@ -90,6 +99,20 @@ public class NotificationHelperService extends Service {
         notificationManager.notify(getNotifictionID(), notificationBuilder.build());
     }
 
+    private int showBackgroundNotification(String textTitle, String textContent) throws Exception {
+        this.createBackgroundNotificationChannel();
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this.context, backgroundNotificationID)
+                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                .setContentTitle(textTitle)
+                .setContentText(textContent)
+                .setContentIntent(getPendingIntent())
+                .setAutoCancel(true);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this.context);
+        int notificationId = getNotifictionID();
+        notificationManager.notify(notificationId, notificationBuilder.build());
+        return notificationId;
+    }
+
     public static void sendNormalNotification(String textTitle, String textContent, Context context) {
         try {
             getInstance(context).showNormalNotification(textTitle,textContent);
@@ -104,6 +127,18 @@ public class NotificationHelperService extends Service {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static int createBackgroundNotification(String textTitle, String textContent, Context context) {
+        try {
+            return getInstance(context).showBackgroundNotification(textTitle,textContent);
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+
+    public static void removeBackgroundNotification(int id, Context context) {
+        getInstance(context).createNotificationManager().cancel(id);
     }
 
     private void createNormalNotificationChannel() throws Exception {
@@ -141,6 +176,26 @@ public class NotificationHelperService extends Service {
         if (manager != null) {
             manager.createNotificationChannel(notificationChannel);
             identifiedNotificationChannelActive = true;
+        } else {
+            throw new NotificationManagerException("Sound system doesn't Responding. Try again!!");
+        }
+    }
+
+    private void createBackgroundNotificationChannel() throws Exception {
+        // TODO: Check for versions
+
+        if (isbackgroundNotificationChannelActive) return;
+
+        NotificationChannel notificationChannel = new NotificationChannel(backgroundNotificationID, backgroundNotificationChannelName, backgroundNotificationChannelImportance);
+        notificationChannel.setLightColor(backgroundNotificationLightColor);
+        notificationChannel.setLockscreenVisibility(backgroundNotoficationLockScreenVisiblity);
+        notificationChannel.setDescription(backgroundNotificationChannelDescription);
+        notificationChannel.setSound(backgroundNotificationChannelSound, null);
+
+        NotificationManager manager = this.createNotificationManager();
+        if (manager != null) {
+            manager.createNotificationChannel(notificationChannel);
+            isbackgroundNotificationChannelActive = true;
         } else {
             throw new NotificationManagerException("Sound system doesn't Responding. Try again!!");
         }
