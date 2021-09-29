@@ -9,10 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Social_Distance_Reminder">
+        <activity android:name=".UI.ViewNotificationsActivity"></activity>
+
         <service
             android:name=".services.NotificationHelperService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <activity android:name=".UI.LandingActivity" />
         <activity android:name=".UI.HomeActivity" />

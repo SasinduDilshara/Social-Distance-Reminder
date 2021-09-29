@@ -37,5 +37,14 @@
         android:text="Send Identified Notification"
         tools:layout_editor_absoluteX="150dp"
         tools:layout_editor_absoluteY="430dp" />
+
+    <Button
+        android:id="@+id/notificbutton3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="redirectToNotificationPage"
+        android:text="Go to notifications"
+        tools:layout_editor_absoluteX="150dp"
+        tools:layout_editor_absoluteY="430dp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

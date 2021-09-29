@@ -25,4 +25,9 @@ public class HomeActivity extends AppCompatActivity {
     public void sendTestIdentifiedNotification(View view) {
         NotificationHelperService.sendIdentifiedNotification("ID Title", "ID Description", this);
     }
+
+    public void redirectToNotificationPage(View view) {
+        Intent viewNotificationPage = new Intent(this, ViewNotificationsActivity.class);
+        startActivity(viewNotificationPage);
+    }
 }

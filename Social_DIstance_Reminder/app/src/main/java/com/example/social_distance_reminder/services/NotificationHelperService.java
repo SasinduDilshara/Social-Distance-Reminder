@@ -3,6 +3,7 @@ package com.example.social_distance_reminder.services;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.social_distance_reminder.R;
+import com.example.social_distance_reminder.UI.ViewNotificationsActivity;
 import com.example.social_distance_reminder.exceptions.NotificationManagerException;
 
 import static com.example.social_distance_reminder.helper.RandomIDGenerator.getNotifictionID;
@@ -69,7 +71,9 @@ public class NotificationHelperService extends Service {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this.context, normalNotificationID)
                 .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
                 .setContentTitle(textTitle)
-                .setContentText(textContent);
+                .setContentText(textContent)
+                .setContentIntent(getPendingIntent())
+                .setAutoCancel(true);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this.context);
         notificationManager.notify(getNotifictionID(), notificationBuilder.build());
     }
@@ -79,7 +83,9 @@ public class NotificationHelperService extends Service {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this.context, identifiedNotificationID)
                 .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
                 .setContentTitle(textTitle)
-                .setContentText(textContent);
+                .setContentText(textContent)
+                .setContentIntent(getPendingIntent())
+                .setAutoCancel(true);;
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this.context);
         notificationManager.notify(getNotifictionID(), notificationBuilder.build());
     }
@@ -138,6 +144,14 @@ public class NotificationHelperService extends Service {
         } else {
             throw new NotificationManagerException("Sound system doesn't Responding. Try again!!");
         }
+    }
+
+    private PendingIntent getPendingIntent() {
+        //TODO: Pending activity can change by if conditions or parameters
+        Intent intent = new Intent(this.context, ViewNotificationsActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this.context, 0, intent, 0);
+        return pendingIntent;
     }
 
     @Nullable
