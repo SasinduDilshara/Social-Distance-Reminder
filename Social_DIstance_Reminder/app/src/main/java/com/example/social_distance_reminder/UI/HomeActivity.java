@@ -13,25 +13,21 @@ import com.example.social_distance_reminder.auth.FirebaseAuthHelper;
 import com.example.social_distance_reminder.services.NotificationHelperService;
 
 public class HomeActivity extends AppCompatActivity {
+    private static boolean closed = false;
     private int notificatoionId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        startService(new Intent(this, BackgroundServiceHandler.class));
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        if (!closed) {
+            startService(new Intent(this, BackgroundServiceHandler.class));
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-//        while(true) {
-//            if (!(BackgroundServiceHandler.isStillRunning())) {
-//                stopService(new Intent(this, BackgroundServiceHandler.class));
-//                break;
-//            }
-//        }
-//        startService(new Intent(this, NotificationHelperService.class));
     }
 
     public void sendTestNotification(View view) {

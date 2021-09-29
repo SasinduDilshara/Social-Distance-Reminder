@@ -16,6 +16,8 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.social_distance_reminder.UI.HomeActivity;
 
+import static com.example.social_distance_reminder.helper.RandomIDGenerator.getBackgroundNotifictionID;
+
 public class BackgroundServiceHandler extends Service {
     private static final int NOTIF_ID = 1;
     private static final String NOTIF_CHANNEL_ID = "Channel_Id";
@@ -45,7 +47,7 @@ public class BackgroundServiceHandler extends Service {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if ( i == 500) {
+            if ( i == 700) {
                 stopForeground(true);
                 stillRunning = false;
                 break;
@@ -56,31 +58,16 @@ public class BackgroundServiceHandler extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
         if (!stillRunning) {
-            startForeground();
+            startForeground(getApplicationContext());
             test();
             stillRunning = true;
         }
         return super.onStartCommand(intent, flags, startId);
     }
 
-    private void startForeground() {
-        System.out.println("\n\n\n22");
-        String NOTIFICATION_CHANNEL_ID = "com.example.social_distance_reminder";
-        String channelName = "My Background Service";
-        NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
-        chan.setLightColor(Color.BLUE);
-        chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
-        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        assert manager != null;
-        manager.createNotificationChannel(chan);
-
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
-        Notification notification = notificationBuilder.setOngoing(true)
-//                .setSmallIcon(Icon.CONTENTS_FILE_DESCRIPTOR)
-                .setContentTitle("App is running in background")
-                .setPriority(NotificationManager.IMPORTANCE_MIN)
-                .setCategory(Notification.CATEGORY_SERVICE)
-                .build();
-        startForeground(2, notification);
+    private void startForeground(Context context) {
+        Notification notification = NotificationHelperService
+                .createBackgroundNotificationForService("Running","App is running in background", context);
+        startForeground(getBackgroundNotifictionID(), notification);
     }
 }
