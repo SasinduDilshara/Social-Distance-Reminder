@@ -24,28 +24,35 @@ import com.example.social_distance_reminder.R;
 
 public class LoginActivity extends AppCompatActivity implements AuthRedirectHandler {
 
-    EditText phntext, codeText;
-    Button addPhone, verifyPhone;
-    LinearLayout container, container2;
+    EditText phoneText, codeText;
+    Button phoneButton, codeButton;
+    LinearLayout phoneLayout, codeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        phntext = (EditText)findViewById(R.id.phonenumber);
-        addPhone = (Button)findViewById(R.id.addphone);
-        container = (LinearLayout)findViewById(R.id.container);
+        phoneText = findViewById(R.id.txt_Login_phone);
+        phoneButton = findViewById(R.id.btn_Login_phone);
+        phoneLayout = findViewById(R.id.lnr_Login_phone);
 
-        codeText = (EditText)findViewById(R.id.code);
-        verifyPhone = (Button)findViewById(R.id.verify);
-        container2 = (LinearLayout)findViewById(R.id.container2);
+        codeText = findViewById(R.id.txt_Login_code);
+        codeButton = findViewById(R.id.btn_Login_code);
+        codeLayout = findViewById(R.id.lnr_Login_code);
 
-        codeText.setVisibility(View.INVISIBLE);
-        verifyPhone.setVisibility(View.INVISIBLE);
+        phoneLayout.setVisibility(View.VISIBLE);
+        codeLayout.setVisibility(View.GONE);
+        phoneText.setText("+1 650-555-3434");
+        phoneButton.setOnClickListener(this::addPhone);
+        codeButton.setOnClickListener(this::verifyPhone);
 
-        phntext.setText("+1 650-555-3434");
+    }
 
+    @Override
+    public void popupVerifyActivity() {
+        phoneLayout.setVisibility(View.GONE);
+        codeLayout.setVisibility(View.VISIBLE);
     }
 
     public void verifyPhone(View view) {
@@ -53,7 +60,7 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
     }
 
     public void addPhone(View view) {
-        FirebaseAuthHelper.verifyUsingPhoneNumber(phntext.getText().toString(), this, this);
+        FirebaseAuthHelper.verifyUsingPhoneNumber(phoneText.getText().toString(), this, this);
     }
 
     public void redirectToHome() {
@@ -72,9 +79,5 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
         Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void popupVerifyActivity() {
-        codeText.setVisibility(View.VISIBLE);
-        verifyPhone.setVisibility(View.VISIBLE);
-    }
+
 }
