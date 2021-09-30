@@ -106,12 +106,12 @@ public class FirebaseAuthHelper {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
+                            // Sign in success, update ui with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
 
                             FirebaseUser user = task.getResult().getUser();
                             authRedirectHandler.onAuthComplete();
-                            // Update UI
+                            // Update ui
                         } else {
                             authRedirectHandler.onAuthFail(handleAuthExceptions(task.getException()));
                         }

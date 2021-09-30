@@ -17,7 +17,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.social_distance_reminder.R;
-import com.example.social_distance_reminder.UI.ViewNotificationsActivity;
+import com.example.social_distance_reminder.ui.ViewNotificationsActivity;
 import com.example.social_distance_reminder.exceptions.NotificationManagerException;
 
 import static com.example.social_distance_reminder.helper.RandomIDGenerator.getNotifictionID;

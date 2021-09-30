@@ -1,25 +1,14 @@
 package com.example.social_distance_reminder.services;
 
 import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.Icon;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.widget.Toast;
-
-import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
-
-import com.example.social_distance_reminder.UI.HomeActivity;
 
 import static com.example.social_distance_reminder.helper.RandomIDGenerator.getBackgroundNotifictionID;
 
@@ -59,7 +48,7 @@ public class BackgroundServiceHandler extends Service {
         // Start up the thread running the service. Note that we create a
         // separate thread because the service normally runs in the process's
         // main thread, which we don't want to block. We also make it
-        // background priority so CPU-intensive work doesn't disrupt our UI.
+        // background priority so CPU-intensive work doesn't disrupt our ui.
         HandlerThread thread = new HandlerThread("ServiceStartArguments");
         thread.start();
 

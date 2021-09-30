@@ -3,8 +3,8 @@ package com.example.social_distance_reminder;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.social_distance_reminder.UI.HomeActivity;
-import com.example.social_distance_reminder.UI.LoginActivity;
+import com.example.social_distance_reminder.ui.HomeActivity;
+import com.example.social_distance_reminder.ui.LoginActivity;
 import com.example.social_distance_reminder.auth.FirebaseAuthHelper;
 
 import androidx.appcompat.app.AppCompatActivity;
