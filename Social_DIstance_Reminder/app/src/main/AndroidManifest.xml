@@ -9,13 +9,15 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION " />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.LOCAL_MAC_ADDRESS" />
     <!--
  If your app targets Android 9 or lower, you can declare
          ACCESS_COARSE_LOCATION instead.
     -->
-<!--    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> &lt;!&ndash; TODO: Need To check of these &ndash;&gt;-->
+    <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> &lt;!&ndash; TODO: Need To check of these &ndash;&gt; -->
     <uses-feature
         android:name="android.hardware.bluetooth"
         android:required="true" />
@@ -27,24 +29,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Social_Distance_Reminder">
-        <activity android:name=".UI.BluetoothTestActivity"></activity>
-
         <service
-            android:name=".services.BluetoothHelperService"
+            android:name=".services.CustomBluetoothService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true"></service>
+
+        <activity android:name=".UI.BluetoothTestActivity" />
+
         <service
             android:name=".services.BackgroundServiceHandler"
             android:enabled="true"
             android:exported="true" />
 
         <activity android:name=".UI.ViewNotificationsActivity" />
-
-        <service
-            android:name=".services.NotificationHelperService"
-            android:enabled="true"
-            android:exported="true" />
-
         <activity android:name=".UI.LandingActivity" />
         <activity android:name=".UI.HomeActivity" />
         <activity

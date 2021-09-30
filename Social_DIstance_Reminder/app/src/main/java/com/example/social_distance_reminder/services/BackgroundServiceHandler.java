@@ -1,14 +1,8 @@
 package com.example.social_distance_reminder.services;
 
 import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.Icon;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
@@ -16,12 +10,9 @@ import android.os.Looper;
 import android.os.Message;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
+import com.example.social_distance_reminder.helper.NotificationHelper;
 
-import com.example.social_distance_reminder.UI.HomeActivity;
-
-import static com.example.social_distance_reminder.helper.RandomIDGenerator.getBackgroundNotifictionID;
+import static com.example.social_distance_reminder.helper.RandomIDGenerator.getForegroundID;
 
 public class BackgroundServiceHandler extends Service {
     private Looper serviceLooper;
@@ -72,9 +63,9 @@ public class BackgroundServiceHandler extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
 
-        Notification notification = NotificationHelperService
+        Notification notification = NotificationHelper
                 .createBackgroundNotificationForService("Running","App is running in background", getApplicationContext());
-        startForeground(getBackgroundNotifictionID(), notification);
+        startForeground(getForegroundID(), notification);
 
         // For each start request, send a message to start a job and deliver the
         // start ID so we know which request we're stopping when we finish the job

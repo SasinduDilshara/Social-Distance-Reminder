@@ -1,4 +1,4 @@
-package com.example.social_distance_reminder.services;
+package com.example.social_distance_reminder.helper;
 
 import android.Manifest;
 import android.app.Service;
@@ -19,17 +19,13 @@ import java.util.Set;
 
 import static androidx.core.app.ActivityCompat.startActivityForResult;
 
-public class BluetoothHelperService extends Service {
+public class BluetoothHelper {
+
     private static BluetoothAdapter bluetoothAdapter = null;
     public static final int REQUEST_ENABLE_BT = 1;
     public static BroadcastReceiver broadcastReceiver = null;
 
-    public BluetoothHelperService() {
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
+    public BluetoothHelper() {
     }
 
     public static BluetoothAdapter getBluetoothAdapter() throws BluetoothNotSupportException {
@@ -120,27 +116,4 @@ public class BluetoothHelperService extends Service {
     public static String getMacAddress() throws BluetoothNotSupportException {
         return getBluetoothAdapter().getAddress();
     }
-
-//    //TODO: NEED TO UPDATE THE ACTIVITY https://developer.android.com/guide/topics/connectivity/bluetooth/find-bluetooth-devices#discover-devices
-//    private final BroadcastReceiver receiver = new BroadcastReceiver() {
-//        public void onReceive(Context context, Intent intent) {
-//            String action = intent.getAction();
-//            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-//                // Discovery has found a device. Get the BluetoothDevice
-//                // object and its info from the Intent.
-//                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-//                String deviceName = device.getName();
-//                String deviceHardwareAddress = device.getAddress(); // MAC address
-//
-//                int rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI,Short.MIN_VALUE);
-//                String bluetoothDeviceName = intent.getStringExtra(BluetoothDevice.EXTRA_NAME);
-//
-//                System.out.println("\ndeviceName - " + deviceName + "\n" +
-//                        "MAC - " + deviceHardwareAddress + "\n" +
-//                        "Bluetooth Device Name " + bluetoothDeviceName + "\n" +
-//                        "Rssi " +  rssi + "dB\n"
-//                        );
-//            }
-//        }
-//    };
 }
