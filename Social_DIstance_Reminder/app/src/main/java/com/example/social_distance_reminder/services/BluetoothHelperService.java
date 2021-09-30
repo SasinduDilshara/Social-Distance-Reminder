@@ -117,6 +117,10 @@ public class BluetoothHelperService extends Service {
         return new IntentFilter(BluetoothDevice.ACTION_FOUND);
     }
 
+    public static String getMacAddress() throws BluetoothNotSupportException {
+        return getBluetoothAdapter().getAddress();
+    }
+
 //    //TODO: NEED TO UPDATE THE ACTIVITY https://developer.android.com/guide/topics/connectivity/bluetooth/find-bluetooth-devices#discover-devices
 //    private final BroadcastReceiver receiver = new BroadcastReceiver() {
 //        public void onReceive(Context context, Intent intent) {
