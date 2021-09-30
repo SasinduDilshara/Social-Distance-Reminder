@@ -1,17 +1,17 @@
 package com.example.social_distance_reminder.UI;
 
-        import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
-        import android.os.Bundle;
-        import android.view.View;
-        import android.widget.Toast;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
-        import com.example.social_distance_reminder.R;
-        import com.example.social_distance_reminder.exceptions.BluetoothNotSupportException;
-        import com.example.social_distance_reminder.services.BluetoothHelperService;
+import com.example.social_distance_reminder.R;
+import com.example.social_distance_reminder.exceptions.BluetoothNotSupportException;
+import com.example.social_distance_reminder.services.BluetoothHelperService;
 
-        import static com.example.social_distance_reminder.services.BluetoothHelperService.getBroadcastReciever;
-        import static com.example.social_distance_reminder.services.BluetoothHelperService.getIntentFilter;
+import static com.example.social_distance_reminder.services.BluetoothHelperService.getBroadcastReciever;
+import static com.example.social_distance_reminder.services.BluetoothHelperService.getIntentFilter;
 
 public class BluetoothTestActivity extends AppCompatActivity {
 
@@ -33,7 +33,7 @@ public class BluetoothTestActivity extends AppCompatActivity {
         try {
             BluetoothHelperService.getBluetoothAdapter().startDiscovery();
         } catch (BluetoothNotSupportException e) {
-            System.out.println("\n\n" + e.getMessage() + "\n\n");
+            System.out.println("\n\nError:- " + e.getMessage() + "\n\n");
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }

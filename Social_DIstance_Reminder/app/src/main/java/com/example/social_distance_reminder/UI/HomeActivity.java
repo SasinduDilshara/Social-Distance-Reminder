@@ -13,7 +13,7 @@ import com.example.social_distance_reminder.services.BackgroundServiceHandler;
 import com.example.social_distance_reminder.auth.FirebaseAuthHelper;
 import com.example.social_distance_reminder.services.NotificationHelperService;
 
-import static com.example.social_distance_reminder.services.BluetoothHelperService.getMacAddress;
+import static com.example.social_distance_reminder.services.MacAddressService.getMacAddress;
 
 public class HomeActivity extends AppCompatActivity {
     private static boolean closed = true;
@@ -43,7 +43,7 @@ public class HomeActivity extends AppCompatActivity {
     public void sendTestBackgroundNotification(View view) {
         this.notificatoionId = NotificationHelperService.createBackgroundNotification("Background Title", "Background Description", this);
         try {
-            System.out.println("\n\nThis is the Mac address : - " + getMacAddress() + "\n\n");
+            System.out.println("\n\nThis is the Mac address : - " + getMacAddress(this) + "\n\n");
         } catch (BluetoothNotSupportException e) {
             e.printStackTrace();
         }
