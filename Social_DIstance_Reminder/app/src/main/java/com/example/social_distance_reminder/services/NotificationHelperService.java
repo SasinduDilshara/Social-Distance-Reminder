@@ -113,6 +113,19 @@ public class NotificationHelperService extends Service {
         return notificationId;
     }
 
+    private Notification showBackgroundNotificationForService(String textTitle, String textContent) throws Exception {
+        this.createBackgroundNotificationChannel();
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this.context, backgroundNotificationID)
+                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                .setContentTitle(textTitle)
+                .setContentText(textContent)
+                .setContentIntent(getPendingIntent())
+                .setAutoCancel(true);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this.context);
+        int notificationId = getNotifictionID();
+        return notificationBuilder.build();
+    }
+
     public static void sendNormalNotification(String textTitle, String textContent, Context context) {
         try {
             getInstance(context).showNormalNotification(textTitle,textContent);
@@ -125,6 +138,7 @@ public class NotificationHelperService extends Service {
         try {
             getInstance(context).showIdentifiedNotification(textTitle,textContent);
         } catch (Exception e) {
+            //TODO: Handle these
             e.printStackTrace();
         }
     }
@@ -134,6 +148,15 @@ public class NotificationHelperService extends Service {
             return getInstance(context).showBackgroundNotification(textTitle,textContent);
         } catch (Exception e) {
             return -1;
+        }
+    }
+
+    public static Notification createBackgroundNotificationForService(String textTitle, String textContent, Context context) {
+        try {
+            return getInstance(context).showBackgroundNotificationForService(textTitle,textContent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

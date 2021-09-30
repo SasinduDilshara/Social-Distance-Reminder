@@ -136,4 +136,12 @@ public class FirebaseAuthHelper {
     public static FirebaseUser getCurrentUser() {
         return getmAuth().getCurrentUser();
     }
+
+    public static void logout() throws Exception {
+        if (getCurrentUser() != null) {
+            getmAuth().signOut();
+        } else {
+            throw new Exception("Signout Fail!");
+        }
+    }
 }
