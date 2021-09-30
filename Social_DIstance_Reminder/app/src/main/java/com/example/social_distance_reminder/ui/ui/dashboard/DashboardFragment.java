@@ -12,8 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.social_distance_reminder.ui.R;
-import com.example.social_distance_reminder.ui.databinding.FragmentDashboardBinding;
+import com.example.social_distance_reminder.R;
+import com.example.social_distance_reminder.databinding.FragmentDashboardBinding;
 
 public class DashboardFragment extends Fragment {
 

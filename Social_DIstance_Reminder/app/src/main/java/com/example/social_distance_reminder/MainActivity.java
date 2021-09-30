@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.example.social_distance_reminder.ui.HomeActivity;
 import com.example.social_distance_reminder.ui.LoginActivity;
 import com.example.social_distance_reminder.auth.FirebaseAuthHelper;
+import com.example.social_distance_reminder.ui.PrimeActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private void redirectToHome() {
         Intent nextPage;
         if (FirebaseAuthHelper.getCurrentUser() != null) {
-            nextPage = new Intent(this, HomeActivity.class);
+            nextPage = new Intent(this, PrimeActivity.class);
         } else {
             nextPage = new Intent(this, LoginActivity.class);
         }

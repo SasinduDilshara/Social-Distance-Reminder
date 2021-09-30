@@ -10,7 +10,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.social_distance_reminder.ui.databinding.ActivityPrimeBinding;
+import com.example.social_distance_reminder.R;
+import com.example.social_distance_reminder.databinding.ActivityPrimeBinding;
 
 public class PrimeActivity extends AppCompatActivity {
 
