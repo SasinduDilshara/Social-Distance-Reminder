@@ -2,25 +2,17 @@ package com.example.social_distance_reminder.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.example.social_distance_reminder.auth.AuthRedirectHandler;
-import com.example.social_distance_reminder.auth.FirebaseAuthHelper;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
 import com.example.social_distance_reminder.R;
+import com.example.social_distance_reminder.auth.AuthRedirectHandler;
+import com.example.social_distance_reminder.auth.FirebaseAuthHelper;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity implements AuthRedirectHandler {
 
@@ -70,13 +62,13 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
 
     @Override
     public void onAuthComplete() {
-        Toast.makeText(getApplicationContext()," YOU SUCCESSFULLY COMPLETED THE AUTHENTICATION ",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), " YOU SUCCESSFULLY COMPLETED THE AUTHENTICATION ", Toast.LENGTH_SHORT).show();
         redirectToHome();
     }
 
     @Override
     public void onAuthFail(String message) {
-        Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
 
