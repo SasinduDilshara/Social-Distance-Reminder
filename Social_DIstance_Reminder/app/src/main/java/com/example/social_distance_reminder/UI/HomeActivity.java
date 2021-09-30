@@ -48,9 +48,9 @@ public class HomeActivity extends AppCompatActivity {
     public void logout(View view) {
         try {
             FirebaseAuthHelper.logout();
-            Intent landingPage = new Intent(this, LandingActivity.class);
-            landingPage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(landingPage);
+            Intent loginPage = new Intent(this, LoginActivity.class);
+            loginPage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(loginPage);
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
         }
