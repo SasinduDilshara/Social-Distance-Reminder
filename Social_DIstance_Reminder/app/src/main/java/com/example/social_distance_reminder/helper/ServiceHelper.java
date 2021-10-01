@@ -4,6 +4,12 @@ import android.Manifest;
 import android.app.ActivityManager;
 import android.content.Context;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketAddress;
+import java.util.UUID;
+
 public class ServiceHelper {
 
     @SuppressWarnings("deprecation")
@@ -30,5 +36,25 @@ public class ServiceHelper {
                     Manifest.permission.ACCESS_FINE_LOCATION};
             return permissions;
         }
+    }
+
+    public static boolean isInternetAvailable() {
+        try {
+            int timeoutMs = 1500;
+            Socket sock = new Socket();
+            SocketAddress sockaddr = new InetSocketAddress("8.8.8.8", 53);
+
+            sock.connect(sockaddr, timeoutMs);
+            sock.close();
+
+            return true;
+        } catch (IOException e) { return false; }
+    }
+
+    public static String generateHash(String string,Context context){
+        //TODO: Implement
+        String s = new String(UUID.randomUUID().toString()); // refer string resource file in java_resource.xml
+        return s;
+
     }
 }

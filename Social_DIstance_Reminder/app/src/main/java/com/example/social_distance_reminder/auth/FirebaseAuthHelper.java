@@ -24,6 +24,7 @@ import static android.content.ContentValues.TAG;
 public class FirebaseAuthHelper {
     private static String mVerificationId = "";
     private static PhoneAuthProvider.ForceResendingToken mResendToken;
+    private static String phoneNumber;
 
     private static PhoneAuthCredential getCredintial(String verificationId, String code) {
         return PhoneAuthProvider.getCredential(verificationId, code);
@@ -42,6 +43,7 @@ public class FirebaseAuthHelper {
     }
 
     public static void verifyUsingPhoneNumber(String phoneNumber, Activity activity, AuthRedirectHandler authRedirectHandler) {
+        FirebaseAuthHelper.phoneNumber = phoneNumber;
         PhoneAuthOptions options =
                 PhoneAuthOptions.newBuilder(getmAuth())
                         .setPhoneNumber(phoneNumber)       // Phone number to verify
@@ -71,7 +73,7 @@ public class FirebaseAuthHelper {
                 Log.d(TAG, "onVerificationCompleted:" + credential);
 
                 signInWithPhoneAuthCredential(credential, activity, authRedirectHandler);
-                authRedirectHandler.onAuthComplete();
+                authRedirectHandler.onAuthComplete(FirebaseAuthHelper.phoneNumber);
             }
 
             @Override
@@ -110,7 +112,7 @@ public class FirebaseAuthHelper {
                             Log.d(TAG, "signInWithCredential:success");
 
                             FirebaseUser user = task.getResult().getUser();
-                            authRedirectHandler.onAuthComplete();
+                            authRedirectHandler.onAuthComplete(FirebaseAuthHelper.phoneNumber);
                             // Update UI
                         } else {
                             authRedirectHandler.onAuthFail(handleAuthExceptions(task.getException()));

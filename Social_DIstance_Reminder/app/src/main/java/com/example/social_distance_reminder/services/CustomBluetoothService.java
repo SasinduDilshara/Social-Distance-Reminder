@@ -16,8 +16,11 @@ import android.util.Log;
 import androidx.annotation.RequiresPermission;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.example.social_distance_reminder.broadcastrecievers.NetworkStateReceiver;
+import com.example.social_distance_reminder.db.crudhelper.SqlLiteHelper;
 import com.example.social_distance_reminder.exceptions.BeaconNotSupportedException;
 import com.example.social_distance_reminder.exceptions.BluetoothNotSupportException;
+import com.example.social_distance_reminder.helper.BackgroundTaskHelper;
 import com.example.social_distance_reminder.helper.BluetoothHelper;
 import com.example.social_distance_reminder.helper.NotificationHelper;
 
@@ -38,14 +41,17 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.ContentValues.TAG;
 import static com.example.social_distance_reminder.helper.RandomIDGenerator.getForegroundID;
 
-public class CustomBluetoothService extends Service implements BeaconConsumer {
-    private static String deviceId = "deviceId";
+public class CustomBluetoothService extends Service implements BeaconConsumer, NetworkStateReceiver.NetworkStateReceiverListener {
+    private static String deviceId;
     private BeaconTransmitter beaconTransmitter;
     private Beacon beacon;
     private String BEACON_LAYOUT = "m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25";
     private BeaconParser beaconParser = new BeaconParser()
             .setBeaconLayout(BEACON_LAYOUT);
     private BeaconManager beaconManager;
+
+    private final NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
+    private SqlLiteHelper sqlLiteHelper;
 
     public CustomBluetoothService() {
     }
@@ -138,7 +144,7 @@ public class CustomBluetoothService extends Service implements BeaconConsumer {
 
         if (beacon == null) {
             beacon = new Beacon.Builder()
-                    .setId1(UUID.randomUUID().toString()) // need to generate ids device specific
+                    .setId1(deviceId) // need to generate ids device specific
                     .setId2("1")
                     .setId3("2")
                     .setManufacturer(0x0118)
@@ -183,6 +189,11 @@ public class CustomBluetoothService extends Service implements BeaconConsumer {
         IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
 //        registerBroadcastReceivers();
         registerReceiver(mReceiver, filter);
+        networkStateReceiver.addListener(this);
+        registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+
+        sqlLiteHelper = SqlLiteHelper.getInstance(this);
+        deviceId = sqlLiteHelper.getUserId();
     }
 
     @Override
@@ -267,16 +278,15 @@ public class CustomBluetoothService extends Service implements BeaconConsumer {
     public void onBeaconServiceConnect() {
         beaconManager.removeAllRangeNotifiers();
         beaconManager.addRangeNotifier(
-                (beacons, region) -> {
-                    for (Beacon beacon : beacons) {
-                        Log.d(TAG, "I see a beacon ");
-                        double distance = beacon.getDistance();
-                        System.out.println("Beacon Detected - " + beacon.getId1().toString());
-                        System.out.println("");
-                        System.out.println("");
-                        System.out.println("");
-                        System.out.println("");
-                        }
+            (beacons, region) -> {
+                for (Beacon beacon : beacons) {
+                    Log.d(TAG, "I see a beacon ");
+                    double distance = beacon.getDistance();
+                    System.out.println("Beacon Detected - " + beacon.getId1().toString());
+
+                    //TODO:CHECK FOR DISTANCE
+                    sqlLiteHelper.addDevice(beacon.getId1().toString(), 0, 0);
+                }
         });
         try {
             beaconManager.setForegroundScanPeriod(10000);
@@ -286,5 +296,15 @@ public class CustomBluetoothService extends Service implements BeaconConsumer {
         } catch (RemoteException e) {
 
         }
+    }
+
+    @Override
+    public void networkAvailable() {
+        new BackgroundTaskHelper.UploadTask().execute(this); // called after network state changed from disable to enable
+    }
+
+    @Override
+    public void networkUnavailable() {
+        Log.d(TAG, "networkUnavailable: ");
     }
 }
