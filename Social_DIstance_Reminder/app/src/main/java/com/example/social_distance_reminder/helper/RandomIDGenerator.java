@@ -4,9 +4,13 @@ import java.util.Random;
 
 public class RandomIDGenerator {
 
-    public static Random notificationGenerator = new Random();
+    public static Random notificationIDGenerator = new Random();
+    public static Random foregroundIDGenerator = new Random();
 
     public static int getNotifictionID () {
-        return notificationGenerator.nextInt();
+        return notificationIDGenerator.nextInt();
+    }
+    public static int getForegroundID () {
+        return foregroundIDGenerator.nextInt();
     }
 }

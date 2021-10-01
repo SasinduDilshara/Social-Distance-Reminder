@@ -1,37 +1,34 @@
-package com.example.social_distance_reminder.services;
+package com.example.social_distance_reminder.helper;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.IBinder;
 
-import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.social_distance_reminder.R;
-import com.example.social_distance_reminder.UI.ViewNotificationsActivity;
+import com.example.social_distance_reminder.ui.ViewNotificationsActivity;
 import com.example.social_distance_reminder.exceptions.NotificationManagerException;
 
 import static com.example.social_distance_reminder.helper.RandomIDGenerator.getNotifictionID;
 
-public class NotificationHelperService extends Service {
+public class NotificationHelper {
     private Context context;
 
     private static NotificationManager notificationManager = null;
 
-    public NotificationHelperService(Context context) {
+    public NotificationHelper(Context context) {
         this.context = context;
     }
 
-    private static NotificationHelperService notificationHelperService = null;
+    private static NotificationHelper notificationHelper = null;
 
     private static boolean isNormalNotificationChannelActive = false;
     private static boolean identifiedNotificationChannelActive = false;
@@ -68,11 +65,11 @@ public class NotificationHelperService extends Service {
         return notificationManager;
     }
 
-    public static NotificationHelperService getInstance(Context context) {
-        if (notificationHelperService == null || notificationHelperService.context != context) {
-            notificationHelperService = new NotificationHelperService(context);
+    public static NotificationHelper getInstance(Context context) {
+        if (notificationHelper == null || notificationHelper.context != context) {
+            notificationHelper = new NotificationHelper(context);
         }
-        return notificationHelperService;
+        return notificationHelper;
     }
 
     private void showNormalNotification(String textTitle, String textContent) throws Exception {
@@ -113,6 +110,19 @@ public class NotificationHelperService extends Service {
         return notificationId;
     }
 
+    private Notification showBackgroundNotificationForService(String textTitle, String textContent) throws Exception {
+        this.createBackgroundNotificationChannel();
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this.context, backgroundNotificationID)
+                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                .setContentTitle(textTitle)
+                .setContentText(textContent)
+                .setContentIntent(getPendingIntent())
+                .setAutoCancel(true);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this.context);
+        int notificationId = getNotifictionID();
+        return notificationBuilder.build();
+    }
+
     public static void sendNormalNotification(String textTitle, String textContent, Context context) {
         try {
             getInstance(context).showNormalNotification(textTitle,textContent);
@@ -125,6 +135,7 @@ public class NotificationHelperService extends Service {
         try {
             getInstance(context).showIdentifiedNotification(textTitle,textContent);
         } catch (Exception e) {
+            //TODO: Handle these
             e.printStackTrace();
         }
     }
@@ -134,6 +145,15 @@ public class NotificationHelperService extends Service {
             return getInstance(context).showBackgroundNotification(textTitle,textContent);
         } catch (Exception e) {
             return -1;
+        }
+    }
+
+    public static Notification createBackgroundNotificationForService(String textTitle, String textContent, Context context) {
+        try {
+            return getInstance(context).showBackgroundNotificationForService(textTitle,textContent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -207,12 +227,6 @@ public class NotificationHelperService extends Service {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this.context, 0, intent, 0);
         return pendingIntent;
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
     }
 
 }

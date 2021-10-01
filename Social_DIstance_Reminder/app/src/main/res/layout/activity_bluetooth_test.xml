@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.LandingActivity">
+    tools:context=".ui.BluetoothTestActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,18 +12,13 @@
         android:orientation="vertical">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/discoverbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="redirectToLogin"
-        android:text="Login"
+        android:onClick="startBluetoothDiscovery"
+        android:text="Discover Bluetooth Devices"
         tools:layout_editor_absoluteX="150dp"
         tools:layout_editor_absoluteY="430dp" />
-</LinearLayout>
-        <LinearLayout
-            android:id="@+id/container2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-        </LinearLayout>
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

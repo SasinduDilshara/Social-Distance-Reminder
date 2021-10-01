@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.HomeActivity">
+    tools:context=".ui.HomeActivity">
 
     <LinearLayout
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -62,6 +63,24 @@
         android:layout_height="wrap_content"
         android:onClick="redirectToNotificationPage"
         android:text="Go to notifications"
+        tools:layout_editor_absoluteX="150dp"
+        tools:layout_editor_absoluteY="430dp" />
+
+    <Button
+        android:id="@+id/notificbutton6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="logout"
+        android:text="Sign Out"
+        tools:layout_editor_absoluteX="150dp"
+        tools:layout_editor_absoluteY="430dp" />
+
+    <Button
+        android:id="@+id/bluetoothbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="redirectToBluetoothTestPage"
+        android:text="Go to Bluetooth Test Page"
         tools:layout_editor_absoluteX="150dp"
         tools:layout_editor_absoluteY="430dp" />
     </LinearLayout>
