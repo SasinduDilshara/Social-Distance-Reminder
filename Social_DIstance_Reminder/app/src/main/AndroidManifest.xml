@@ -12,7 +12,7 @@
         android:theme="@style/Theme.Social_Distance_Reminder">
         <activity
             android:name=".ui.PrimeActivity"
-            android:label="@string/title_activity_prime"></activity>
+            android:label="@string/title_activity_prime" />
         <activity android:name=".ui.ViewNotificationsActivity" />
         <activity android:name=".ui.HomeActivity" />
         <activity

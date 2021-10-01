@@ -4,43 +4,52 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
+import com.example.social_distance_reminder.databinding.FragmentNotificationsBinding;
+import com.example.social_distance_reminder.helper.NotificationsViewAdapter;
+import com.example.social_distance_reminder.models.Notification;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
-import com.example.social_distance_reminder.R;
-import com.example.social_distance_reminder.databinding.FragmentNotificationsBinding;
 
 public class NotificationsFragment extends Fragment {
 
-    private NotificationsViewModel notificationsViewModel;
-    private FragmentNotificationsBinding binding;
+    ArrayList<Notification> notifications;
+    FragmentNotificationsBinding binding;
+    NotificationsViewAdapter notificationsViewAdapter;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        notificationsViewModel =
-                new ViewModelProvider(this).get(NotificationsViewModel.class);
+    private String TAG = "Test";
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentNotificationsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-        final TextView textView = binding.textNotifications;
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        notifications = new ArrayList<Notification>();
+        notifications.add(new Notification("Test1", Calendar.getInstance().getTime(), "qwertyudfghjcvbnfghjvbn"));
+        notifications.add(new Notification("Test2", Calendar.getInstance().getTime(), "sdhsdhsdhsdfhsrhqshaha"));
+        notifications.add(new Notification("Test3", Calendar.getInstance().getTime(), "qwertyudfghjcvbnfdhahrhahadheghjvbn"));
+        notifications.add(new Notification("Test4", Calendar.getInstance().getTime(), "qwertyudfghjsdhserhsehwehrsehsdhfnstrjsrtjsjhsrjrtjstrjsryjcvbnfghjvbn"));
+        notifications.add(new Notification("Test1", Calendar.getInstance().getTime(), "qwertyudfghjcvbnfghjvbn"));
+        notifications.add(new Notification("Test2", Calendar.getInstance().getTime(), "sdhsdhsdhsdfhsrhqshaha"));
+        notifications.add(new Notification("Test3", Calendar.getInstance().getTime(), "qwertyudfghjcvbnfdhahrhahadheghjvbn"));
+        notifications.add(new Notification("Test4", Calendar.getInstance().getTime(), "qwertyudfghjsdhserhsehwehrsehsdhfnstrjsrtjsjhsrjrtjstrjsryjcvbnfghjvbn"));
+        bookListGenerate();
         return root;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    private void bookListGenerate() {
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+//        notifications_recyclerView.setLayoutManager(layoutManager);
+//        notificationsViewAdapter = new NotificationsViewAdapter(getActivity(), notifications);
+//        notifications_recyclerView.setAdapter(notificationsViewAdapter);
+
+        notificationsViewAdapter = new NotificationsViewAdapter(getActivity(), notifications);
+        binding.setNotificationAdapter(notificationsViewAdapter);
     }
+
 }
