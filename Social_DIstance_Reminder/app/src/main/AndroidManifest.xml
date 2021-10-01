@@ -2,6 +2,26 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.social_distance_reminder">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION " />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.LOCAL_MAC_ADDRESS" />
+    <!--
+ If your app targets Android 9 or lower, you can declare
+         ACCESS_COARSE_LOCATION instead.
+    -->
+    <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> &lt;!&ndash; TODO: Need To check of these &ndash;&gt; -->
+    <uses-feature
+        android:name="android.hardware.bluetooth"
+        android:required="true" />
+
     <application
         android:allowBackup="true"
         android:fullBackupContent="true"
@@ -10,6 +30,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Social_Distance_Reminder">
+        <service
+            android:name=".services.CustomBluetoothService"
+            android:enabled="true"
+            android:exported="true"></service>
+
+        <activity android:name=".UI.BluetoothTestActivity" />
+
+        <service
+            android:name=".services.BackgroundServiceHandler"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".UI.ViewNotificationsActivity" />
+        <activity android:name=".UI.LandingActivity" />
+        <activity android:name=".UI.HomeActivity" />
         <activity
             android:name=".ui.PrimeActivity"
             android:label="@string/title_activity_prime" />

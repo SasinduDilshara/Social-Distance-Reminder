@@ -8,12 +8,16 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.social_distance_reminder.R;
+import com.example.social_distance_reminder.exceptions.BluetoothNotSupportException;
 import com.example.social_distance_reminder.services.BackgroundServiceHandler;
 import com.example.social_distance_reminder.auth.FirebaseAuthHelper;
-import com.example.social_distance_reminder.services.NotificationHelperService;
+import com.example.social_distance_reminder.helper.NotificationHelper;
+
+import static com.example.social_distance_reminder.services.MacAddressService.getBluetoothMacAddress;
+import static com.example.social_distance_reminder.services.MacAddressService.getMacAddress;
 
 public class HomeActivity extends AppCompatActivity {
-    private static boolean closed = false;
+    private static boolean closed = true;
     private int notificatoionId = 0;
 
     @Override
@@ -25,11 +29,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void sendTestNotification(View view) {
-        NotificationHelperService.sendNormalNotification("Title", "Description", this);
+        NotificationHelper.sendNormalNotification("Title", "Description", this);
     }
 
     public void sendTestIdentifiedNotification(View view) {
-        NotificationHelperService.sendIdentifiedNotification("ID Title", "ID Description", this);
+        NotificationHelper.sendIdentifiedNotification("ID Title", "ID Description", this);
     }
 
     public void redirectToNotificationPage(View view) {
@@ -38,11 +42,17 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void sendTestBackgroundNotification(View view) {
-        this.notificatoionId = NotificationHelperService.createBackgroundNotification("Background Title", "Background Description", this);
+        this.notificatoionId = NotificationHelper.createBackgroundNotification("Background Title", "Background Description", this);
+        try {
+            System.out.println("\n\nThis is the Mac address : - " + getMacAddress(this) + "\n\n");
+            System.out.println("\n\n" + "Bluetooth MAC is :-" + getBluetoothMacAddress() + "\n\n");
+        } catch (BluetoothNotSupportException e) {
+            e.printStackTrace();
+        }
     }
 
     public void RemoveTestBackgroundNotification(View view) {
-        NotificationHelperService.removeBackgroundNotification(this.notificatoionId, this);
+        NotificationHelper.removeBackgroundNotification(this.notificatoionId, this);
     }
 
     public void logout(View view) {
@@ -54,5 +64,10 @@ public class HomeActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void redirectToBluetoothTestPage(View view) {
+        Intent bluetoothTestPage = new Intent(this, BluetoothTestActivity.class);
+        startActivity(bluetoothTestPage);
     }
 }

@@ -1,18 +1,15 @@
-package com.example.social_distance_reminder.services;
+package com.example.social_distance_reminder.helper;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.IBinder;
 
-import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -22,16 +19,16 @@ import com.example.social_distance_reminder.exceptions.NotificationManagerExcept
 
 import static com.example.social_distance_reminder.helper.RandomIDGenerator.getNotifictionID;
 
-public class NotificationHelperService extends Service {
+public class NotificationHelper {
     private Context context;
 
     private static NotificationManager notificationManager = null;
 
-    public NotificationHelperService(Context context) {
+    public NotificationHelper(Context context) {
         this.context = context;
     }
 
-    private static NotificationHelperService notificationHelperService = null;
+    private static NotificationHelper notificationHelper = null;
 
     private static boolean isNormalNotificationChannelActive = false;
     private static boolean identifiedNotificationChannelActive = false;
@@ -68,11 +65,11 @@ public class NotificationHelperService extends Service {
         return notificationManager;
     }
 
-    public static NotificationHelperService getInstance(Context context) {
-        if (notificationHelperService == null || notificationHelperService.context != context) {
-            notificationHelperService = new NotificationHelperService(context);
+    public static NotificationHelper getInstance(Context context) {
+        if (notificationHelper == null || notificationHelper.context != context) {
+            notificationHelper = new NotificationHelper(context);
         }
-        return notificationHelperService;
+        return notificationHelper;
     }
 
     private void showNormalNotification(String textTitle, String textContent) throws Exception {
@@ -230,12 +227,6 @@ public class NotificationHelperService extends Service {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this.context, 0, intent, 0);
         return pendingIntent;
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.social_distance_reminder.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,9 +9,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.social_distance_reminder.R;
 import com.example.social_distance_reminder.auth.AuthRedirectHandler;
 import com.example.social_distance_reminder.auth.FirebaseAuthHelper;
+import com.example.social_distance_reminder.db.crudhelper.FirebaseCRUDHelper;
+import com.example.social_distance_reminder.db.crudhelper.SqlLiteHelper;
+import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -62,8 +65,12 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
 
     @Override
     public void onAuthComplete() {
-        Toast.makeText(getApplicationContext(), " YOU SUCCESSFULLY COMPLETED THE AUTHENTICATION ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext()," YOU SUCCESSFULLY COMPLETED THE AUTHENTICATION ",Toast.LENGTH_SHORT).show();
         redirectToHome();
+        String userId = generateHash(phonenumber,this);
+        Context context = this;
+        SqlLiteHelper.getInstance(context).insertUserId(userId);
+        new FirebaseCRUDHelper().onCreteUser(userId);
     }
 
     @Override
