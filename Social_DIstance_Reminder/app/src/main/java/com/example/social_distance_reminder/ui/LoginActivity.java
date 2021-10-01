@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.social_distance_reminder.R;
 import com.example.social_distance_reminder.auth.AuthRedirectHandler;
 import com.example.social_distance_reminder.auth.FirebaseAuthHelper;
 import com.example.social_distance_reminder.db.crudhelper.FirebaseCRUDHelper;
@@ -16,6 +17,7 @@ import com.example.social_distance_reminder.db.crudhelper.SqlLiteHelper;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import static com.example.social_distance_reminder.helper.ServiceHelper.generateHash;
 
 public class LoginActivity extends AppCompatActivity implements AuthRedirectHandler {
 
@@ -58,15 +60,20 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
         FirebaseAuthHelper.verifyUsingPhoneNumber(phoneText.getText().toString(), this, this);
     }
 
-    public void redirectToHome() {
+    public void redirectPrime() {
+        Intent homePage = new Intent(this, PrimeActivity.class);
+        startActivity(homePage);
+    }
+
+    public void redirectToHome(View view) {
         Intent homePage = new Intent(this, HomeActivity.class);
         startActivity(homePage);
     }
 
     @Override
-    public void onAuthComplete() {
+    public void onAuthComplete(String phonenumber) {
         Toast.makeText(getApplicationContext()," YOU SUCCESSFULLY COMPLETED THE AUTHENTICATION ",Toast.LENGTH_SHORT).show();
-        redirectToHome();
+        redirectPrime();
         String userId = generateHash(phonenumber,this);
         Context context = this;
         SqlLiteHelper.getInstance(context).insertUserId(userId);
