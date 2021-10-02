@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.social_distance_reminder.R;
@@ -23,8 +24,10 @@ import static com.example.social_distance_reminder.helper.ServiceHelper.generate
 public class LoginActivity extends AppCompatActivity implements AuthRedirectHandler {
 
     EditText phoneText, codeText1,codeText2,codeText3,codeText4,codeText5,codeText6;
+    TextView phoneNumView;
     Button phoneButton, codeButton;
     LinearLayout phoneLayout, codeLayout;
+    String phoneNum = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,7 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
         phoneText = findViewById(R.id.txt_Login_phone);
         phoneButton = findViewById(R.id.btn_Login_phone);
         phoneLayout = findViewById(R.id.lnr_Login_phone);
+        phoneNumView = findViewById(R.id.lbl_Login_phoneNumber);
 
         codeButton = findViewById(R.id.btn_Login_code);
         codeText1 = findViewById(R.id.txt_Login_code1);
@@ -206,7 +210,11 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
     }
 
     public void addPhone(View view) {
-        FirebaseAuthHelper.verifyUsingPhoneNumber(phoneText.getText().toString(), this, this);
+        phoneNum = phoneText.getText().toString().trim();
+        if(!phoneNum.isEmpty()) {
+            FirebaseAuthHelper.verifyUsingPhoneNumber(phoneNum, this, this);
+            phoneNumView.setText(phoneNum);
+        }
     }
 
     public void redirectPrime() {
