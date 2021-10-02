@@ -43,6 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@id/guidelineV2"
             app:layout_constraintStart_toEndOf="@id/guidelineV1"
             app:layout_constraintTop_toBottomOf="@id/guidelineH1">
@@ -69,19 +70,73 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintEnd_toStartOf="@id/guidelineV2"
             app:layout_constraintStart_toEndOf="@id/guidelineV1"
             app:layout_constraintTop_toBottomOf="@id/guidelineH1">
 
-            <EditText
-                android:id="@+id/txt_Login_code"
-                android:layout_width="200dp"
+<!--            <EditText-->
+<!--                android:id="@+id/txt_Login_code"-->
+<!--                android:layout_width="200dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:autofillHints="False"-->
+<!--                android:layout_marginEnd="15dp"-->
+<!--                android:hint="Enter the code"-->
+<!--                android:inputType="number" />-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autofillHints="False"
-                android:layout_marginEnd="15dp"
-                android:hint="Enter the code"
-                android:inputType="number" />
+                android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/txt_Login_code1"
+                    android:layout_width="35dp"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="false"
+                    android:textAlignment="center"
+                    android:inputType="number"
+                    android:maxLength="1" />
+                <EditText
+                    android:id="@+id/txt_Login_code2"
+                    android:layout_width="35dp"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="false"
+                    android:textAlignment="center"
+                    android:inputType="number"
+                    android:maxLength="1" />
+                <EditText
+                    android:id="@+id/txt_Login_code3"
+                    android:layout_width="35dp"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="false"
+                    android:textAlignment="center"
+                    android:inputType="number"
+                    android:maxLength="1" />
+                <EditText
+                    android:id="@+id/txt_Login_code4"
+                    android:layout_width="35dp"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="false"
+                    android:textAlignment="center"
+                    android:inputType="number"
+                    android:maxLength="1" />
+                <EditText
+                    android:id="@+id/txt_Login_code5"
+                    android:layout_width="35dp"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="false"
+                    android:textAlignment="center"
+                    android:inputType="number"
+                    android:maxLength="1" />
+                <EditText
+                    android:id="@+id/txt_Login_code6"
+                    android:layout_width="35dp"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="false"
+                    android:textAlignment="center"
+                    android:inputType="number"
+                    android:maxLength="1" />
+            </LinearLayout>
 
             <Button
                 android:id="@+id/btn_Login_code"
