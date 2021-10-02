@@ -14,7 +14,6 @@ import com.example.social_distance_reminder.auth.AuthRedirectHandler;
 import com.example.social_distance_reminder.auth.FirebaseAuthHelper;
 import com.example.social_distance_reminder.db.crudhelper.FirebaseCRUDHelper;
 import com.example.social_distance_reminder.db.crudhelper.SqlLiteHelper;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import static com.example.social_distance_reminder.helper.ServiceHelper.generateHash;
@@ -66,7 +65,7 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
     }
 
     public void redirectToHome(View view) {
-        Intent homePage = new Intent(this, HomeActivity.class);
+        Intent homePage = new Intent(this, TestActivity.class);
         startActivity(homePage);
     }
 

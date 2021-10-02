@@ -16,14 +16,14 @@ import com.example.social_distance_reminder.helper.NotificationHelper;
 import static com.example.social_distance_reminder.services.MacAddressService.getBluetoothMacAddress;
 import static com.example.social_distance_reminder.services.MacAddressService.getMacAddress;
 
-public class HomeActivity extends AppCompatActivity {
+public class TestActivity extends AppCompatActivity {
     private static boolean closed = true;
     private int notificatoionId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_test);
         if(!closed) startService(new Intent(this, BackgroundServiceHandler.class));
         closed = true;
     }
