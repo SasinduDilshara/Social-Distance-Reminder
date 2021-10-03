@@ -30,12 +30,10 @@ public class DashboardFragment extends Fragment {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textDashboard;
         Button button = binding.buttonDashboard;
         dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                textView.setText(s);
                 button.setOnClickListener(DashboardFragment.this::redirectToHome);
             }
         });
