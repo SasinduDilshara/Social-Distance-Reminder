@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/CardViewRadius"
+    android:layout_width="350dp"
+    android:layout_height="wrap_content"
+    android:elevation="0dp"
+    tools:context=".ui.ui.home.HomeFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnBarcodeClose"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@color/colorPrimaryDark"
+                android:src="@drawable/ic_stats_black_24dp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Type the following sequence"
+            android:textAlignment="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Type the following sequence"
+            android:textAlignment="center" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/txt_Login_phone"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:autofillHints="True"
+                android:hint="Enter your number"
+                android:inputType="phone" />
+
+            <Button
+                android:id="@+id/btn_Login_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:text="Add" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
