@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +20,8 @@ import com.example.social_distance_reminder.db.crudhelper.FirebaseCRUDHelper;
 import com.example.social_distance_reminder.db.crudhelper.SqlLiteHelper;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.helper.widget.Carousel;
+
 import static com.example.social_distance_reminder.helper.ServiceHelper.generateHash;
 
 public class LoginActivity extends AppCompatActivity implements AuthRedirectHandler {
@@ -27,7 +30,9 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
     TextView phoneNumView;
     Button phoneButton, codeButton;
     LinearLayout phoneLayout, codeLayout;
+    Carousel carousel;
     String phoneNum = "";
+    int [] images = {R.drawable.distanzia_cover_foreground_dark, R.drawable.distanzia_cover_foreground_light, R.drawable.distanzia_cover_foreground_original};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +43,7 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
         phoneButton = findViewById(R.id.btn_Login_phone);
         phoneLayout = findViewById(R.id.lnr_Login_phone);
         phoneNumView = findViewById(R.id.lbl_Login_phoneNumber);
+        carousel = findViewById(R.id.carousel);
 
         codeButton = findViewById(R.id.btn_Login_code);
         codeText1 = findViewById(R.id.txt_Login_code1);
@@ -55,6 +61,23 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
         phoneText.setText("+1 650-555-3434");
         phoneButton.setOnClickListener(this::addPhone);
         codeButton.setOnClickListener(this::verifyPhone);
+
+        carousel.setAdapter(new Carousel.Adapter() {
+            @Override
+            public int count() {
+                return images.length;
+            }
+
+            @Override
+            public void populate(View view, int index){
+                ((ImageView)view).setImageResource(images[index]);
+            }
+
+            @Override
+            public void onNewItem(int index) {
+
+            }
+        });
 
     }
 
