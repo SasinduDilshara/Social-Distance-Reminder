@@ -154,14 +154,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
+                android:textColor="@color/white"
                 android:text="OTP was sent to"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/lbl_Login_phoneNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/orange_400_light"
                 android:text="+94 23 2245343"
                 android:textSize="22sp"
                 android:textStyle="bold" />
@@ -182,6 +183,7 @@
                         android:layout_width="35dp"
                         android:layout_height="wrap_content"
                         android:autofillHints="false"
+                        android:drawableTint="@color/orange_400"
                         android:inputType="number"
                         android:maxLength="1"
                         android:textAlignment="center" />
@@ -191,6 +193,7 @@
                         android:layout_width="35dp"
                         android:layout_height="wrap_content"
                         android:autofillHints="false"
+                        android:drawableTint="@color/orange_400"
                         android:inputType="number"
                         android:maxLength="1"
                         android:textAlignment="center" />
@@ -200,6 +203,7 @@
                         android:layout_width="35dp"
                         android:layout_height="wrap_content"
                         android:autofillHints="false"
+                        android:drawableTint="@color/orange_400"
                         android:inputType="number"
                         android:maxLength="1"
                         android:textAlignment="center" />
@@ -209,6 +213,7 @@
                         android:layout_width="35dp"
                         android:layout_height="wrap_content"
                         android:autofillHints="false"
+                        android:drawableTint="@color/orange_400"
                         android:inputType="number"
                         android:maxLength="1"
                         android:textAlignment="center" />
@@ -218,6 +223,7 @@
                         android:layout_width="35dp"
                         android:layout_height="wrap_content"
                         android:autofillHints="false"
+                        android:drawableTint="@color/orange_400"
                         android:inputType="number"
                         android:maxLength="1"
                         android:textAlignment="center" />
@@ -227,13 +233,10 @@
                         android:layout_width="35dp"
                         android:layout_height="wrap_content"
                         android:autofillHints="false"
-                        android:backgroundTint="@color/orange_400"
                         android:drawableTint="@color/orange_400"
-                        android:foregroundTint="@color/orange_400"
                         android:inputType="number"
                         android:maxLength="1"
-                        android:textAlignment="center"
-                        android:textColorHighlight="@color/orange_400" />
+                        android:textAlignment="center"/>
                 </LinearLayout>
 
                 <Button
