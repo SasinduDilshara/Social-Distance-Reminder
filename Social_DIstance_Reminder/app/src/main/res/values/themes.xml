@@ -35,6 +35,10 @@
         <item name="android:backgroundTint">@color/light_Blue_800_dark</item>
     </style>
 
+    <style name="AccentButton">
+        <item name="android:backgroundTint">@color/orange_400</item>
+    </style>
+
     <style name="Theme.Social_Distance_Reminder.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

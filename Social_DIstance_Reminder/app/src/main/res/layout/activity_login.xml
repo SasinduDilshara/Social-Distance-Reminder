@@ -80,20 +80,22 @@
                 android:id="@+id/imageView0"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="fitCenter"
-                android:contentDescription="TODO"/>
+                android:contentDescription="TODO"
+                android:scaleType="fitCenter" />
+
             <ImageView
                 android:id="@+id/imageView1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="fitCenter"
-                android:contentDescription="TODO"/>
+                android:contentDescription="TODO"
+                android:scaleType="fitCenter" />
+
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="fitCenter"
-                android:contentDescription="TODO"/>
+                android:contentDescription="TODO"
+                android:scaleType="fitCenter" />
 
             <androidx.constraintlayout.helper.widget.Carousel
                 android:id="@+id/carousel"
@@ -113,30 +115,63 @@
             android:id="@+id/lnr_Login_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone"
+            android:orientation="vertical"
+            android:visibility="visible"
             app:layout_constraintEnd_toStartOf="@id/guidelineV2"
             app:layout_constraintStart_toEndOf="@id/guidelineV1"
-            app:layout_constraintTop_toBottomOf="@id/guidelineH1">
+            app:layout_constraintTop_toBottomOf="@id/guidelineH4">
 
-            <EditText
-                android:id="@+id/txt_Login_phone"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
-                android:autofillHints="True"
-                android:drawableTint="@color/orange_400"
-                android:hint="Enter your number"
-                android:inputType="phone" />
-
-            <Button
-                android:id="@+id/btn_Login_phone"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:backgroundTint="@color/orange_400"
-                android:textColor="@color/white"
-                android:text="Add" />
+                android:orientation="horizontal"
+                android:layout_marginBottom="30dp">
+
+                <TextView
+                    android:id="@+id/lbl_Login_terms"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:autofillHints="True"
+                    android:drawableTint="@color/orange_400"
+                    android:hint="I agree on these terms and conditions"
+                    android:inputType="phone" />
+
+                <CheckBox
+                    android:id="@+id/chk_Login_terms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginStart="15dp"
+                    android:backgroundTint="@color/orange_400" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/txt_Login_phone"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:autofillHints="True"
+                    android:drawableTint="@color/orange_400"
+                    android:hint="Enter your number"
+                    android:inputType="phone" />
+
+                <Button
+                    android:id="@+id/btn_Login_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:backgroundTint="@color/orange_400"
+                    android:text="Add"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -145,7 +180,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@id/guidelineV2"
             app:layout_constraintStart_toEndOf="@id/guidelineV1"
             app:layout_constraintTop_toBottomOf="@id/guidelineH3">
@@ -154,16 +189,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:textColor="@color/white"
                 android:text="OTP was sent to"
+                android:textColor="@color/white"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/lbl_Login_phoneNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/orange_400_light"
                 android:text="+94 23 2245343"
+                android:textColor="@color/orange_400_light"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
@@ -236,7 +271,7 @@
                         android:drawableTint="@color/orange_400"
                         android:inputType="number"
                         android:maxLength="1"
-                        android:textAlignment="center"/>
+                        android:textAlignment="center" />
                 </LinearLayout>
 
                 <Button

@@ -4,8 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.style.ClickableSpan;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -16,6 +20,7 @@ import com.example.social_distance_reminder.databinding.ActivityLoginBinding;
 import com.example.social_distance_reminder.db.crudhelper.FirebaseCRUDHelper;
 import com.example.social_distance_reminder.db.crudhelper.SqlLiteHelper;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.helper.widget.Carousel;
 
@@ -38,6 +43,25 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
 
         binding.lnrLoginPhone.setVisibility(View.VISIBLE);
         binding.lnrLoginCode.setVisibility(View.GONE);
+
+        SpannableString termsConditionsString = new SpannableString("I agree on these terms and conditions");
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View view) {
+                Toast.makeText(getApplicationContext(), "open", Toast.LENGTH_SHORT).show();
+            }
+        };
+        termsConditionsString.setSpan(clickableSpan, 17, 37, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        binding.btnLoginPhone.setEnabled(false);
+        binding.chkLoginTerms.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                binding.btnLoginPhone.setEnabled(b);
+            }
+        });
+        binding.lblLoginTerms.setText(termsConditionsString);
+//        binding.lblLoginTerms.setMovementMethod(LinkMovementMethod.getInstance());
         binding.txtLoginPhone.setText("+1 650-555-3434");
         binding.btnLoginPhone.setOnClickListener(this::addPhone);
         binding.btnLoginCode.setOnClickListener(this::verifyPhone);
