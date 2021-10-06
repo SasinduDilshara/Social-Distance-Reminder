@@ -6,16 +6,13 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.social_distance_reminder.R;
 import com.example.social_distance_reminder.auth.AuthRedirectHandler;
 import com.example.social_distance_reminder.auth.FirebaseAuthHelper;
+import com.example.social_distance_reminder.databinding.ActivityLoginBinding;
 import com.example.social_distance_reminder.db.crudhelper.FirebaseCRUDHelper;
 import com.example.social_distance_reminder.db.crudhelper.SqlLiteHelper;
 
@@ -26,51 +23,34 @@ import static com.example.social_distance_reminder.helper.ServiceHelper.generate
 
 public class LoginActivity extends AppCompatActivity implements AuthRedirectHandler {
 
-    EditText phoneText, codeText1,codeText2,codeText3,codeText4,codeText5,codeText6;
-    TextView phoneNumView;
-    Button phoneButton, codeButton;
-    LinearLayout phoneLayout, codeLayout;
-    Carousel carousel;
+    ActivityLoginBinding binding;
     String phoneNum = "";
-    int [] images = {R.drawable.distanzia_cover_foreground_dark, R.drawable.distanzia_cover_foreground_light, R.drawable.distanzia_cover_foreground_original};
+    int[] images = {R.drawable.distanzia_cover_foreground_dark, R.drawable.distanzia_cover_foreground_light, R.drawable.distanzia_cover_foreground_original};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
-        phoneText = findViewById(R.id.txt_Login_phone);
-        phoneButton = findViewById(R.id.btn_Login_phone);
-        phoneLayout = findViewById(R.id.lnr_Login_phone);
-        phoneNumView = findViewById(R.id.lbl_Login_phoneNumber);
-        carousel = findViewById(R.id.carousel);
-
-        codeButton = findViewById(R.id.btn_Login_code);
-        codeText1 = findViewById(R.id.txt_Login_code1);
-        codeText2 = findViewById(R.id.txt_Login_code2);
-        codeText3 = findViewById(R.id.txt_Login_code3);
-        codeText4 = findViewById(R.id.txt_Login_code4);
-        codeText5 = findViewById(R.id.txt_Login_code5);
-        codeText6 = findViewById(R.id.txt_Login_code6);
-        codeLayout = findViewById(R.id.lnr_Login_code);
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         setupOTPText();
 
-        phoneLayout.setVisibility(View.VISIBLE);
-        codeLayout.setVisibility(View.GONE);
-        phoneText.setText("+1 650-555-3434");
-        phoneButton.setOnClickListener(this::addPhone);
-        codeButton.setOnClickListener(this::verifyPhone);
+        binding.lnrLoginPhone.setVisibility(View.VISIBLE);
+        binding.lnrLoginCode.setVisibility(View.GONE);
+        binding.txtLoginPhone.setText("+1 650-555-3434");
+        binding.btnLoginPhone.setOnClickListener(this::addPhone);
+        binding.btnLoginCode.setOnClickListener(this::verifyPhone);
 
-        carousel.setAdapter(new Carousel.Adapter() {
+        binding.carousel.setAdapter(new Carousel.Adapter() {
             @Override
             public int count() {
                 return images.length;
             }
 
             @Override
-            public void populate(View view, int index){
-                ((ImageView)view).setImageResource(images[index]);
+            public void populate(View view, int index) {
+                ((ImageView) view).setImageResource(images[index]);
             }
 
             @Override
@@ -81,8 +61,9 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
 
     }
 
+
     private void setupOTPText() {
-        codeText1.addTextChangedListener(new TextWatcher() {
+        binding.txtLoginCode1.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -90,8 +71,8 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(!charSequence.toString().trim().isEmpty()){
-                    codeText2.requestFocus();
+                if (!charSequence.toString().trim().isEmpty()) {
+                    binding.txtLoginCode2.requestFocus();
                 }
             }
 
@@ -100,7 +81,7 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
 
             }
         });
-        codeText2.addTextChangedListener(new TextWatcher() {
+        binding.txtLoginCode2.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -108,10 +89,10 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(!charSequence.toString().trim().isEmpty()){
-                    codeText3.requestFocus();
-                }else{
-                    codeText1.requestFocus();
+                if (!charSequence.toString().trim().isEmpty()) {
+                    binding.txtLoginCode3.requestFocus();
+                } else {
+                    binding.txtLoginCode1.requestFocus();
                 }
             }
 
@@ -120,7 +101,7 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
 
             }
         });
-        codeText3.addTextChangedListener(new TextWatcher() {
+        binding.txtLoginCode3.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -128,10 +109,10 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(!charSequence.toString().trim().isEmpty()){
-                    codeText4.requestFocus();
-                }else{
-                    codeText2.requestFocus();
+                if (!charSequence.toString().trim().isEmpty()) {
+                    binding.txtLoginCode4.requestFocus();
+                } else {
+                    binding.txtLoginCode2.requestFocus();
                 }
             }
 
@@ -140,7 +121,7 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
 
             }
         });
-        codeText4.addTextChangedListener(new TextWatcher() {
+        binding.txtLoginCode4.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -148,10 +129,10 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(!charSequence.toString().trim().isEmpty()){
-                    codeText5.requestFocus();
-                }else{
-                    codeText3.requestFocus();
+                if (!charSequence.toString().trim().isEmpty()) {
+                    binding.txtLoginCode5.requestFocus();
+                } else {
+                    binding.txtLoginCode3.requestFocus();
                 }
             }
 
@@ -160,7 +141,7 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
 
             }
         });
-        codeText5.addTextChangedListener(new TextWatcher() {
+        binding.txtLoginCode5.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -168,10 +149,10 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(!charSequence.toString().trim().isEmpty()){
-                    codeText6.requestFocus();
-                }else{
-                    codeText4.requestFocus();
+                if (!charSequence.toString().trim().isEmpty()) {
+                    binding.txtLoginCode6.requestFocus();
+                } else {
+                    binding.txtLoginCode4.requestFocus();
                 }
             }
 
@@ -180,7 +161,7 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
 
             }
         });
-        codeText6.addTextChangedListener(new TextWatcher() {
+        binding.txtLoginCode6.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -188,8 +169,8 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(charSequence.toString().trim().isEmpty()) {
-                    codeText5.requestFocus();
+                if (charSequence.toString().trim().isEmpty()) {
+                    binding.txtLoginCode5.requestFocus();
                 }
             }
 
@@ -200,43 +181,55 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
         });
     }
 
-    String readOTP(){
+    String readOTP() {
         String OTP = "";
-        String code1 = codeText1.getText().toString().trim();
-        String code2 = codeText2.getText().toString().trim();
-        String code3 = codeText3.getText().toString().trim();
-        String code4 = codeText4.getText().toString().trim();
-        String code5 = codeText5.getText().toString().trim();
-        String code6 = codeText6.getText().toString().trim();
-        if(!code1.isEmpty()) { OTP += code1;}
-        if(!code2.isEmpty()) { OTP += code2;}
-        if(!code3.isEmpty()) { OTP += code3;}
-        if(!code4.isEmpty()) { OTP += code4;}
-        if(!code5.isEmpty()) { OTP += code5;}
-        if(!code6.isEmpty()) { OTP += code6;}
+        String code1 = binding.txtLoginCode1.getText().toString().trim();
+        String code2 = binding.txtLoginCode2.getText().toString().trim();
+        String code3 = binding.txtLoginCode3.getText().toString().trim();
+        String code4 = binding.txtLoginCode4.getText().toString().trim();
+        String code5 = binding.txtLoginCode5.getText().toString().trim();
+        String code6 = binding.txtLoginCode6.getText().toString().trim();
+        if (!code1.isEmpty()) {
+            OTP += code1;
+        }
+        if (!code2.isEmpty()) {
+            OTP += code2;
+        }
+        if (!code3.isEmpty()) {
+            OTP += code3;
+        }
+        if (!code4.isEmpty()) {
+            OTP += code4;
+        }
+        if (!code5.isEmpty()) {
+            OTP += code5;
+        }
+        if (!code6.isEmpty()) {
+            OTP += code6;
+        }
         return OTP;
     }
 
     @Override
     public void popupVerifyActivity() {
-        phoneLayout.setVisibility(View.GONE);
-        codeLayout.setVisibility(View.VISIBLE);
+        binding.lnrLoginPhone.setVisibility(View.GONE);
+        binding.lnrLoginCode.setVisibility(View.VISIBLE);
     }
 
     public void verifyPhone(View view) {
         String OTP = readOTP();
-        if(OTP.length() == 6) {
+        if (OTP.length() == 6) {
             FirebaseAuthHelper.verifyUsingCode(OTP, this, this);
-        }else{
+        } else {
             Toast.makeText(this, "OTP should have 6 numbers", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void addPhone(View view) {
-        phoneNum = phoneText.getText().toString().trim();
-        if(!phoneNum.isEmpty()) {
+        phoneNum = binding.txtLoginPhone.getText().toString().trim();
+        if (!phoneNum.isEmpty()) {
             FirebaseAuthHelper.verifyUsingPhoneNumber(phoneNum, this, this);
-            phoneNumView.setText(phoneNum);
+            binding.lblLoginPhoneNumber.setText(phoneNum);
         }
     }
 
@@ -252,9 +245,9 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
 
     @Override
     public void onAuthComplete(String phonenumber) {
-        Toast.makeText(getApplicationContext()," YOU SUCCESSFULLY COMPLETED THE AUTHENTICATION ",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), " YOU SUCCESSFULLY COMPLETED THE AUTHENTICATION ", Toast.LENGTH_SHORT).show();
         redirectPrime();
-        String userId = generateHash(phonenumber,this);
+        String userId = generateHash(phonenumber, this);
         Context context = this;
         SqlLiteHelper.getInstance(context).insertUserId(userId);
         new FirebaseCRUDHelper().onCreteUser(userId);

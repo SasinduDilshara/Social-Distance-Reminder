@@ -29,7 +29,6 @@
         app:layout_constraintGuide_percent="0.67" />
 
 
-
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineH10"
         android:layout_width="wrap_content"
@@ -92,7 +91,7 @@
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_margin="10dp"
-            app:cardBackgroundColor="?attr/colorPrimaryDark"
+            style="@style/DashboardCardType2"
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp">
 
@@ -108,7 +107,7 @@
                     android:id="@+id/button_dashboard"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:text="tesing"/>
+                    android:text="tesing" />
 
                 <ImageView
                     android:layout_width="0dp"
@@ -128,8 +127,8 @@
             android:layout_height="0dp"
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
+            style="@style/DashboardCardType1"
             android:layout_margin="10dp"
-            app:cardBackgroundColor="?attr/colorPrimaryDark"
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp">
 
@@ -158,7 +157,7 @@
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_margin="10dp"
-            app:cardBackgroundColor="?attr/colorPrimaryDark"
+            style="@style/DashboardCardType1"
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp">
 
@@ -188,7 +187,7 @@
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_margin="10dp"
-            app:cardBackgroundColor="?attr/colorPrimaryDark"
+            style="@style/DashboardCardType1"
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp">
 
@@ -218,7 +217,7 @@
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_margin="10dp"
-            app:cardBackgroundColor="?attr/colorPrimaryDark"
+            style="@style/DashboardCardType1"
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp">
 
@@ -248,7 +247,7 @@
             android:layout_rowWeight="1"
             android:layout_columnWeight="1"
             android:layout_margin="10dp"
-            app:cardBackgroundColor="?attr/colorPrimaryDark"
+            style="@style/DashboardCardType2"
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp">
 
@@ -275,18 +274,18 @@
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--<TextView-->
-<!--android:layout_width="0dp"-->
-<!--android:layout_height="match_parent"-->
-<!--android:layout_weight="0.8"-->
-<!--android:autoSizeMaxTextSize="30sp"-->
-<!--android:autoSizeMinTextSize="12sp"-->
-<!--android:autoSizePresetSizes="@array/autosize_text_sizes"-->
-<!--android:autoSizeTextType="uniform"-->
-<!--android:gravity="center"-->
-<!--android:padding="7dp"-->
-<!--android:text="Add Book"-->
-<!--android:textAlignment="center"-->
-<!--android:textColor="?attr/titleTextColor"-->
-<!--android:textSize="20sp"-->
-<!--android:textStyle="bold" />-->
+    <!--<TextView-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_weight="0.8"-->
+    <!--android:autoSizeMaxTextSize="30sp"-->
+    <!--android:autoSizeMinTextSize="12sp"-->
+    <!--android:autoSizePresetSizes="@array/autosize_text_sizes"-->
+    <!--android:autoSizeTextType="uniform"-->
+    <!--android:gravity="center"-->
+    <!--android:padding="7dp"-->
+    <!--android:text="Add Book"-->
+    <!--android:textAlignment="center"-->
+    <!--android:textColor="?attr/titleTextColor"-->
+    <!--android:textSize="20sp"-->
+    <!--android:textStyle="bold" />-->

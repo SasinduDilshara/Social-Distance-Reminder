@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
+    <color name="grey">#FF555555</color>
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00000000</color>
     <color name="warning">#ef5350</color>
     <color name="light_Blue_800">#0277bd</color>
     <color name="light_Blue_800_dark">#004c8c</color>
-    <color name="light_Blue_800_light">#58a5f0</color>
+    <color name="light_Blue_800_darker">#002f6c</color>
+    <color name="light_Blue_800_light">#4b9ccc</color>
+    <color name="light_Blue_800_lighter">#66abd4</color>
     <color name="orange_400">#ffa726</color>
     <color name="orange_400_dark">#c77800</color>
     <color name="orange_400_light">#ffd95b</color>

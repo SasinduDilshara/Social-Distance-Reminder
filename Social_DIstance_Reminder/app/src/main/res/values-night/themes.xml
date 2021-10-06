@@ -14,7 +14,24 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="SplashScreen">
-        <item name="android:src">@drawable/distanzia_cover_foreground_dark</item>
+    <style name="NotificationCard">
+        <item name="android:backgroundTint">@color/light_Blue_800_lighter</item>
+        <item name="android:elevation">5dp</item>
+    </style>
+
+    <style name="NotificationCardTitle">
+        <item name="android:textColor">@color/orange_400_dark</item>
+    </style>
+
+    <style name="NotificationCardText">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="DashboardCardType1">
+        <item name="android:backgroundTint">@color/light_Blue_800_lighter</item>
+    </style>
+
+    <style name="DashboardCardType2">
+        <item name="android:backgroundTint">@color/light_Blue_800_light</item>
     </style>
 </resources>
