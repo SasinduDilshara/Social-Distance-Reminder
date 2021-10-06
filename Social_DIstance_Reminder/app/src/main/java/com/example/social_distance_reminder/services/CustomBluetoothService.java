@@ -50,7 +50,7 @@ public class CustomBluetoothService extends Service implements BeaconConsumer, N
             .setBeaconLayout(BEACON_LAYOUT);
     private BeaconManager beaconManager;
 
-    private final NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
+    private NetworkStateReceiver networkStateReceiver;
     private SqlLiteHelper sqlLiteHelper;
 
     public CustomBluetoothService() {
@@ -186,6 +186,7 @@ public class CustomBluetoothService extends Service implements BeaconConsumer, N
     @Override
     public void onCreate() {
         super.onCreate();
+        networkStateReceiver = new NetworkStateReceiver(getApplicationContext());
         IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
 //        registerBroadcastReceivers();
         registerReceiver(mReceiver, filter);
@@ -202,30 +203,32 @@ public class CustomBluetoothService extends Service implements BeaconConsumer, N
         Log.d(TAG, "Bluetooth Service is Going to Destroy");
         try {
             unregisterReceiver(mReceiver);
+            networkStateReceiver.removeListener(this);
+            this.unregisterReceiver(networkStateReceiver);
         } catch (IllegalArgumentException iae) {
             Log.d(TAG, "No Reciever got registered"); // check how this cause
         }
         beaconManager.unbind(this);
     }
 
-//    private void registerBroadcastReceivers() {
-//        // Create a new broadcast intent filter that will filter and
-//        // receive ACTION_VIEW_LOCAL intents.
+    private void registerBroadcastReceivers() {
+        // Create a new broadcast intent filter that will filter and
+        // receive ACTION_VIEW_LOCAL intents.
 //        IntentFilter intentFilter =
 //                new IntentFilter(CustomBluetoothService.ACTION_LOCATION_ACCESS_STATE_CHANGE);
-//
-//        // Call the Activity class helper method to register this
-//        // local receiver instance.
+
+        // Call the Activity class helper method to register this
+        // local receiver instance.
 //        LocalBroadcastManager.getInstance(this)
 //                .registerReceiver(locationAccessStateChangeReceiver,
 //                        intentFilter);
-//
-//        registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
-//
+
+        registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+
 //        registerReceiver(mGpsSwitchStateReceiver, new IntentFilter(ACTION_PROVIDERS_CHANGED));
-//
+
 //        LocalBroadcastManager.getInstance(this).registerReceiver(keepTransmitterAliveReceiver, new IntentFilter(ACTION_KEEP_TRANSMITTER_ALIVE));
-//    }
+    }
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
@@ -285,7 +288,8 @@ public class CustomBluetoothService extends Service implements BeaconConsumer, N
                     System.out.println("Beacon Detected - " + beacon.getId1().toString());
 
                     //TODO:CHECK FOR DISTANCE
-                    sqlLiteHelper.addDevice(beacon.getId1().toString(), 0, 0);
+                    sqlLiteHelper.addDevice(beacon.getId1().toString(), 0, 0, beacon.getRssi());
+                    System.out.println("Devices are\n" + sqlLiteHelper.getDevices());
                 }
         });
         try {
@@ -299,12 +303,13 @@ public class CustomBluetoothService extends Service implements BeaconConsumer, N
     }
 
     @Override
-    public void networkAvailable() {
+    public void onNetworkAvailable() {
+        System.out.println("Network is available\n");
         new BackgroundTaskHelper.UploadTask().execute(this); // called after network state changed from disable to enable
     }
 
     @Override
-    public void networkUnavailable() {
+    public void onNetworkUnavailable() {
         Log.d(TAG, "networkUnavailable: ");
     }
 }

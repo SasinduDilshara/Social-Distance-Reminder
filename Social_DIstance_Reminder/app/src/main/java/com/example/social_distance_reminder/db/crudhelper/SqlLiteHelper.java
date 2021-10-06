@@ -21,7 +21,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
     private static int DATABASE_VERSION = 1;
     private static String USER_LOG_TABLE_NAME = "user_logs";
     private static String APP_DATA_TABLE_NAME = "app_data";
-    private static int update_time = 10;
+    private static int update_time = 4;
     private static String TEMPORARY_LOG_TABLE_NAME = "temp_log";
 
     private SqlLiteHelper(Context context) {
@@ -52,7 +52,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
                 "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "USERID TEXT," +
                 " TIMESTAMP_UP DATETIME DEFAULT CURRENT_TIMESTAMP," +
-                " LATITUDE DOUBLE, LONGITUDE DOUBLE )";
+                " LATITUDE DOUBLE, LONGITUDE DOUBLE, RSSI INT )";
 
         query_app_data = "CREATE TABLE " + APP_DATA_TABLE_NAME +
                 "(ID INTEGER PRIMARY KEY , " +
@@ -87,7 +87,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addDevice(String userId, double latitude, double longitude) {
+    public void addDevice(String userId, double latitude, double longitude, int rssi) {
 
         String select_query = "SELECT * FROM " + TEMPORARY_LOG_TABLE_NAME + " WHERE USER_ID = '" + userId + "'";
 
@@ -109,6 +109,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
                     deviceModel.setLatitude(latitude);
                     deviceModel.setLongitude(longitude);
                 }
+                deviceModel.setRssi(rssi);
                 new InsertDeviceAsync(this).execute(deviceModel);
                 ContentValues cv = new ContentValues();
                 cv.put("USER_ID", userId);
@@ -134,11 +135,12 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
                 deviceModel.setLatitude(latitude);
                 deviceModel.setLongitude(longitude);
             }
+            deviceModel.setRssi(rssi);
             new InsertDeviceAsync(this).execute(deviceModel);
 
         }
 
-        db.close();
+        // db.close();
         cursor.close();
 
 
@@ -160,10 +162,11 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
                 deviceModel.setTimeStamp(cursor.getString(2));
                 deviceModel.setLatitude(cursor.getDouble(cursor.getColumnIndex("LATITUDE")));
                 deviceModel.setLongitude(cursor.getDouble(cursor.getColumnIndex("LONGITUDE")));
+                deviceModel.setRssi(cursor.getInt(cursor.getColumnIndex("RSSI")));
                 arrayList.add(deviceModel);
             } while (cursor.moveToNext());
         }
-        db.close();
+        // db.close();
         cursor.close();
         return arrayList;
     }
@@ -314,6 +317,10 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
             return null;
         }
+    }
+
+    public void closeDB() {
+
     }
 
 

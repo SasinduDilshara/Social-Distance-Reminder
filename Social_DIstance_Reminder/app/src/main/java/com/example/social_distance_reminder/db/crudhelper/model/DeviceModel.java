@@ -9,6 +9,15 @@ public class DeviceModel {
     private String timeStamp;
     private double latitude;
     private double longitude;
+    private int rssi;
+
+    public int getRssi() {
+        return rssi;
+    }
+
+    public void setRssi(int rssi) {
+        this.rssi = rssi;
+    }
 
     public void setLatitude(double latitude) {
         this.latitude = latitude;
