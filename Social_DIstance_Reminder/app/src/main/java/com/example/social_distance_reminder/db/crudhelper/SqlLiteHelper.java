@@ -24,7 +24,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
     private static String USER_LOG_TABLE_NAME = "user_logs";
     private static String APP_DATA_TABLE_NAME = "app_data";
     private static String LOCAL_NOTIFICATION_TABLE_NAME = "local_notification_data";
-    private static int update_time = 4;
+    private static int update_time = 2;
     private static String TEMPORARY_LOG_TABLE_NAME = "temp_log";
 
     private SqlLiteHelper(Context context) {

@@ -3,14 +3,29 @@ package com.example.social_distance_reminder.helper;
 import android.Manifest;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.location.Geocoder;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.util.Locale;
 import java.util.UUID;
 
 public class ServiceHelper {
+    private static Geocoder geocoder = null;
+
+    public static void setGeoCoder(Context context) {
+        if (geocoder == null) {
+            geocoder = new Geocoder(context, Locale.getDefault());
+        }
+    }
+
+    public static Geocoder getGeocoder() {
+        if (geocoder != null)
+            return geocoder;
+        return null;
+    }
 
     @SuppressWarnings("deprecation")
     public static  boolean isMyServiceRunning(Context context , Class<?> serviceClass) {

@@ -3,10 +3,15 @@ package com.example.social_distance_reminder.UI;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,8 +23,11 @@ import com.example.social_distance_reminder.exceptions.BluetoothNotSupportExcept
 import com.example.social_distance_reminder.helper.BluetoothHelper;
 import com.example.social_distance_reminder.helper.ServiceHelper;
 import com.example.social_distance_reminder.services.CustomBluetoothService;
+import com.example.social_distance_reminder.services.LocationService;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -28,16 +36,26 @@ import static android.content.ContentValues.TAG;
 import static com.example.social_distance_reminder.helper.BluetoothHelper.getBroadcastReciever;
 import static com.example.social_distance_reminder.helper.BluetoothHelper.getIntentFilter;
 import static com.example.social_distance_reminder.helper.ServiceHelper.isMyServiceRunning;
+import static com.example.social_distance_reminder.helper.ServiceHelper.setGeoCoder;
 
 public class BluetoothTestActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
 
     String[] requiredPermissions = ServiceHelper.getPermissions();
     private static final int REQUEST_CODE = 1;
+    private LocationService gpsTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth_test);
+
+        try {
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
             requiredPermissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
@@ -52,7 +70,7 @@ public class BluetoothTestActivity extends AppCompatActivity implements EasyPerm
 //            Animation animFadeIn = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_in);
 //            btn.startAnimation(animFadeIn);
         }
-
+        setGeoCoder(this);
         registerReceiver(getBroadcastReciever(), getIntentFilter());
         try {
             BluetoothHelper.requestBluetooth(this);
@@ -60,6 +78,38 @@ public class BluetoothTestActivity extends AppCompatActivity implements EasyPerm
             System.out.println("\n\n\n" + e.getMessage()+"\n\n\n");
         }
     }
+
+
+    public void locationFinder(View view){
+        gpsTracker = new LocationService(getApplicationContext());
+        if(gpsTracker.canGetLocation()){
+            double latitude = gpsTracker.getLatitude();
+            double longitude = gpsTracker.getLongitude();
+            Location location = gpsTracker.getLocation();
+
+            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+            List<Address> addresses = null;
+            try {
+                addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                String cityName = addresses.get(0).getAddressLine(0);
+                String stateName = addresses.get(0).getAddressLine(1);
+                String countryName = addresses.get(0).getAddressLine(2);
+
+
+                System.out.println("cityName:- " + cityName);
+                System.out.println("stateName:- " + stateName);
+                System.out.println("countryName:- " + countryName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            System.out.println("lan:- " + latitude);
+            System.out.println("lon:- " + longitude);
+        }else{
+            gpsTracker.showSettingsAlert();
+        }
+    }
+
 
     @Override
     protected void onDestroy() {
