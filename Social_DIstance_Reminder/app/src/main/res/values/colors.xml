@@ -2,6 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="grey">#FF555555</color>
+    <color name="light_grey">#FF999999</color>
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00000000</color>
     <color name="warning">#ef5350</color>
@@ -13,4 +14,5 @@
     <color name="orange_400">#ffa726</color>
     <color name="orange_400_dark">#c77800</color>
     <color name="orange_400_light">#ffd95b</color>
+    <color name="orange_400_lighter">#EAD284</color>
 </resources>

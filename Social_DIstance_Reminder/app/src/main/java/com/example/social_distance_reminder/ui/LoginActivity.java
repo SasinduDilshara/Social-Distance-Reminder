@@ -1,13 +1,17 @@
 package com.example.social_distance_reminder.ui;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -17,56 +21,71 @@ import com.example.social_distance_reminder.R;
 import com.example.social_distance_reminder.auth.AuthRedirectHandler;
 import com.example.social_distance_reminder.auth.FirebaseAuthHelper;
 import com.example.social_distance_reminder.databinding.ActivityLoginBinding;
+import com.example.social_distance_reminder.databinding.PopupTermsBinding;
 import com.example.social_distance_reminder.db.crudhelper.FirebaseCRUDHelper;
 import com.example.social_distance_reminder.db.crudhelper.SqlLiteHelper;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.helper.widget.Carousel;
+import androidx.databinding.DataBindingUtil;
 
 import static com.example.social_distance_reminder.helper.ServiceHelper.generateHash;
 
 public class LoginActivity extends AppCompatActivity implements AuthRedirectHandler {
 
-    ActivityLoginBinding binding;
+    ActivityLoginBinding loginBinding;
+    PopupTermsBinding popupBinding;
+    Dialog termsPopup;
     String phoneNum = "";
-    int[] images = {R.drawable.distanzia_cover_foreground_dark, R.drawable.distanzia_cover_foreground_light, R.drawable.distanzia_cover_foreground_original};
+    CountDownTimer timer = null;
+    int[] images = {R.drawable.covid_1, R.drawable.covid_2, R.drawable.covid_3,R.drawable.covid_4, R.drawable.covid_5, R.drawable.covid_6};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityLoginBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        loginBinding = ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(loginBinding.getRoot());
+
+        termsPopup = new Dialog(this);
+        popupBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.popup_terms, null, false);
+        termsPopup.setContentView(popupBinding.getRoot());
 
         setupOTPText();
 
-        binding.lnrLoginPhone.setVisibility(View.VISIBLE);
-        binding.lnrLoginCode.setVisibility(View.GONE);
+        loginBinding.lnrLoginPhone.setVisibility(View.VISIBLE);
+        loginBinding.lnrLoginCode.setVisibility(View.GONE);
 
         SpannableString termsConditionsString = new SpannableString("I agree on these terms and conditions");
-        ClickableSpan clickableSpan = new ClickableSpan() {
+        ClickableSpan clickableSpanTerms = new ClickableSpan() {
             @Override
             public void onClick(@NonNull View view) {
-                Toast.makeText(getApplicationContext(), "open", Toast.LENGTH_SHORT).show();
+                popupBinding.btnDeclareClose.setOnClickListener(v2 -> termsPopup.dismiss());
+                termsPopup.show();
             }
         };
-        termsConditionsString.setSpan(clickableSpan, 17, 37, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        termsConditionsString.setSpan(clickableSpanTerms, 17, 37, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        loginBinding.lblLoginTerms.setText(termsConditionsString);
+        loginBinding.lblLoginTerms.setMovementMethod(LinkMovementMethod.getInstance());
 
-        binding.btnLoginPhone.setEnabled(false);
-        binding.chkLoginTerms.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        loginBinding.btnLoginPhone.setEnabled(false);
+        loginBinding.chkLoginTerms.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                binding.btnLoginPhone.setEnabled(b);
+                loginBinding.btnLoginPhone.setEnabled(b);
             }
         });
-        binding.lblLoginTerms.setText(termsConditionsString);
-//        binding.lblLoginTerms.setMovementMethod(LinkMovementMethod.getInstance());
-        binding.txtLoginPhone.setText("+1 650-555-3434");
-        binding.btnLoginPhone.setOnClickListener(this::addPhone);
-        binding.btnLoginCode.setOnClickListener(this::verifyPhone);
+        loginBinding.txtLoginPhone.setText("+1 650-555-3434");
+        loginBinding.btnLoginPhone.setOnClickListener(this::addPhone);
+        loginBinding.btnLoginCode.setOnClickListener(this::verifyPhone);
+        loginBinding.btnLoginResend.setOnClickListener((view) -> ResendOTP());
+        loginBinding.btnLoginChange.setOnClickListener((view -> {
+            loginBinding.lnrLoginCode.setVisibility(View.GONE);
+            loginBinding.lnrLoginPhone.setVisibility(View.VISIBLE);
+        }));
 
-        binding.carousel.setAdapter(new Carousel.Adapter() {
+        loginBinding.carousel.setAdapter(new Carousel.Adapter() {
             @Override
             public int count() {
                 return images.length;
@@ -85,9 +104,8 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
 
     }
 
-
     private void setupOTPText() {
-        binding.txtLoginCode1.addTextChangedListener(new TextWatcher() {
+        loginBinding.txtLoginCode1.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -96,7 +114,7 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (!charSequence.toString().trim().isEmpty()) {
-                    binding.txtLoginCode2.requestFocus();
+                    loginBinding.txtLoginCode2.requestFocus();
                 }
             }
 
@@ -105,7 +123,7 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
 
             }
         });
-        binding.txtLoginCode2.addTextChangedListener(new TextWatcher() {
+        loginBinding.txtLoginCode2.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -114,9 +132,9 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (!charSequence.toString().trim().isEmpty()) {
-                    binding.txtLoginCode3.requestFocus();
+                    loginBinding.txtLoginCode3.requestFocus();
                 } else {
-                    binding.txtLoginCode1.requestFocus();
+                    loginBinding.txtLoginCode1.requestFocus();
                 }
             }
 
@@ -125,7 +143,7 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
 
             }
         });
-        binding.txtLoginCode3.addTextChangedListener(new TextWatcher() {
+        loginBinding.txtLoginCode3.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -134,9 +152,9 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (!charSequence.toString().trim().isEmpty()) {
-                    binding.txtLoginCode4.requestFocus();
+                    loginBinding.txtLoginCode4.requestFocus();
                 } else {
-                    binding.txtLoginCode2.requestFocus();
+                    loginBinding.txtLoginCode2.requestFocus();
                 }
             }
 
@@ -145,7 +163,7 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
 
             }
         });
-        binding.txtLoginCode4.addTextChangedListener(new TextWatcher() {
+        loginBinding.txtLoginCode4.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -154,9 +172,9 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (!charSequence.toString().trim().isEmpty()) {
-                    binding.txtLoginCode5.requestFocus();
+                    loginBinding.txtLoginCode5.requestFocus();
                 } else {
-                    binding.txtLoginCode3.requestFocus();
+                    loginBinding.txtLoginCode3.requestFocus();
                 }
             }
 
@@ -165,7 +183,7 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
 
             }
         });
-        binding.txtLoginCode5.addTextChangedListener(new TextWatcher() {
+        loginBinding.txtLoginCode5.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -174,9 +192,9 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (!charSequence.toString().trim().isEmpty()) {
-                    binding.txtLoginCode6.requestFocus();
+                    loginBinding.txtLoginCode6.requestFocus();
                 } else {
-                    binding.txtLoginCode4.requestFocus();
+                    loginBinding.txtLoginCode4.requestFocus();
                 }
             }
 
@@ -185,7 +203,7 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
 
             }
         });
-        binding.txtLoginCode6.addTextChangedListener(new TextWatcher() {
+        loginBinding.txtLoginCode6.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -194,7 +212,7 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.toString().trim().isEmpty()) {
-                    binding.txtLoginCode5.requestFocus();
+                    loginBinding.txtLoginCode5.requestFocus();
                 }
             }
 
@@ -207,12 +225,12 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
 
     String readOTP() {
         String OTP = "";
-        String code1 = binding.txtLoginCode1.getText().toString().trim();
-        String code2 = binding.txtLoginCode2.getText().toString().trim();
-        String code3 = binding.txtLoginCode3.getText().toString().trim();
-        String code4 = binding.txtLoginCode4.getText().toString().trim();
-        String code5 = binding.txtLoginCode5.getText().toString().trim();
-        String code6 = binding.txtLoginCode6.getText().toString().trim();
+        String code1 = loginBinding.txtLoginCode1.getText().toString().trim();
+        String code2 = loginBinding.txtLoginCode2.getText().toString().trim();
+        String code3 = loginBinding.txtLoginCode3.getText().toString().trim();
+        String code4 = loginBinding.txtLoginCode4.getText().toString().trim();
+        String code5 = loginBinding.txtLoginCode5.getText().toString().trim();
+        String code6 = loginBinding.txtLoginCode6.getText().toString().trim();
         if (!code1.isEmpty()) {
             OTP += code1;
         }
@@ -236,8 +254,8 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
 
     @Override
     public void popupVerifyActivity() {
-        binding.lnrLoginPhone.setVisibility(View.GONE);
-        binding.lnrLoginCode.setVisibility(View.VISIBLE);
+        loginBinding.lnrLoginPhone.setVisibility(View.GONE);
+        loginBinding.lnrLoginCode.setVisibility(View.VISIBLE);
     }
 
     public void verifyPhone(View view) {
@@ -249,21 +267,46 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
         }
     }
 
+    private void ResendOTP() {
+        Toast.makeText(this, "OTP Resent", Toast.LENGTH_SHORT).show();
+        startResendCountDown();
+    }
+
     public void addPhone(View view) {
-        phoneNum = binding.txtLoginPhone.getText().toString().trim();
+        phoneNum = loginBinding.txtLoginPhone.getText().toString().trim();
         if (!phoneNum.isEmpty()) {
             FirebaseAuthHelper.verifyUsingPhoneNumber(phoneNum, this, this);
-            binding.lblLoginPhoneNumber.setText(phoneNum);
+            loginBinding.lblLoginPhoneNumber.setText(phoneNum);
+            startResendCountDown();
+        }else{
+            Toast.makeText(this, "Enter your number", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void redirectPrime() {
-        Intent homePage = new Intent(this, PrimeActivity.class);
-        startActivity(homePage);
+    private void startResendCountDown() {
+        if(timer != null){
+            timer.cancel();
+        }
+        loginBinding.btnLoginResend.setVisibility(View.GONE);
+        loginBinding.lblLoginResend.setVisibility(View.VISIBLE);
+        timer = new CountDownTimer(60000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                loginBinding.lblLoginResend.setText("Resend OTP in " + millisUntilFinished / 1000 + " seconds");
+            }
+
+            public void onFinish() {
+                loginBinding.lblLoginResend.setVisibility(View.GONE);
+                loginBinding.btnLoginResend.setVisibility(View.VISIBLE);
+            }
+
+        };
+        timer.start();
     }
 
-    public void redirectToHome(View view) {
-        Intent homePage = new Intent(this, TestActivity.class);
+    public void redirectPrime() {
+        finish();
+        Intent homePage = new Intent(this, PrimeActivity.class);
         startActivity(homePage);
     }
 

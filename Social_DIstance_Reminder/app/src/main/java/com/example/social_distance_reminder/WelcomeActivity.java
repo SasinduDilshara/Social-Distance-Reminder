@@ -6,6 +6,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import com.example.social_distance_reminder.databinding.ActivityLoginBinding;
+import com.example.social_distance_reminder.databinding.ActivityWelcomeBinding;
 import com.example.social_distance_reminder.ui.LoginActivity;
 import com.example.social_distance_reminder.auth.FirebaseAuthHelper;
 import com.example.social_distance_reminder.ui.PrimeActivity;
@@ -14,14 +16,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class WelcomeActivity extends AppCompatActivity {
 
-    private ImageView welcomeLogoView;
+    private ActivityWelcomeBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_welcome);
-        welcomeLogoView = findViewById(R.id.img_Welcome_logo);
+
+        binding = ActivityWelcomeBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         Animation logo_anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.logo_anim);
-        welcomeLogoView.setAnimation(logo_anim);
+        binding.imgWelcomeLogo.setAnimation(logo_anim);
 
         logo_anim.setAnimationListener(new Animation.AnimationListener() {
 
@@ -52,6 +56,7 @@ public class WelcomeActivity extends AppCompatActivity {
         } else {
             nextPage = new Intent(this, LoginActivity.class);
         }
+        finish();
         startActivity(nextPage);
     }
 

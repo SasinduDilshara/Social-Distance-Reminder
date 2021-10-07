@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/drawable/ic_close.xml" value="0.11666666666666667" />
         <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/activity_dash.xml" value="0.16032608695652173" />
         <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/activity_landing.xml" value="0.16032608695652173" />
         <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/activity_login.xml" value="0.21" />
@@ -21,6 +22,7 @@
         <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/fragment_tabbed.xml" value="0.1" />
         <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/popup_Declare.xml" value="0.16" />
         <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/popup_declaration.xml" value="0.1" />
+        <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/popup_terms.xml" value="0.15677083333333333" />
         <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/menu/bottom_nav_menu.xml" value="0.17239583333333333" />
         <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/menu/menu_main.xml" value="0.13489583333333333" />
       </map>

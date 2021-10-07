@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.1" />
+            app:layout_constraintGuide_percent="0.2" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelineH6"
@@ -80,20 +80,7 @@
                 android:id="@+id/imageView0"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:contentDescription="TODO"
-                android:scaleType="fitCenter" />
-
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="TODO"
-                android:scaleType="fitCenter" />
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:alpha="0.9"
                 android:contentDescription="TODO"
                 android:scaleType="fitCenter" />
 
@@ -107,7 +94,7 @@
                 app:carousel_infinite="true"
                 app:carousel_nextState="@+id/next"
                 app:carousel_previousState="@+id/previous"
-                app:constraint_referenced_ids="imageView0,imageView1,imageView2" />
+                app:constraint_referenced_ids="imageView0" />
 
         </androidx.constraintlayout.motion.widget.MotionLayout>
 
@@ -129,19 +116,23 @@
 
                 <TextView
                     android:id="@+id/lbl_Login_terms"
-                    android:layout_width="200dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="15dp"
                     android:autofillHints="True"
-                    android:drawableTint="@color/orange_400"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="15sp"
                     android:hint="I agree on these terms and conditions"
-                    android:inputType="phone" />
+                    android:inputType="phone"
+                    app:drawableTint="@color/orange_400" />
 
                 <CheckBox
                     android:id="@+id/chk_Login_terms"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
+                    android:scaleX="1.5"
+                    android:scaleY="1.5"
                     android:layout_marginStart="15dp"
                     android:backgroundTint="@color/orange_400" />
 
@@ -167,9 +158,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
-                    android:backgroundTint="@color/orange_400"
-                    android:text="Add"
-                    android:textColor="@color/white" />
+                    android:backgroundTint="@color/accent_button"
+                    android:text="Register"
+                    android:textColor="@color/accent_button_text" />
 
             </LinearLayout>
         </LinearLayout>
@@ -198,9 +189,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="+94 23 2245343"
-                android:textColor="@color/orange_400_light"
+                android:textColor="@color/white"
                 android:textSize="22sp"
                 android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_Login_change"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:text="Change Number"
+                android:textColor="@color/orange_400_light" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -279,16 +278,27 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
-                    android:backgroundTint="@color/orange_400_dark"
+                    android:textColor="@color/accent_button_text"
+                    android:backgroundTint="@color/accent_button"
                     android:text="Verify" />
             </LinearLayout>
 
             <Button
                 android:id="@+id/btn_Login_resend"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:text="Resend OTP"
+                android:textColor="@color/orange_400_light" />
+
+            <TextView
+                android:visibility="visible"
+                android:id="@+id/lbl_Login_resend"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Resend OTP in 30s"
                 android:textColor="@color/white" />
 
         </LinearLayout>
