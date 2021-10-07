@@ -63,9 +63,15 @@ public class DeviceModel {
         this.timeStamp = timeStamp;
     }
 
-    @NonNull
     @Override
     public String toString() {
-        return "id - " + ID + String.format("\nisAllowed -%s", UserID) + "\nthis device id - "+ timeStamp;
+        return "DeviceModel{" +
+                "ID=" + ID +
+                ", UserID='" + UserID + '\'' +
+                ", timeStamp='" + timeStamp + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", rssi=" + rssi +
+                '}';
     }
 }

@@ -11,7 +11,9 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import com.example.social_distance_reminder.UI.LandingActivity;
 import com.example.social_distance_reminder.db.crudhelper.model.DeviceModel;
+import com.example.social_distance_reminder.db.crudhelper.model.LocalNotification;
 
 import static android.content.ContentValues.TAG;
 
@@ -21,6 +23,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
     private static int DATABASE_VERSION = 1;
     private static String USER_LOG_TABLE_NAME = "user_logs";
     private static String APP_DATA_TABLE_NAME = "app_data";
+    private static String LOCAL_NOTIFICATION_TABLE_NAME = "local_notification_data";
     private static int update_time = 4;
     private static String TEMPORARY_LOG_TABLE_NAME = "temp_log";
 
@@ -46,7 +49,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String query_user_log, query_app_data, query_temp_log;
+        String query_user_log, query_app_data, query_temp_log, query_local_notification;
         //creating table
         query_user_log = "CREATE TABLE " + USER_LOG_TABLE_NAME +
                 "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -63,10 +66,17 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
                 "( USER_ID TEXT PRIMARY KEY," +
                 " TIMESTAMP_UP INTEGER )";
 
+        query_local_notification = "CREATE TABLE " + LOCAL_NOTIFICATION_TABLE_NAME +
+                "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "USERID TEXT," +
+                " TIMESTAMP DATETIME DEFAULT CURRENT_TIMESTAMP," +
+                " LOCATION TEXT, RSSI INT )";
+
 
         db.execSQL(query_user_log);
         db.execSQL(query_app_data);
         db.execSQL(query_temp_log);
+        db.execSQL(query_local_notification);
 
         db.execSQL("INSERT INTO " + APP_DATA_TABLE_NAME + " (ID) " + " VALUES (1)");
 
@@ -83,6 +93,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + USER_LOG_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + APP_DATA_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TEMPORARY_LOG_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + LOCAL_NOTIFICATION_TABLE_NAME);
 
         onCreate(db);
     }
@@ -276,7 +287,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
             SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
             //deleting row
             sqLiteDatabase.delete(USER_LOG_TABLE_NAME, "ID = " + integers[0], null);
-            sqLiteDatabase.close();
+//            sqLiteDatabase.close();
             return null;
         }
     }
@@ -313,7 +324,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
             //close database connection
 
-            sqLiteDatabase.close();
+//            sqLiteDatabase.close();
 
             return null;
         }
@@ -321,6 +332,73 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
     public void closeDB() {
 
+    }
+
+    public void addLocalNotification(String userId, String location, int rssi) {
+
+        LocalNotification localNotification = new LocalNotification();
+        localNotification.setUserID(userId);
+        if (location != null) {
+            localNotification.setLocation(location);
+        }
+        localNotification.setRssi(rssi);
+        new InsertLocalNotificationAsync(this).execute(localNotification);
+    }
+
+    public ArrayList<LocalNotification> getLocalNotifications() {
+        ArrayList<LocalNotification> arrayList = new ArrayList<>();
+        String select_query = "SELECT * FROM " + LOCAL_NOTIFICATION_TABLE_NAME;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_query, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                LocalNotification localNotification = new LocalNotification();
+                localNotification.setID(cursor.getInt(cursor.getColumnIndex("ID")));
+                localNotification.setUserID(cursor.getString(1));
+                localNotification.setLocation(cursor.getString(cursor.getColumnIndex("LOCATION")));
+                localNotification.setTimeStamp(cursor.getString(2));
+                localNotification.setRssi(cursor.getInt(cursor.getColumnIndex("RSSI")));
+                arrayList.add(localNotification);
+            } while (cursor.moveToNext());
+        }
+        // db.close();
+        cursor.close();
+        return arrayList;
+    }
+
+    private static class InsertLocalNotificationAsync extends AsyncTask<LocalNotification, Void, Void> {
+        SqlLiteHelper database;
+
+        public InsertLocalNotificationAsync(SqlLiteHelper database) {
+            this.database = database;
+        }
+
+        @Override
+        protected Void doInBackground(LocalNotification... notifications) {
+
+            SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put("USERID", notifications[0].getUserID());
+            values.put("LOCATION", notifications[0].getLocation());
+            values.put("RSSI", notifications[0].getRssi());
+
+            //inserting new row
+            long newRowId;
+            try {
+                long success = sqLiteDatabase.insert(LOCAL_NOTIFICATION_TABLE_NAME, null, values);
+
+                Log.e(TAG, "doInBackground: database inserted is " + success);
+            } catch (Exception e) {
+                Log.d(TAG, "addNotes: " + e.getMessage());
+            }
+            //close database connection
+//            sqLiteDatabase.close();
+            return null;
+        }
     }
 
 
