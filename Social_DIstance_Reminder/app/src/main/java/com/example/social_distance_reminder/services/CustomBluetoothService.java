@@ -290,6 +290,11 @@ public class CustomBluetoothService extends Service implements BeaconConsumer, N
                     //TODO:CHECK FOR DISTANCE
                     sqlLiteHelper.addDevice(beacon.getId1().toString(), 0, 0, beacon.getRssi());
                     System.out.println("Devices are\n" + sqlLiteHelper.getDevices());
+                    if (networkStateReceiver.ismConnected()) {
+                        onNetworkAvailable();
+                    } else {
+                        onNetworkUnavailable();
+                    }
                 }
         });
         try {
