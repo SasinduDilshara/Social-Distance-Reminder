@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.social_distance_reminder.R;
@@ -12,21 +13,20 @@ import com.example.social_distance_reminder.databinding.FragmentHomeBinding;
 import com.example.social_distance_reminder.databinding.PopupDeclarationBinding;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.helper.widget.Carousel;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 public class HomeFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
     private FragmentHomeBinding homeBinding;
     private PopupDeclarationBinding popupBinding;
     private Dialog declarePopup;
+    int[] images = {R.drawable.covid_1, R.drawable.covid_2, R.drawable.covid_3,R.drawable.covid_4, R.drawable.covid_5, R.drawable.covid_6};
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
 
         homeBinding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = homeBinding.getRoot();
@@ -36,6 +36,23 @@ public class HomeFragment extends Fragment {
         declarePopup.setContentView(popupBinding.getRoot());
 
         homeBinding.btnHomeDeclare.setOnClickListener(v2 -> showDeclarationPopup());
+
+        homeBinding.carousel.setAdapter(new Carousel.Adapter() {
+            @Override
+            public int count() {
+                return images.length;
+            }
+
+            @Override
+            public void populate(View view, int index) {
+                ((ImageView) view).setImageResource(images[index]);
+            }
+
+            @Override
+            public void onNewItem(int index) {
+
+            }
+        });
         return root;
     }
 

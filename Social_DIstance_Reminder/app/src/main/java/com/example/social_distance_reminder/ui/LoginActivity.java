@@ -39,7 +39,6 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
     Dialog termsPopup;
     String phoneNum = "";
     CountDownTimer timer = null;
-    int[] images = {R.drawable.covid_1, R.drawable.covid_2, R.drawable.covid_3,R.drawable.covid_4, R.drawable.covid_5, R.drawable.covid_6};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,23 +83,6 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
             loginBinding.lnrLoginCode.setVisibility(View.GONE);
             loginBinding.lnrLoginPhone.setVisibility(View.VISIBLE);
         }));
-
-        loginBinding.carousel.setAdapter(new Carousel.Adapter() {
-            @Override
-            public int count() {
-                return images.length;
-            }
-
-            @Override
-            public void populate(View view, int index) {
-                ((ImageView) view).setImageResource(images[index]);
-            }
-
-            @Override
-            public void onNewItem(int index) {
-
-            }
-        });
 
     }
 
