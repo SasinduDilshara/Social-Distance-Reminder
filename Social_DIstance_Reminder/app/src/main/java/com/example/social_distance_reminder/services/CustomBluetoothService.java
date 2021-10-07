@@ -8,6 +8,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -32,14 +34,18 @@ import org.altbeacon.beacon.BeaconTransmitter;
 import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.ContentValues.TAG;
 import static com.example.social_distance_reminder.helper.RandomIDGenerator.getForegroundID;
+import static com.example.social_distance_reminder.helper.ServiceHelper.getGeocoder;
 
 public class CustomBluetoothService extends Service implements BeaconConsumer, NetworkStateReceiver.NetworkStateReceiverListener {
     private static String deviceId;
@@ -49,9 +55,14 @@ public class CustomBluetoothService extends Service implements BeaconConsumer, N
     private BeaconParser beaconParser = new BeaconParser()
             .setBeaconLayout(BEACON_LAYOUT);
     private BeaconManager beaconManager;
+    private List<Address> addresses = null;
+    private double longitude, latitude;
+    private String location;
+    Geocoder geocoder = null;
 
     private NetworkStateReceiver networkStateReceiver;
     private SqlLiteHelper sqlLiteHelper;
+    private LocationService locationService;
 
     public CustomBluetoothService() {
     }
@@ -186,6 +197,8 @@ public class CustomBluetoothService extends Service implements BeaconConsumer, N
     @Override
     public void onCreate() {
         super.onCreate();
+
+        locationService = new LocationService(getApplicationContext());
         networkStateReceiver = new NetworkStateReceiver(getApplicationContext());
         IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
 //        registerBroadcastReceivers();
@@ -287,10 +300,33 @@ public class CustomBluetoothService extends Service implements BeaconConsumer, N
                     double distance = beacon.getDistance();
                     System.out.println("Beacon Detected - " + beacon.getId1().toString());
 
+                    location = "unknown";
+                    latitude = 0.0;
+                    longitude = 0.0;
+                    addresses = null;
+
                     //TODO:CHECK FOR DISTANCE
-                    sqlLiteHelper.addDevice(beacon.getId1().toString(), 0, 0, beacon.getRssi());
-                    sqlLiteHelper.addLocalNotification(beacon.getId1().toString(), "location", beacon.getRssi());
-                    NotificationHelper.sendIdentifiedNotification("Caution!", "You are near to a person", getApplicationContext());
+
+                    if(locationService.canGetLocation()) {
+                        locationService.getLocation();
+                        latitude = locationService.getLatitude();
+                        longitude = locationService.getLongitude();
+                        System.out.println("Locations are - " + latitude + " , " + longitude);
+                        try {
+                            geocoder = getGeocoder();
+                            if (geocoder != null) {
+                                addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                                System.out.println("Address " + addresses);
+                                if (addresses.size() > 0)
+                                    location = addresses.get(0).getAddressLine(0);
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    sqlLiteHelper.addDevice(beacon.getId1().toString(), latitude, longitude, beacon.getRssi());
+                    sqlLiteHelper.addLocalNotification(beacon.getId1().toString(), location, beacon.getRssi());
+                    NotificationHelper.sendIdentifiedNotification("Caution!", "You are near to a person in " + location, getApplicationContext());
                     System.out.println("Devices are\n" + sqlLiteHelper.getDevices());
                     System.out.println("Devices are\n" + sqlLiteHelper.getLocalNotifications());
 
