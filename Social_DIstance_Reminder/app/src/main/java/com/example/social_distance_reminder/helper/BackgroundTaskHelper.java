@@ -33,8 +33,6 @@ public class BackgroundTaskHelper {
             super.onPostExecute(context);
             if (context != null) {
                 SqlLiteHelper databaseHelper = SqlLiteHelper.getInstance(context);
-
-
                 FirebaseCRUDHelper firebaseHelper = new FirebaseCRUDHelper();
                 if (list != null && list.size() != 0) {
                     Log.d(TAG, "onPostExecute: firebase update method called");
