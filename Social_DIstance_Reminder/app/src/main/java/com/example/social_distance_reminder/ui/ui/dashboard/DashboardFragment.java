@@ -15,28 +15,22 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.social_distance_reminder.databinding.FragmentDashboardBinding;
+import com.example.social_distance_reminder.models.DashboardElement;
 import com.example.social_distance_reminder.ui.TestActivity;
 
 public class DashboardFragment extends Fragment {
 
-    private DashboardViewModel dashboardViewModel;
     private FragmentDashboardBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
 
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        Button button = binding.buttonDashboard;
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                button.setOnClickListener(DashboardFragment.this::redirectToHome);
-            }
-        });
+        binding.buttonDashboard.setOnClickListener(this::redirectToHome);
+        DashboardElement de = new DashboardElement(4,9,3,6,2,5);
+        binding.setElement(de);
         return root;
     }
 

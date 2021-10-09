@@ -14,13 +14,20 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="NotificationCard">
-        <item name="android:backgroundTint">@color/light_Blue_800</item>
-        <item name="android:elevation">5dp</item>
+    <style name="NotificationCardDefault">
+        <item name="android:backgroundTint">@color/light_Blue_800_light</item>
     </style>
 
-    <style name="NotificationCardTitle">
-        <item name="android:textColor">@color/orange_400_light</item>
+    <style name="NotificationCardImportant">
+        <item name="android:backgroundTint">@color/orange_400_light</item>
+    </style>
+
+    <style name="NotificationCardTitleDefault">
+        <item name="android:textColor">@color/light_Blue_800_dark</item>
+    </style>
+
+    <style name="NotificationCardTitleImportant">
+        <item name="android:textColor">@color/orange_400_dark</item>
     </style>
 
     <style name="NotificationCardText">

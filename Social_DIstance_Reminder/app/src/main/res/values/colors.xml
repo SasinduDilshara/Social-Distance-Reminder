@@ -15,4 +15,6 @@
     <color name="orange_400_dark">#c77800</color>
     <color name="orange_400_light">#ffd95b</color>
     <color name="orange_400_lighter">#EAD284</color>
+    <color name="light_background">#FFDDDDDD</color>
+    <color name="dark_background">#FF222222</color>
 </resources>

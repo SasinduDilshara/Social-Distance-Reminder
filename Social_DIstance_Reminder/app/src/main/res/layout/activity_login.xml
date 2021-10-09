@@ -67,7 +67,6 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.69" />
 
-
         <LinearLayout
             android:id="@+id/lnr_Login_phone"
             android:layout_width="wrap_content"
@@ -189,6 +188,7 @@
                         android:autofillHints="false"
                         android:drawableTint="@color/orange_400"
                         android:inputType="number"
+                        android:textColor="@color/white"
                         android:maxLength="1"
                         android:textAlignment="center" />
 
@@ -199,6 +199,7 @@
                         android:autofillHints="false"
                         android:drawableTint="@color/orange_400"
                         android:inputType="number"
+                        android:textColor="@color/white"
                         android:maxLength="1"
                         android:textAlignment="center" />
 
@@ -209,6 +210,7 @@
                         android:autofillHints="false"
                         android:drawableTint="@color/orange_400"
                         android:inputType="number"
+                        android:textColor="@color/white"
                         android:maxLength="1"
                         android:textAlignment="center" />
 
@@ -219,6 +221,7 @@
                         android:autofillHints="false"
                         android:drawableTint="@color/orange_400"
                         android:inputType="number"
+                        android:textColor="@color/white"
                         android:maxLength="1"
                         android:textAlignment="center" />
 
@@ -229,6 +232,7 @@
                         android:autofillHints="false"
                         android:drawableTint="@color/orange_400"
                         android:inputType="number"
+                        android:textColor="@color/white"
                         android:maxLength="1"
                         android:textAlignment="center" />
 
@@ -239,6 +243,7 @@
                         android:autofillHints="false"
                         android:drawableTint="@color/orange_400"
                         android:inputType="number"
+                        android:textColor="@color/white"
                         android:maxLength="1"
                         android:textAlignment="center" />
                 </LinearLayout>

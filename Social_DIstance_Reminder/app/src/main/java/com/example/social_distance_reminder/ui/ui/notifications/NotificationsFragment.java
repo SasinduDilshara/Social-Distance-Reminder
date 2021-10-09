@@ -30,14 +30,14 @@ public class NotificationsFragment extends Fragment {
         binding = FragmentNotificationsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         notifications = new ArrayList<Notification>();
-        notifications.add(new Notification("Test1", Calendar.getInstance().getTime(), "qwertyudfghjcvbnfghjvbn"));
-        notifications.add(new Notification("Test2", Calendar.getInstance().getTime(), "sdhsdhsdhsdfhsrhqshaha"));
-        notifications.add(new Notification("Test3", Calendar.getInstance().getTime(), "qwertyudfghjcvbnfdhahrhahadheghjvbn"));
-        notifications.add(new Notification("Test4", Calendar.getInstance().getTime(), "qwertyudfghjsdhserhsehwehrsehsdhfnstrjsrtjsjhsrjrtjstrjsryjcvbnfghjvbn"));
-        notifications.add(new Notification("Test1", Calendar.getInstance().getTime(), "qwertyudfghjcvbnfghjvbn"));
-        notifications.add(new Notification("Test2", Calendar.getInstance().getTime(), "sdhsdhsdhsdfhsrhqshaha"));
-        notifications.add(new Notification("Test3", Calendar.getInstance().getTime(), "qwertyudfghjcvbnfdhahrhahadheghjvbn"));
-        notifications.add(new Notification("Test4", Calendar.getInstance().getTime(), "qwertyudfghjsdhserhsehwehrsehsdhfnstrjsrtjsjhsrjrtjstrjsryjcvbnfghjvbn"));
+        notifications.add(new Notification("Test1", Calendar.getInstance().getTime(), "qwertyudfghjcvbnfghjvbn", true));
+        notifications.add(new Notification("Test2", Calendar.getInstance().getTime(), "sdhsdhsdhsdfhsrhqshaha", false));
+        notifications.add(new Notification("Test3", Calendar.getInstance().getTime(), "qwertyudfghjcvbnfdhahrhahadheghjvbn", false));
+        notifications.add(new Notification("Test4", Calendar.getInstance().getTime(), "qwertyudfghjsdhserhsehwehrsehsdhfnstrjsrtjsjhsrjrtjstrjsryjcvbnfghjvbn", false));
+        notifications.add(new Notification("Test1", Calendar.getInstance().getTime(), "qwertyudfghjcvbnfghjvbn", true));
+        notifications.add(new Notification("Test2", Calendar.getInstance().getTime(), "sdhsdhsdhsdfhsrhqshaha", false));
+        notifications.add(new Notification("Test3", Calendar.getInstance().getTime(), "qwertyudfghjcvbnfdhahrhahadheghjvbn", false));
+        notifications.add(new Notification("Test4", Calendar.getInstance().getTime(), "qwertyudfghjsdhserhsehwehrsehsdhfnstrjsrtjsjhsrjrtjstrjsryjcvbnfghjvbn", false));
         bookListGenerate();
         return root;
     }

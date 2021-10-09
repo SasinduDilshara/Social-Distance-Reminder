@@ -7,7 +7,6 @@
         android:layout_height="wrap_content"
         android:elevation="0dp"
         app:cardCornerRadius="20dp"
-        android:backgroundTint="?attr/backgroundColor"
         tools:context=".ui.ui.home.HomeFragment">
 
         <LinearLayout
@@ -25,7 +24,7 @@
                 android:orientation="horizontal">
 
                 <ImageButton
-                    android:id="@+id/btn_Declare_close"
+                    android:id="@+id/btn_Settings_close"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:background="@color/warning"
@@ -43,7 +42,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TERMS AND CONDITIONS"
+                    android:text="SETTINGS"
                     android:layout_marginBottom="15dp"
                     android:textStyle="bold"
                     android:textSize="18sp"

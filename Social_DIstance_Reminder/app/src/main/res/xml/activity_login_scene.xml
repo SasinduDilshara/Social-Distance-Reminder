@@ -10,6 +10,8 @@
         motion:motionInterpolator="easeInOut"
         motion:duration="5000"
         android:id="@+id/forward">
+        <OnClick
+            motion:clickAction="jumpToEnd"/>
         <OnSwipe
             motion:dragDirection="dragLeft"
             motion:touchAnchorSide="left" />

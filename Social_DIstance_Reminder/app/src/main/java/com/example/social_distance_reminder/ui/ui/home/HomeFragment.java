@@ -2,6 +2,8 @@ package com.example.social_distance_reminder.ui.ui.home;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,18 +14,19 @@ import com.example.social_distance_reminder.R;
 import com.example.social_distance_reminder.databinding.FragmentHomeBinding;
 import com.example.social_distance_reminder.databinding.PopupDeclarationBinding;
 
+import java.util.Random;
+
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.helper.widget.Carousel;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding homeBinding;
     private PopupDeclarationBinding popupBinding;
     private Dialog declarePopup;
-    int[] images = {R.drawable.covid_1, R.drawable.covid_2, R.drawable.covid_3,R.drawable.covid_4, R.drawable.covid_5, R.drawable.covid_6};
+    int[] images = {R.drawable.covid_1, R.drawable.covid_2, R.drawable.covid_3, R.drawable.covid_4, R.drawable.covid_5, R.drawable.covid_6};
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -58,7 +61,7 @@ public class HomeFragment extends Fragment {
 
     public void showDeclarationPopup() {
         popupBinding.btnDeclareClose.setOnClickListener(v2 -> declarePopup.dismiss());
-        popupBinding.lblDeclareRandom.setText("Random1234");
+        popupBinding.lblDeclareRandom.setText(getRandomString(8));
         popupBinding.txtDeclareRandom.setText("");
         popupBinding.btnDeclareConfirm.setOnClickListener(v2 -> {
             if (popupBinding.lblDeclareRandom.getText().toString().equals(popupBinding.txtDeclareRandom.getText().toString())) {
@@ -68,6 +71,25 @@ public class HomeFragment extends Fragment {
             }
         });
         declarePopup.show();
+    }
+
+    public String getRandomString(int n) {
+        String AlphaNumericString = "ABCDEFGHJKLMNPQRSTUVWXYZ"
+                + "123456789"
+                + "abcdefghijkmnopqrstuvxyz";
+
+        StringBuilder sb = new StringBuilder(n);
+
+        Random random = new Random();
+
+        for (int i = 0; i < n; i++) {
+
+            int index = random.nextInt(AlphaNumericString.length());
+            sb.append(AlphaNumericString
+                    .charAt(index));
+        }
+
+        return sb.toString();
     }
 
     @Override
