@@ -3,11 +3,13 @@
 
     <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="450dp"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:elevation="0dp"
-        app:cardCornerRadius="20dp"
-        tools:context=".ui.ui.home.HomeFragment">
+        app:cardElevation="?popupElevation"
+        app:cardCornerRadius="?popupCornerRadius"
+        app:contentPadding="?popupPadding"
+        android:backgroundTint="?popupBackgroundColor"
+        tools:context=".ui.PrimeActivity">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,18 +42,18 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="About Us"
+                    android:text="ABOUT US"
                     android:layout_marginBottom="15dp"
                     android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:textColor="@color/orange_400_dark"
+                    android:textSize="?popupTitleTextSize"
+                    android:textColor="?popupTitleTextColor"
                     android:textAlignment="center" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/grey"
+                    android:textColor="?popupDefaultTextColor"
                     android:text="By giving your consent \n Contrary to popular belief, Lorem Ipsum is not simply random text.
                     It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.
                     Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia,

@@ -3,12 +3,12 @@
 
     <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="450dp"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:elevation="0dp"
-        app:cardElevation="0dp"
-        app:cardCornerRadius="20dp"
-        android:padding="20dp"
+        app:cardElevation="?popupElevation"
+        app:cardCornerRadius="?popupCornerRadius"
+        app:contentPadding="?popupPadding"
+        android:backgroundTint="?popupBackgroundColor"
         tools:context=".ui.ui.home.HomeFragment">
 
         <LinearLayout
@@ -37,17 +37,18 @@
                 android:layout_margin="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Declaration"
+                android:text="DECLARATION"
                 android:textAlignment="center"
-                android:textSize="20dp"/>
+                android:textStyle="bold"
+                android:textSize="?popupTitleTextSize"
+                android:textColor="?popupTitleTextColor"/>
 
             <TextView
                 android:layout_margin="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Lorem ipsum dolor sit amet, \n
-                consectetur adipiscing elit. Pellentesque rhoncus sed quam a commodo. \n
-                Nam tempor, felis ut finibus ullamcorper, nisl erat porttitor libero, eget tincidunt massa erat non nulla. \n
+                android:textColor="?popupDefaultTextColor"
+                android:text="Lorem ipsum dolor sit amet, \nconsectetur adipiscing elit. Pellentesque rhoncus sed quam a commodo. \nNam tempor, felis ut finibus ullamcorper, nisl erat porttitor libero, eget tincidunt massa erat non nulla. \n
                 Morbi vel diam nulla. Nam a ex rhoncus, vehicula orci et, egestas massa.\n
                 Duis ipsum turpis, euismod et elit in, ultricies fermentum magna. Donec vehicula elit in risus finibus ornare. \n
                 Maecenas facilisis accumsan mi sit amet suscipit. In at dignissim tellus, vel tempor mauris. \n
@@ -62,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:text="Type the following sequence to declare"
                 android:textSize="15sp"
-                android:textColor="@color/orange_400" />
+                android:textColor="?popupTitleTextColor" />
 
             <TextView
                 android:layout_marginStart="20dp"
@@ -72,33 +73,35 @@
                 android:layout_height="wrap_content"
                 android:letterSpacing="0.1"
                 android:text="srkKAEfkawi"
+                android:textColor="?popupDefaultTextColor"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 />
 
             <LinearLayout
                 android:layout_marginTop="10dp"
-                android:layout_marginStart="20dp"
                 android:layout_marginBottom="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/txt_Declare_random"
-                    android:layout_width="200dp"
+                    android:layout_width="170dp"
                     android:layout_height="wrap_content"
                     android:textIsSelectable="false"
-                    android:layout_marginEnd="15dp"
+                    android:layout_marginEnd="5dp"
+                    android:textColor="?popupDefaultTextColor"
                     android:hint="Enter above text" />
 
                 <Button
                     android:id="@+id/btn_Declare_confirm"
-                    android:layout_width="120dp"
-                    android:backgroundTint="@color/primary_button"
-                    android:textColor="@color/primary_button_text"
+                    android:layout_width="110dp"
+                    android:backgroundTint="?primaryButtonBackgroundColor"
+                    android:textColor="?primaryButtonTextColor"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
+                    android:layout_marginStart="5dp"
                     android:text="Declare" />
             </LinearLayout>
         </LinearLayout>

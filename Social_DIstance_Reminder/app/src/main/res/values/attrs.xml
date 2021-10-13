@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="popups">
+        <attr name="popupBackgroundColor" format="color" />
+        <attr name="popupDefaultTextColor" format="color" />
+        <attr name="popupTitleTextColor" format="color" />
+        <attr name="popupTitleTextSize" format="dimension" />
+        <attr name="popupElevation" format="dimension" />
+        <attr name="popupPadding" format="dimension" />
+        <attr name="popupCornerRadius" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="buttons">
+        <attr name="accentButtonBackgroundColor" format="color" />
+        <attr name="accentButtonTextColor" format="color" />
+        <attr name="primaryButtonBackgroundColor" format="color" />
+        <attr name="primaryButtonTextColor" format="color" />
+    </declare-styleable>
+</resources>

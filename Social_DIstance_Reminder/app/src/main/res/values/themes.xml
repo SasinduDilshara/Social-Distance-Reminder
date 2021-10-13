@@ -6,12 +6,27 @@
         <item name="colorPrimaryVariant">@color/light_Blue_800_dark</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/orange_400_light</item>
-        <item name="colorSecondaryVariant">@color/orange_400_dark</item>
+        <item name="colorSecondary">@color/orange_400_dark</item>
+        <item name="colorSecondaryVariant">@color/orange_400</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+
+        <!-- POPUP -->
+        <item name="popupBackgroundColor">@color/popup_light_background</item>
+        <item name="popupDefaultTextColor">@color/dark_background</item>
+        <item name="popupTitleTextColor">@color/orange_400_dark</item>
+        <item name="popupTitleTextSize">@dimen/popup_title_text_size</item>
+        <item name="popupElevation">@dimen/popup_elevation</item>
+        <item name="popupCornerRadius">@dimen/popup_corner_radius</item>
+        <item name="popupPadding">@dimen/popup_padding</item>
+
+        <!-- BUTTONS -->
+        <item name="accentButtonBackgroundColor">@color/accent_button</item>
+        <item name="accentButtonTextColor">@color/accent_button_text</item>
+        <item name="primaryButtonBackgroundColor">@color/primary_button</item>
+        <item name="primaryButtonTextColor">@color/primary_button_text</item>
+
     </style>
 
     <style name="NotificationCardDefault">

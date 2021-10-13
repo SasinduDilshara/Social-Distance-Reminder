@@ -26,6 +26,20 @@
             app:layout_constraintGuide_percent="0.9" />
 
         <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineV3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.15" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineV4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.85" />
+
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelineH5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,14 +51,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.5" />
+            app:layout_constraintGuide_percent="0.25" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineH4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.6" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineH7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.05" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelineH1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.75" />
+            app:layout_constraintGuide_percent="0.72" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelineH2"
@@ -58,41 +87,50 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.6" />
+            app:layout_constraintGuide_percent="0.65" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guidelineH4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.69" />
+        <ImageView
+            android:id="@+id/img_Login_logo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:elevation="3dp"
+            app:layout_constraintBottom_toBottomOf="@id/guidelineH5"
+            android:scaleType="fitCenter"
+            app:layout_constraintEnd_toEndOf="@id/guidelineV4"
+            app:layout_constraintStart_toStartOf="@id/guidelineV3"
+            app:layout_constraintTop_toTopOf="@id/guidelineH7"
+            app:srcCompat="@drawable/distanzia_banner"
+            android:contentDescription="Logo" />
 
         <LinearLayout
             android:id="@+id/lnr_Login_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@id/guidelineV2"
             app:layout_constraintStart_toEndOf="@id/guidelineV1"
-            app:layout_constraintTop_toBottomOf="@id/guidelineH4">
+            app:layout_constraintTop_toBottomOf="@id/guidelineH1">
+
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="30dp">
+                android:layout_marginBottom="15dp">
 
                 <TextView
                     android:id="@+id/lbl_Login_terms"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
                     android:layout_marginEnd="15dp"
                     android:autofillHints="True"
-                    android:layout_gravity="center_vertical"
-                    android:textSize="15sp"
                     android:hint="I agree on these terms and conditions"
                     android:inputType="phone"
+                    android:minHeight="48dp"
+                    android:textSize="15sp"
                     app:drawableTint="@color/orange_400" />
 
                 <CheckBox
@@ -103,6 +141,7 @@
                     android:scaleX="1.5"
                     android:scaleY="1.5"
                     android:layout_marginStart="15dp"
+                    android:textColor="@color/white"
                     android:backgroundTint="@color/orange_400" />
 
             </LinearLayout>
@@ -120,7 +159,8 @@
                     android:autofillHints="True"
                     android:drawableTint="@color/orange_400"
                     android:hint="Enter your number"
-                    android:inputType="phone" />
+                    android:inputType="phone"
+                    android:minHeight="48dp" />
 
                 <Button
                     android:id="@+id/btn_Login_phone"
@@ -140,7 +180,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintEnd_toStartOf="@id/guidelineV2"
             app:layout_constraintStart_toEndOf="@id/guidelineV1"
             app:layout_constraintTop_toBottomOf="@id/guidelineH3">
@@ -188,9 +228,10 @@
                         android:autofillHints="false"
                         android:drawableTint="@color/orange_400"
                         android:inputType="number"
-                        android:textColor="@color/white"
                         android:maxLength="1"
-                        android:textAlignment="center" />
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
                     <EditText
                         android:id="@+id/txt_Login_code2"
@@ -199,9 +240,10 @@
                         android:autofillHints="false"
                         android:drawableTint="@color/orange_400"
                         android:inputType="number"
-                        android:textColor="@color/white"
                         android:maxLength="1"
-                        android:textAlignment="center" />
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
                     <EditText
                         android:id="@+id/txt_Login_code3"
@@ -210,9 +252,10 @@
                         android:autofillHints="false"
                         android:drawableTint="@color/orange_400"
                         android:inputType="number"
-                        android:textColor="@color/white"
                         android:maxLength="1"
-                        android:textAlignment="center" />
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
                     <EditText
                         android:id="@+id/txt_Login_code4"
@@ -221,9 +264,10 @@
                         android:autofillHints="false"
                         android:drawableTint="@color/orange_400"
                         android:inputType="number"
-                        android:textColor="@color/white"
                         android:maxLength="1"
-                        android:textAlignment="center" />
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
                     <EditText
                         android:id="@+id/txt_Login_code5"
@@ -232,9 +276,10 @@
                         android:autofillHints="false"
                         android:drawableTint="@color/orange_400"
                         android:inputType="number"
-                        android:textColor="@color/white"
                         android:maxLength="1"
-                        android:textAlignment="center" />
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
                     <EditText
                         android:id="@+id/txt_Login_code6"
@@ -243,9 +288,10 @@
                         android:autofillHints="false"
                         android:drawableTint="@color/orange_400"
                         android:inputType="number"
-                        android:textColor="@color/white"
                         android:maxLength="1"
-                        android:textAlignment="center" />
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
                 </LinearLayout>
 
                 <Button

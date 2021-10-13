@@ -7,81 +7,107 @@
     tools:context=".ui.TestActivity">
 
     <LinearLayout
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <EditText
-        android:id="@+id/editTextTextPersonName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="This is Home Page"
-        tools:layout_editor_absoluteX="58dp"
-        tools:layout_editor_absoluteY="95dp" />
+        <EditText
+            android:id="@+id/editTextTextPersonName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="This is Home Page"
+            tools:layout_editor_absoluteX="58dp"
+            tools:layout_editor_absoluteY="95dp" />
 
-    <Button
-        android:id="@+id/notificbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="sendTestNotification"
-        android:text="Send Notification"
-        tools:layout_editor_absoluteX="150dp"
-        tools:layout_editor_absoluteY="430dp" />
-    <Button
-        android:id="@+id/notificbutton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="sendTestIdentifiedNotification"
-        android:text="Send Identified Notification"
-        tools:layout_editor_absoluteX="150dp"
-        tools:layout_editor_absoluteY="430dp" />
+        <Button
+            android:id="@+id/notificbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="sendTestNotification"
+            android:text="Send Notification"
+            tools:layout_editor_absoluteX="150dp"
+            tools:layout_editor_absoluteY="430dp" />
 
-    <Button
-        android:id="@+id/notificbutton3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="sendTestBackgroundNotification"
-        android:text="Send Background Notification"
-        tools:layout_editor_absoluteX="150dp"
-        tools:layout_editor_absoluteY="430dp" />
+        <Button
+            android:id="@+id/notificbutton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="sendTestIdentifiedNotification"
+            android:text="Send Identified Notification"
+            tools:layout_editor_absoluteX="150dp"
+            tools:layout_editor_absoluteY="430dp" />
 
-    <Button
-        android:id="@+id/notificbutton5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="RemoveTestBackgroundNotification"
-        android:text="Remove Background Notification"
-        tools:layout_editor_absoluteX="150dp"
-        tools:layout_editor_absoluteY="430dp" />
+        <Button
+            android:id="@+id/notificbutton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="sendTestBackgroundNotification"
+            android:text="Send Background Notification"
+            tools:layout_editor_absoluteX="150dp"
+            tools:layout_editor_absoluteY="430dp" />
 
-    <Button
-        android:id="@+id/notificbutton4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="redirectToNotificationPage"
-        android:text="Go to notifications"
-        tools:layout_editor_absoluteX="150dp"
-        tools:layout_editor_absoluteY="430dp" />
+        <Button
+            android:id="@+id/notificbutton5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="RemoveTestBackgroundNotification"
+            android:text="Remove Background Notification"
+            tools:layout_editor_absoluteX="150dp"
+            tools:layout_editor_absoluteY="430dp" />
 
-    <Button
-        android:id="@+id/notificbutton6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="logout"
-        android:text="Sign Out"
-        tools:layout_editor_absoluteX="150dp"
-        tools:layout_editor_absoluteY="430dp" />
+        <Button
+            android:id="@+id/notificbutton4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="redirectToNotificationPage"
+            android:text="Go to notifications"
+            tools:layout_editor_absoluteX="150dp"
+            tools:layout_editor_absoluteY="430dp" />
 
-    <Button
-        android:id="@+id/bluetoothbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="redirectToBluetoothTestPage"
-        android:text="Go to Bluetooth Test Page"
-        tools:layout_editor_absoluteX="150dp"
-        tools:layout_editor_absoluteY="430dp" />
+        <Button
+            android:id="@+id/notificbutton6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="logout"
+            android:text="Sign Out"
+            tools:layout_editor_absoluteX="150dp"
+            tools:layout_editor_absoluteY="430dp" />
+
+        <Button
+            android:id="@+id/bluetoothbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="redirectToBluetoothTestPage"
+            android:text="Go to Bluetooth Test Page"
+            tools:layout_editor_absoluteX="150dp"
+            tools:layout_editor_absoluteY="430dp" />
+
+
+        <EditText
+            android:id="@+id/testUID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="User" />
+        <EditText
+            android:id="@+id/testTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Title" />
+        <EditText
+            android:id="@+id/testMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Message" />
+
+        <Button
+            android:id="@+id/testButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SEND" />
+
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
