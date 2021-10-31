@@ -50,7 +50,7 @@ public class BackgroundServiceHandler extends Service {
         // Start up the thread running the service. Note that we create a
         // separate thread because the service normally runs in the process's
         // main thread, which we don't want to block. We also make it
-        // background priority so CPU-intensive work doesn't disrupt our UI.
+        // background priority so CPU-intensive work doesn't disrupt our ui.
         HandlerThread thread = new HandlerThread("ServiceStartArguments");
         thread.start();
 

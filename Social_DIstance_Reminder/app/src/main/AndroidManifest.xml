@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION " />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.LOCAL_MAC_ADDRESS" />
+<!--    <uses-permission android:name="android.permission.LOCAL_MAC_ADDRESS" />-->
     <!--
  If your app targets Android 9 or lower, you can declare
          ACCESS_COARSE_LOCATION instead.
@@ -24,11 +24,14 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:fullBackupContent="true"
+        android:icon="@mipmap/ic_launcher_distanzia"
+        android:label="@string/app_identifier"
+        android:roundIcon="@mipmap/ic_launcher_distanzia_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Social_Distance_Reminder">
+        android:theme="@style/Theme.Social_Distance_Reminder"
+        android:usesCleartextTraffic="true">
+
         <activity android:name=".UI.TestActivity"></activity>
 
         <service
@@ -36,22 +39,44 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".UI.BluetoothTestActivity" />
+        <service
+            android:name=".services.NotificationsFCMService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_baseline_close_24" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/orange_400_light" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+
+        <activity android:name=".ui.BluetoothTestActivity" />
 
         <service
             android:name=".services.BackgroundServiceHandler"
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".UI.ViewNotificationsActivity" />
-        <activity android:name=".UI.LandingActivity" />
-        <activity android:name=".UI.HomeActivity" />
+        <activity android:name=".ui.ViewNotificationsActivity" />
+        <activity android:name=".ui.TestActivity" />
         <activity
-            android:name=".UI.LoginActivity"
+            android:name=".ui.PrimeActivity"
+            android:label="@string/title_activity_prime" />
+        <activity
+            android:name=".ui.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/Theme.Social_Distance_Reminder.NoActionBar" />
         <activity
-            android:name=".MainActivity"
+            android:name=".WelcomeActivity"
+            android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Social_Distance_Reminder.NoActionBar">
             <intent-filter>

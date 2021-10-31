@@ -4,51 +4,329 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.LoginActivity">
+    tools:context=".ui.LoginActivity">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:background="@color/light_Blue_800">
 
-        <EditText
-            android:id="@+id/phonenumber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@id/addphone"/>
-
-        <Button
-            android:id="@+id/addphone"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineV1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:onClick="addPhone"
-            android:text="Add" />
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.1" />
 
-    <EditText
-        android:id="@+id/code"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="false"
-        android:layout_marginRight="-92dp"
-        android:layout_toLeftOf="@id/verify" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineV2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.9" />
 
-    <Button
-        android:id="@+id/verify"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:onClick="verifyPhone"
-        android:text="Verify" />
-    </LinearLayout>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineV3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.15" />
 
-    <LinearLayout
-    android:id="@+id/container2"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-    </LinearLayout>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineV4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.85" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineH5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.2" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineH6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.25" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineH4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.6" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineH7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineH1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.72" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineH2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.85" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineH3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.65" />
+
+        <ImageView
+            android:id="@+id/img_Login_logo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:elevation="3dp"
+            app:layout_constraintBottom_toBottomOf="@id/guidelineH5"
+            android:scaleType="fitCenter"
+            app:layout_constraintEnd_toEndOf="@id/guidelineV4"
+            app:layout_constraintStart_toStartOf="@id/guidelineV3"
+            app:layout_constraintTop_toTopOf="@id/guidelineH7"
+            app:srcCompat="@drawable/distanzia_banner"
+            android:contentDescription="Logo" />
+
+        <LinearLayout
+            android:id="@+id/lnr_Login_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@id/guidelineV2"
+            app:layout_constraintStart_toEndOf="@id/guidelineV1"
+            app:layout_constraintTop_toBottomOf="@id/guidelineH1">
+
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="15dp">
+
+                <TextView
+                    android:id="@+id/lbl_Login_terms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginEnd="15dp"
+                    android:autofillHints="True"
+                    android:hint="I agree on these terms and conditions"
+                    android:inputType="phone"
+                    android:minHeight="48dp"
+                    android:textSize="15sp"
+                    app:drawableTint="@color/orange_400" />
+
+                <CheckBox
+                    android:id="@+id/chk_Login_terms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:scaleX="1.5"
+                    android:scaleY="1.5"
+                    android:layout_marginStart="15dp"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/orange_400" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/txt_Login_phone"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:autofillHints="True"
+                    android:drawableTint="@color/orange_400"
+                    android:hint="Enter your number"
+                    android:inputType="phone"
+                    android:minHeight="48dp" />
+
+                <Button
+                    android:id="@+id/btn_Login_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:backgroundTint="@color/accent_button"
+                    android:text="Register"
+                    android:textColor="@color/accent_button_text" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lnr_Login_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="visible"
+            app:layout_constraintEnd_toStartOf="@id/guidelineV2"
+            app:layout_constraintStart_toEndOf="@id/guidelineV1"
+            app:layout_constraintTop_toBottomOf="@id/guidelineH3">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="OTP was sent to"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/lbl_Login_phoneNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+94 23 2245343"
+                android:textColor="@color/white"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_Login_change"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:text="Change Number"
+                android:textColor="@color/orange_400_light" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/txt_Login_code1"
+                        android:layout_width="35dp"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="false"
+                        android:drawableTint="@color/orange_400"
+                        android:inputType="number"
+                        android:maxLength="1"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+                    <EditText
+                        android:id="@+id/txt_Login_code2"
+                        android:layout_width="35dp"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="false"
+                        android:drawableTint="@color/orange_400"
+                        android:inputType="number"
+                        android:maxLength="1"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+                    <EditText
+                        android:id="@+id/txt_Login_code3"
+                        android:layout_width="35dp"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="false"
+                        android:drawableTint="@color/orange_400"
+                        android:inputType="number"
+                        android:maxLength="1"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+                    <EditText
+                        android:id="@+id/txt_Login_code4"
+                        android:layout_width="35dp"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="false"
+                        android:drawableTint="@color/orange_400"
+                        android:inputType="number"
+                        android:maxLength="1"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+                    <EditText
+                        android:id="@+id/txt_Login_code5"
+                        android:layout_width="35dp"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="false"
+                        android:drawableTint="@color/orange_400"
+                        android:inputType="number"
+                        android:maxLength="1"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+                    <EditText
+                        android:id="@+id/txt_Login_code6"
+                        android:layout_width="35dp"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="false"
+                        android:drawableTint="@color/orange_400"
+                        android:inputType="number"
+                        android:maxLength="1"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_Login_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:textColor="@color/accent_button_text"
+                    android:backgroundTint="@color/accent_button"
+                    android:text="Verify" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_Login_resend"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:text="Resend OTP"
+                android:textColor="@color/orange_400_light" />
+
+            <TextView
+                android:visibility="visible"
+                android:id="@+id/lbl_Login_resend"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Resend OTP in 30s"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
