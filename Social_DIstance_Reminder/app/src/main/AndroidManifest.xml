@@ -29,11 +29,31 @@
         android:label="@string/app_identifier"
         android:roundIcon="@mipmap/ic_launcher_distanzia_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Social_Distance_Reminder">
+        android:theme="@style/Theme.Social_Distance_Reminder"
+        android:usesCleartextTraffic="true">
         <service
             android:name=".services.CustomBluetoothService"
             android:enabled="true"
             android:exported="false" />
+
+        <service
+            android:name=".services.NotificationsFCMService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_baseline_close_24" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/orange_400_light" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
 
         <activity android:name=".ui.BluetoothTestActivity" />
 

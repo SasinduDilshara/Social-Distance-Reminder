@@ -4,7 +4,7 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Notification {
+public class Notification{
     private String title;
     private Date date;
     private String description;
