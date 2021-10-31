@@ -13,6 +13,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.social_distance_reminder.R;
+import com.example.social_distance_reminder.db.crudhelper.FirebaseCRUDHelper;
 import com.example.social_distance_reminder.services.LocationService;
 
 import java.io.IOException;
@@ -38,6 +39,7 @@ public class TestActivity extends AppCompatActivity {
         } catch (Exception e){
             e.printStackTrace();
         }
+//        new FirebaseCRUDHelper().get();
     }
 
     public void OnClick(View view){
@@ -70,5 +72,9 @@ public class TestActivity extends AppCompatActivity {
         }else{
             gpsTracker.showSettingsAlert();
         }
+    }
+
+    public void firebaseGetTest(View view) {
+        new FirebaseCRUDHelper().get();
     }
 }

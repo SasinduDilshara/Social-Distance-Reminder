@@ -62,7 +62,8 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
     }
 
     public void redirectToHome() {
-        Intent homePage = new Intent(this, HomeActivity.class);
+//        Intent homePage = new Intent(this, HomeActivity.class);
+        Intent homePage = new Intent(this, TestActivity.class);
         startActivity(homePage);
     }
 

@@ -3,18 +3,26 @@ package com.example.social_distance_reminder.db.crudhelper;
 import android.util.Log;
 
 import com.example.social_distance_reminder.db.crudhelper.model.DeviceModel;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
@@ -94,6 +102,38 @@ public class FirebaseCRUDHelper {
                     }
                 });
     }
+
+    public void get() {
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();//firebaseUser.getUid()
+//        Task<DocumentSnapshot> nearDevices =  db.collection("users").document(firebaseUser.getUid())
+//                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    System.out.println("task.getResult() :- " + task.getResult().get + " , ");
+//                    List<String> list = new ArrayList<>();
+////                    for (DocumentSnapshot document : task.getResult()) {
+////                        System.out.println("document.getData() :- " + document.getData() + " , ");
+//////                        System.out.println("document.getData() :- " + document.getDocumentReference() + " , ");
+////                        list.add(document.getId());
+////                    }
+////                    Log.d(TAG, list.toString());
+//                } else {
+//                    Log.d(TAG, "Error getting documents: ", task.getException());
+//                }
+//            }
+//        });
+
+        db.collection("users").document("Document").getCollections().then((querySnapshot) => {
+                querySnapshot.forEach((collection) => {
+                        console.log("collection: " + collection.id);
+        });
+    });
+
+    }
+
+//    Task<QuerySnapshot> collection =
+//            db.collection("users").document(firebaseUser.getUid()).collection(firebaseUser.getUid()).get();
 
 
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.example.social_distance_reminder.UI.HomeActivity;
 import com.example.social_distance_reminder.UI.LandingActivity;
 import com.example.social_distance_reminder.UI.LoginActivity;
+import com.example.social_distance_reminder.UI.TestActivity;
 import com.example.social_distance_reminder.auth.AuthRedirectHandler;
 import com.example.social_distance_reminder.auth.FirebaseAuthHelper;
 
@@ -31,8 +32,11 @@ public class MainActivity extends AppCompatActivity {
         if (FirebaseAuthHelper.getCurrentUser() != null) {
             nextPage = new Intent(this, HomeActivity.class);
         } else {
-            nextPage = new Intent(this, LandingActivity.class);
+            nextPage = new Intent(this, TestActivity.class);
+//            nextPage = new Intent(this, LandingActivity.class);
         }
+//
+//        nextPage = new Intent(this, TestActivity.class);
         startActivity(nextPage);
     }
 }

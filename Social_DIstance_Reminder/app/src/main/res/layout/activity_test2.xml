@@ -30,4 +30,12 @@
         android:text="Button"
         tools:layout_editor_absoluteX="147dp"
         tools:layout_editor_absoluteY="485dp" />
+    <Button
+        android:id="@+id/firebaseget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="firebaseGetTest"
+        android:text="firebaseGetTest"
+        tools:layout_editor_absoluteX="147dp"
+        tools:layout_editor_absoluteY="485dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
