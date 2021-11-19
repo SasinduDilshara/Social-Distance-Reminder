@@ -176,6 +176,7 @@ public class FirebaseCRUDHelper {
                                     if (document.exists()) {
 //                                System.out.println("Keys in the document "+ document);
                                         String msgtoken =  document.get("message-token").toString();
+                                        //TODO:Put the send token here
                                         System.out.println("mt123:- " + msgtoken +"\nid:- " + id);
                                     } else {
                                         System.out.println("No such document :- " + id);
