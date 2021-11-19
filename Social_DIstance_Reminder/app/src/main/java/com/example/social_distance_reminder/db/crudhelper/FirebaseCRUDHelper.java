@@ -2,6 +2,7 @@ package com.example.social_distance_reminder.db.crudhelper;
 
 import android.util.Log;
 
+import com.example.social_distance_reminder.auth.FirebaseAuthHelper;
 import com.example.social_distance_reminder.db.crudhelper.model.DeviceModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -26,11 +27,20 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 
 import static android.content.ContentValues.TAG;
+import static com.example.social_distance_reminder.helper.ServiceHelper.generateHash;
 
 public class FirebaseCRUDHelper {
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+//    public void getFCMToken() {
+//        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, instanceIdResult -> {
+//            String newToken = instanceIdResult.getToken();
+//            Log.e("newToken", newToken);
+//            getActivity().getPreferences(Context.MODE_PRIVATE).edit().putString("fb", newToken).apply();
+//        });
+//    }
 
     public void update(final DeviceModel deviceModel, final SqlLiteHelper sqlLiteHelper) {
 
@@ -152,7 +162,12 @@ public class FirebaseCRUDHelper {
         return msgToken[0];
     }
 
-    public List<String> getTheCloseDevices(String bluetoothid) {
+    public List<String> getTheCloseDevices() {
+        System.out.println("Phone Number:- " + FirebaseAuthHelper.getCurrentUser().getPhoneNumber());
+        String bluetoothid = generateHash(FirebaseAuthHelper.getCurrentUser().getPhoneNumber());
+//        String bluetoothid = generateHash("+1 650-555-2234");
+        System.out.println("the bluetooth id to find:- " + bluetoothid);
+
         List<String> closeDevices = new ArrayList<>();
         Task<QuerySnapshot> task1 = db.collectionGroup(bluetoothid).get().addOnSuccessListener(queryDocumentSnapshots -> {
             //Iterate to get the products out of the queryDocumentSnapshots object
@@ -177,7 +192,7 @@ public class FirebaseCRUDHelper {
 //                                System.out.println("Keys in the document "+ document);
                                         String msgtoken =  document.get("message-token").toString();
                                         //TODO:Put the send token here
-                                        System.out.println("mt123:- " + msgtoken +"\nid:- " + id);
+                                        System.out.println("mt123:- " + msgtoken +"\nid:- " + id + " for " + bluetoothid);
                                     } else {
                                         System.out.println("No such document :- " + id);
                                     }

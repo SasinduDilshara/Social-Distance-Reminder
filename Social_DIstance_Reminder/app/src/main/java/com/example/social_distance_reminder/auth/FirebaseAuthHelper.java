@@ -30,6 +30,14 @@ public class FirebaseAuthHelper {
         return PhoneAuthProvider.getCredential(verificationId, code);
     }
 
+    public static String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public static void setPhoneNumber(String phoneNumber) {
+        FirebaseAuthHelper.phoneNumber = phoneNumber;
+    }
+
     private static PhoneAuthProvider.ForceResendingToken getmResendToken() {
         return mResendToken;
     }
