@@ -3,8 +3,10 @@ package com.example.social_distance_reminder.db.crudhelper;
 import android.util.Log;
 
 import com.example.social_distance_reminder.db.crudhelper.model.DeviceModel;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -14,6 +16,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -97,6 +100,71 @@ public class FirebaseCRUDHelper {
                         System.out.println("fail");
                     }
                 });
+    }
+
+    public void updateMessageToken(String token) {
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("messaging-token", token);
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        db.collection("users")
+        .document(firebaseUser.getUid())
+        .set(data)
+        .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                System.out.println("Success");
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                System.out.println("fail");
+            }
+        });
+    }
+
+    public String getUserMessageTokenFromUserId(String id) {
+        String uid = firebaseUser.getUid();
+        FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(id).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                return document.get();
+                            } else {
+                                Log.d(TAG, "No such document :- " + id);
+                            }
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                        }
+                    }
+                });
+        return null;
+    }
+
+    public List<String> getTheCloseDevices(String bluetoothid) {
+        List<String> closeDevices = new ArrayList<>();
+        db.collectionGroup(bluetoothid).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+           @Override
+           public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+               //Iterate to get the products out of the queryDocumentSnapshots object
+               List<DocumentSnapshot> subdocuments = queryDocumentSnapshots.getDocuments();
+               for (DocumentSnapshot doc: subdocuments
+                    ) {
+                   System.out.println("This is the data");
+                   System.out.println(doc.getData());
+                   System.out.println("This is the data");
+                   closeDevices.add((doc.get("messaging-token").toString()));
+               }
+           }
+       });
+        return closeDevices;
     }
 
     // public void getSample() {

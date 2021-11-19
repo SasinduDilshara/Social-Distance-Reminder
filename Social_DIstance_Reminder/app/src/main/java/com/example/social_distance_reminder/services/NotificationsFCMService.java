@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.social_distance_reminder.R;
+import com.example.social_distance_reminder.db.crudhelper.FirebaseCRUDHelper;
 import com.example.social_distance_reminder.models.Notification;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -50,6 +51,7 @@ public class NotificationsFCMService extends FirebaseMessagingService {
         System.out.println("FCM token is :- " + s);
         Log.d(TAG, "onNewToken: "+ s);
         super.onNewToken(s);
+        new FirebaseCRUDHelper().updateMessageToken(s);
     }
 
     private void notifyFragment(Map<String,String> object){
