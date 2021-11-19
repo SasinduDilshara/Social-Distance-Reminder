@@ -105,7 +105,7 @@ public class FirebaseCRUDHelper {
     public void updateMessageToken(String token) {
 
         Map<String, Object> data = new HashMap<>();
-        data.put("messaging-token", token);
+        data.put("message-token", token);
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         db.collection("users")
@@ -127,7 +127,9 @@ public class FirebaseCRUDHelper {
 
     public String getUserMessageTokenFromUserId(String id) {
         String uid = firebaseUser.getUid();
-        FirebaseFirestore.getInstance()
+//        System.out.println("ID to find :- " + id);
+        final String[] msgToken = {null};
+        Task<DocumentSnapshot> task1 = FirebaseFirestore.getInstance()
                 .collection("users")
                 .document(id).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -136,34 +138,55 @@ public class FirebaseCRUDHelper {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                return document.get();
+//                                System.out.println("Keys in the document "+ document);
+                                msgToken[0] =  document.get("message-token").toString();
+                                System.out.println("mt:- " + msgToken[0]);
                             } else {
-                                Log.d(TAG, "No such document :- " + id);
+                                System.out.println("No such document :- " + id);
                             }
                         } else {
-                            Log.d(TAG, "get failed with ", task.getException());
+                            System.out.println( "get failed with "+ task.getException());
                         }
                     }
                 });
-        return null;
+        return msgToken[0];
     }
 
     public List<String> getTheCloseDevices(String bluetoothid) {
         List<String> closeDevices = new ArrayList<>();
-        db.collectionGroup(bluetoothid).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-           @Override
-           public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-               //Iterate to get the products out of the queryDocumentSnapshots object
-               List<DocumentSnapshot> subdocuments = queryDocumentSnapshots.getDocuments();
-               for (DocumentSnapshot doc: subdocuments
-                    ) {
-                   System.out.println("This is the data");
-                   System.out.println(doc.getData());
-                   System.out.println("This is the data");
-                   closeDevices.add((doc.get("messaging-token").toString()));
-               }
-           }
-       });
+        Task<QuerySnapshot> task1 = db.collectionGroup(bluetoothid).get().addOnSuccessListener(queryDocumentSnapshots -> {
+            //Iterate to get the products out of the queryDocumentSnapshots object
+            List<DocumentSnapshot> subdocuments = queryDocumentSnapshots.getDocuments();
+            for (DocumentSnapshot doc: subdocuments
+                 ) {
+//                   System.out.println("This is the data");
+//                System.out.println(doc.getData());
+//                   System.out.println("This is the data");
+//                String t = getUserMessageTokenFromUserId(doc.get("userid").toString());
+//                System.out.println("Results got from mt:- " + t);
+                String id = doc.get("userid").toString();
+                FirebaseFirestore.getInstance()
+                        .collection("users")
+                        .document(id).get()
+                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document.exists()) {
+//                                System.out.println("Keys in the document "+ document);
+                                        String msgtoken =  document.get("message-token").toString();
+                                        System.out.println("mt123:- " + msgtoken +"\nid:- " + id);
+                                    } else {
+                                        System.out.println("No such document :- " + id);
+                                    }
+                                } else {
+                                    System.out.println( "get failed with "+ task.getException());
+                                }
+                            }
+                        });
+            }
+        });
         return closeDevices;
     }
 

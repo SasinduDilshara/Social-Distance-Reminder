@@ -67,9 +67,7 @@ public class ServiceHelper {
     }
 
     public static String generateHash(String string,Context context){
-        //TODO: Implement
-        String s = new String(UUID.randomUUID().toString()); // refer string resource file in java_resource.xml
-        return s;
+        return UUID.nameUUIDFromBytes(string.getBytes()).toString();
 
     }
 }

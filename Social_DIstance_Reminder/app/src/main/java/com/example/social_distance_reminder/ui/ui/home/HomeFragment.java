@@ -16,6 +16,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.social_distance_reminder.R;
 import com.example.social_distance_reminder.databinding.FragmentHomeBinding;
 import com.example.social_distance_reminder.databinding.PopupDeclarationBinding;
+import com.example.social_distance_reminder.db.crudhelper.FirebaseCRUDHelper;
 import com.example.social_distance_reminder.models.Notification;
 import com.example.social_distance_reminder.notifications.MySingleton;
 
@@ -59,6 +60,9 @@ public class HomeFragment extends Fragment {
     }
 
     public void showDeclarationPopup() {
+
+//        new FirebaseCRUDHelper().getSample();
+        new FirebaseCRUDHelper().getTheCloseDevices("ffe79751-e3a1-4f06-ba7b-53ea0b774cc9");
         popupBinding.btnDeclareClose.setOnClickListener(v2 -> declarePopup.dismiss());
         popupBinding.lblDeclareRandom.setText(getRandomString(8));
         popupBinding.txtDeclareRandom.setText("");
