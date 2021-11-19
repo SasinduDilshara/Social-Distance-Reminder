@@ -66,8 +66,21 @@ public class ServiceHelper {
         } catch (IOException e) { return false; }
     }
 
+    public static String cleanPhoneNumber(String phonenumber) {
+        String included = "+1234567890";
+        char c;
+        String cleanedPhoneNumber = "";
+        for (int i = 0; i < phonenumber.length(); i++){
+            c = phonenumber.charAt(i);
+            if(included.contains(String.valueOf(c))) {
+                cleanedPhoneNumber += String.valueOf(c);
+            }
+        }
+        return cleanedPhoneNumber;
+    }
+
     public static String generateHash(String string){
-        return UUID.nameUUIDFromBytes(string.getBytes()).toString();
+        return UUID.nameUUIDFromBytes(cleanPhoneNumber(string).getBytes()).toString();
 
     }
 }
