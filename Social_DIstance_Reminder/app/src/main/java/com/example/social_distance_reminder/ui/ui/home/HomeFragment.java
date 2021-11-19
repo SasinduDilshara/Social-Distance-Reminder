@@ -101,8 +101,9 @@ public class HomeFragment extends Fragment {
             notificationBody.put("message",notification.getDescription());
             notificationBody.put("date",notification.getDate());
             notificationBody.put("importance",notification.isImportant());
+            notificationObject.put("to", "d5lLePz0SQu_r-4WAU3hDr:APA91bGTgSjQn5pthRDeqqy7jINhXT3JRB_KRWybHjoFBbzdkReQT1PwtfHg-gutSd7uXYGd88rjIWI8wFm0O-LJHPWyioDa2CsVm6WQMjpl6A2Ex4aRquiYr9Kop4JXrrl6NigEHGMT");
 //                notification.put("to", "cJBFXY1FQzCcqHjmepWc_t:APA91bEaSjUd5wzC0dUc-NOBTTaFIDKv1fBW2ZrN3o5uayfzqRl4RJbkhpo4IEGOOEtZlCF5ZwjmHuXIRYQaz5BtPK1s1l_AAiiqiG1yWWq2KCjS7Oi20Ad2ddTWJC7rM2XtjnP3kYs_");
-            notificationObject.put("to", "/topics/All");
+//            notificationObject.put("to", "/topics/All");
             notificationObject.put("data", notificationBody);
         } catch (JSONException e) {
             Log.e(TAG, "onCreate: " + e.getMessage());

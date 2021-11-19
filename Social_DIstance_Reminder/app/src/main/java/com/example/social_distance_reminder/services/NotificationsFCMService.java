@@ -46,6 +46,7 @@ public class NotificationsFCMService extends FirebaseMessagingService {
 
     @Override
     public void onNewToken(@NonNull String s) {
+        Log.d(TAG, "onNewToken: "+s);
         //TODO: send the token to back end with user
         super.onNewToken(s);
     }
