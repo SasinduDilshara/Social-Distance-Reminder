@@ -164,8 +164,8 @@ public class FirebaseCRUDHelper {
 
     public List<String> getTheCloseDevices() {
         System.out.println("Phone Number:- " + FirebaseAuthHelper.getCurrentUser().getPhoneNumber());
-        String bluetoothid = generateHash(FirebaseAuthHelper.getCurrentUser().getPhoneNumber());
-//        String bluetoothid = generateHash("+1 650-555-2234");
+       String bluetoothid = generateHash(FirebaseAuthHelper.getCurrentUser().getPhoneNumber());
+        // String bluetoothid = generateHash("+1 650-555-2234");
         System.out.println("the bluetooth id to find:- " + bluetoothid);
 
         List<String> closeDevices = new ArrayList<>();
