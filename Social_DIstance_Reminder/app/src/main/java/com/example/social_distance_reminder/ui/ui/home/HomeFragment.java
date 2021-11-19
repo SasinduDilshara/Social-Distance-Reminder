@@ -219,7 +219,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     public void showDeclarationPopup() {
 
 //        new FirebaseCRUDHelper().getSample();
-        new FirebaseCRUDHelper().getTheCloseDevices("ffe79751-e3a1-4f06-ba7b-53ea0b774cc9");
+        new FirebaseCRUDHelper().getTheCloseDevices();
         popupBinding.btnDeclareClose.setOnClickListener(v2 -> declarePopup.dismiss());
         popupBinding.lblDeclareRandom.setText(getRandomString(8));
         popupBinding.txtDeclareRandom.setText("");

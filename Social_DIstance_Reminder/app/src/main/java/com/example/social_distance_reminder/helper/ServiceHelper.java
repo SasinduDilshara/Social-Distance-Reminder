@@ -66,7 +66,7 @@ public class ServiceHelper {
         } catch (IOException e) { return false; }
     }
 
-    public static String generateHash(String string,Context context){
+    public static String generateHash(String string){
         return UUID.nameUUIDFromBytes(string.getBytes()).toString();
 
     }

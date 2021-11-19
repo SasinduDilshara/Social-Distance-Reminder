@@ -24,6 +24,7 @@ import com.example.social_distance_reminder.databinding.ActivityLoginBinding;
 import com.example.social_distance_reminder.databinding.PopupTermsBinding;
 import com.example.social_distance_reminder.db.crudhelper.FirebaseCRUDHelper;
 import com.example.social_distance_reminder.db.crudhelper.SqlLiteHelper;
+import com.example.social_distance_reminder.services.NotificationsFCMService;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -296,9 +297,10 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
     public void onAuthComplete(String phonenumber) {
         Toast.makeText(getApplicationContext(), " YOU SUCCESSFULLY COMPLETED THE AUTHENTICATION ", Toast.LENGTH_SHORT).show();
         redirectPrime();
-        String userId = generateHash(phonenumber, this);
+        String userId = generateHash(phonenumber);
         Context context = this;
         SqlLiteHelper.getInstance(context).insertUserId(userId);
+        NotificationsFCMService.setFCMToken();
         new FirebaseCRUDHelper().onCreteUser(userId);
     }
 
