@@ -7,14 +7,17 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
@@ -47,6 +50,7 @@ public class FirebaseCRUDHelper {
             Map<String, Object> data = new HashMap<>();
             data.put("timestamp", date);
             data.put("location",location);
+            data.put("userid", uid);
 
             db.collection("users")
                     .document(uid)
@@ -94,6 +98,24 @@ public class FirebaseCRUDHelper {
                     }
                 });
     }
+
+    // public void getSample() {
+    //     System.out.println("Here is the getsample method");
+    //     db.collectionGroup("ffe79751-e3a1-4f06-ba7b-53ea0b774cc9").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+    //         @Override
+    //         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+    //             //Iterate to get the products out of the queryDocumentSnapshots object
+    //             List<DocumentSnapshot> subdocuments = queryDocumentSnapshots.getDocuments();
+    //             for (DocumentSnapshot doc: subdocuments
+    //                  ) {
+    //                 System.out.println("This is the data");
+    //                 System.out.println(doc.getData());
+    //                 System.out.println("This is the data");
+    //             }
+    //         }
+    //     });
+    //     System.out.println("Here is the getsample method");
+    // }
 
 
 }
