@@ -8,17 +8,12 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.social_distance_reminder.R;
+import com.example.social_distance_reminder.auth.FirebaseAuthHelper;
 import com.example.social_distance_reminder.db.crudhelper.FirebaseCRUDHelper;
-import com.example.social_distance_reminder.models.Notification;
+import com.google.firebase.installations.FirebaseInstallations;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.google.type.Date;
 
-import org.json.JSONObject;
-
-import java.text.Format;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
@@ -29,6 +24,18 @@ public class NotificationsFCMService extends FirebaseMessagingService {
     String TAG = "FCM";
     public String userToken;
     SharedPreferences sharedPreferences;
+    String token = null;
+
+    public static void setFCMToken() {
+        FirebaseInstallations.getInstance().getId().addOnCompleteListener(
+                task -> {
+                    if (task.isSuccessful()) {
+                        String token = task.getResult();
+                        new FirebaseCRUDHelper().updateMessageToken(token);
+                    }
+                }
+        );
+    }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -51,7 +58,14 @@ public class NotificationsFCMService extends FirebaseMessagingService {
         System.out.println("FCM token is :- " + s);
         Log.d(TAG, "onNewToken: "+ s);
         super.onNewToken(s);
-        new FirebaseCRUDHelper().updateMessageToken(s);
+//        if (FirebaseAuthHelper.getCurrentUser() != null) {
+//            new FirebaseCRUDHelper().updateMessageToken(s);
+//        }
+        try {
+            new FirebaseCRUDHelper().updateMessageToken(s);
+        } catch (Exception ex) {
+
+        }
     }
 
     private void notifyFragment(Map<String,String> object){
