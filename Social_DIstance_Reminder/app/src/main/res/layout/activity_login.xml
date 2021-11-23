@@ -51,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.25" />
+            app:layout_constraintGuide_percent="0.3" />
 
 
         <androidx.constraintlayout.widget.Guideline
@@ -88,6 +88,18 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.65" />
+
+        <ImageView
+            android:id="@+id/img_Login_graphic"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:elevation="3dp"
+            app:layout_constraintBottom_toBottomOf="@id/guidelineH4"
+            android:scaleType="fitCenter"
+            app:layout_constraintEnd_toEndOf="@id/guidelineV4"
+            app:layout_constraintStart_toStartOf="@id/guidelineV3"
+            app:layout_constraintTop_toTopOf="@id/guidelineH6"
+            android:contentDescription="Logo" />
 
         <ImageView
             android:id="@+id/img_Login_logo"
