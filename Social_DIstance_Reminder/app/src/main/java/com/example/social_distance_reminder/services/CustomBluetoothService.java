@@ -308,6 +308,9 @@ public class CustomBluetoothService extends Service implements BeaconConsumer, N
                     addresses = null;
 
                     //TODO:CHECK FOR DISTANCE
+                    if (distance < 5) {
+                        continue;
+                    }
 
                     if(locationService.canGetLocation()) {
                         locationService.getLocation();
