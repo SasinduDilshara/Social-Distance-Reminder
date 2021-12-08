@@ -267,24 +267,6 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         return sb.toString();
     }
 
-    private JSONObject createNotificationObject(Notification notification){
-        JSONObject notificationObject = new JSONObject();
-        JSONObject notificationBody = new JSONObject();
-        try {
-            notificationBody.put("title",notification.getTitle());
-            notificationBody.put("message",notification.getDescription());
-            notificationBody.put("date",notification.getDate());
-            notificationBody.put("importance",notification.isImportant());
-//                notification.put("to", "cJBFXY1FQzCcqHjmepWc_t:APA91bEaSjUd5wzC0dUc-NOBTTaFIDKv1fBW2ZrN3o5uayfzqRl4RJbkhpo4IEGOOEtZlCF5ZwjmHuXIRYQaz5BtPK1s1l_AAiiqiG1yWWq2KCjS7Oi20Ad2ddTWJC7rM2XtjnP3kYs_");
-            notificationObject.put("to", "fJrDs-yQTDqW0EexSZRT26");
-//            notificationObject.put("to", "/topics/All");
-            notificationObject.put("data", notificationBody);
-        } catch (JSONException e) {
-            Log.e(TAG, "onCreate: " + e.getMessage());
-        }
-        return notificationObject;
-    }
-
     private void sendDeclarationNotification(JSONObject notification) {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(FCM_API, notification,
                 response -> Log.i(TAG, "onResponse: " + response.toString()),

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -16,6 +17,9 @@ import androidx.core.app.NotificationManagerCompat;
 import com.example.social_distance_reminder.R;
 import com.example.social_distance_reminder.exceptions.NotificationManagerException;
 import com.example.social_distance_reminder.ui.PrimeActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import static com.example.social_distance_reminder.helper.RandomIDGenerator.getNotifictionID;
 
@@ -227,6 +231,24 @@ public class NotificationHelper {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this.context, 0, intent, 0);
         return pendingIntent;
+    }
+
+    private static JSONObject createNotificationObject(com.example.social_distance_reminder.models.Notification notification){
+        JSONObject notificationObject = new JSONObject();
+        JSONObject notificationBody = new JSONObject();
+        try {
+            notificationBody.put("title",notification.getTitle());
+            notificationBody.put("message",notification.getDescription());
+            notificationBody.put("date",notification.getDate());
+            notificationBody.put("importance",notification.isImportant());
+//                notification.put("to", "cJBFXY1FQzCcqHjmepWc_t:APA91bEaSjUd5wzC0dUc-NOBTTaFIDKv1fBW2ZrN3o5uayfzqRl4RJbkhpo4IEGOOEtZlCF5ZwjmHuXIRYQaz5BtPK1s1l_AAiiqiG1yWWq2KCjS7Oi20Ad2ddTWJC7rM2XtjnP3kYs_");
+            notificationObject.put("to", "fJrDs-yQTDqW0EexSZRT26");
+//            notificationObject.put("to", "/topics/All");
+            notificationObject.put("data", notificationBody);
+        } catch (JSONException e) {
+            Log.e("NotificationHelper", "onCreate: " + e.getMessage());
+        }
+        return notificationObject;
     }
 
 }
