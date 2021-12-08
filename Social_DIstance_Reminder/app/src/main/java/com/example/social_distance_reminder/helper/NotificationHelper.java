@@ -10,16 +10,24 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-
+import com.android.volley.AuthFailureError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.social_distance_reminder.R;
 import com.example.social_distance_reminder.exceptions.NotificationManagerException;
+import com.example.social_distance_reminder.notifications.MySingleton;
 import com.example.social_distance_reminder.ui.PrimeActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import static com.example.social_distance_reminder.helper.RandomIDGenerator.getNotifictionID;
 
@@ -40,7 +48,7 @@ public class NotificationHelper {
 
     private static int normalNotoficationLockScreenVisiblity = Notification.VISIBILITY_PRIVATE;
     private static int normalNotificationLightColor = Color.BLUE;
-    private static String normalNotificationID= "NORMAL_NOTIFICATION_CHANNEL_ID";
+    private static String normalNotificationID = "NORMAL_NOTIFICATION_CHANNEL_ID";
     private static CharSequence normalNotificationChannelName = "NORMAL_NOTIFICATION_CHANNEL_NAME";
     private static String normalNotificationChannelDescription = "NORMAL_NOTIFICATION_CHANNEL_DESCRIPTION";
     private static int normalNotificationChannelImportance = NotificationManager.IMPORTANCE_DEFAULT;
@@ -56,7 +64,7 @@ public class NotificationHelper {
 
     private static int backgroundNotoficationLockScreenVisiblity = Notification.VISIBILITY_PRIVATE;
     private static int backgroundNotificationLightColor = Color.BLUE;
-    private static String backgroundNotificationID= "BACKGROUND_NOTIFICATION_CHANNEL_ID";
+    private static String backgroundNotificationID = "BACKGROUND_NOTIFICATION_CHANNEL_ID";
     private static CharSequence backgroundNotificationChannelName = "BACKGROUND_NOTIFICATION_CHANNEL_NAME";
     private static String backgroundNotificationChannelDescription = "BACKGROUND_NOTIFICATION_CHANNEL_DESCRIPTION";
     private static int backgroundNotificationChannelImportance = NotificationManager.IMPORTANCE_DEFAULT;
@@ -95,7 +103,8 @@ public class NotificationHelper {
                 .setContentTitle(textTitle)
                 .setContentText(textContent)
                 .setContentIntent(getPendingIntent())
-                .setAutoCancel(true);;
+                .setAutoCancel(true);
+        ;
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this.context);
         notificationManager.notify(getNotifictionID(), notificationBuilder.build());
     }
@@ -129,7 +138,7 @@ public class NotificationHelper {
 
     public static void sendNormalNotification(String textTitle, String textContent, Context context) {
         try {
-            getInstance(context).showNormalNotification(textTitle,textContent);
+            getInstance(context).showNormalNotification(textTitle, textContent);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -137,7 +146,7 @@ public class NotificationHelper {
 
     public static void sendIdentifiedNotification(String textTitle, String textContent, Context context) {
         try {
-            getInstance(context).showIdentifiedNotification(textTitle,textContent);
+            getInstance(context).showIdentifiedNotification(textTitle, textContent);
         } catch (Exception e) {
             //TODO: Handle these
             e.printStackTrace();
@@ -146,7 +155,7 @@ public class NotificationHelper {
 
     public static int createBackgroundNotification(String textTitle, String textContent, Context context) {
         try {
-            return getInstance(context).showBackgroundNotification(textTitle,textContent);
+            return getInstance(context).showBackgroundNotification(textTitle, textContent);
         } catch (Exception e) {
             return -1;
         }
@@ -154,7 +163,7 @@ public class NotificationHelper {
 
     public static Notification createBackgroundNotificationForService(String textTitle, String textContent, Context context) {
         try {
-            return getInstance(context).showBackgroundNotificationForService(textTitle,textContent);
+            return getInstance(context).showBackgroundNotificationForService(textTitle, textContent);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -233,22 +242,51 @@ public class NotificationHelper {
         return pendingIntent;
     }
 
-    private static JSONObject createNotificationObject(com.example.social_distance_reminder.models.Notification notification){
+
+    final private static String FCM_API = "https://fcm.googleapis.com/fcm/send";
+    final private static String serverKey = "key=AAAA6NYYD9E:APA91bHkC_6fqKP8rh3_GaCK6mRRSKqBcZRRI7Nb_jzkjuFGgzjMJr38jn3khw7CHFKuJJNXF0l5qAK8jLBxsEO7X4YUTA53dJi4j9GshqPMRHdsKAC7HZKLMO1UuEPTXg8X4bjanAk9\t\n";
+    final private static String contentType = "application/json";
+    final private static String TAG = "Notification Helper";
+
+    private static JSONObject createNotificationObject(com.example.social_distance_reminder.models.Notification notification, String token) {
         JSONObject notificationObject = new JSONObject();
         JSONObject notificationBody = new JSONObject();
         try {
-            notificationBody.put("title",notification.getTitle());
-            notificationBody.put("message",notification.getDescription());
-            notificationBody.put("date",notification.getDate());
-            notificationBody.put("importance",notification.isImportant());
+            notificationBody.put("title", notification.getTitle());
+            notificationBody.put("message", notification.getDescription());
+            notificationBody.put("date", notification.getDate());
+            notificationBody.put("importance", notification.isImportant());
 //                notification.put("to", "cJBFXY1FQzCcqHjmepWc_t:APA91bEaSjUd5wzC0dUc-NOBTTaFIDKv1fBW2ZrN3o5uayfzqRl4RJbkhpo4IEGOOEtZlCF5ZwjmHuXIRYQaz5BtPK1s1l_AAiiqiG1yWWq2KCjS7Oi20Ad2ddTWJC7rM2XtjnP3kYs_");
-            notificationObject.put("to", "fJrDs-yQTDqW0EexSZRT26");
+            notificationObject.put("to", token);
 //            notificationObject.put("to", "/topics/All");
             notificationObject.put("data", notificationBody);
         } catch (JSONException e) {
             Log.e("NotificationHelper", "onCreate: " + e.getMessage());
         }
         return notificationObject;
+    }
+
+    public static void sendWarningNotification(String msgToken, Context context) {
+        com.example.social_distance_reminder.models.Notification declaration = new com.example.social_distance_reminder.models.Notification("WARNING", new Date(), "A person who came near you has declared as a COVID patient", true);
+        sendDeclarationNotification(createNotificationObject(declaration,msgToken),context);
+    }
+
+    private static void sendDeclarationNotification(JSONObject notification, Context context) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(FCM_API, notification,
+                response -> Log.i(TAG, "onResponse: " + response.toString()),
+                error -> {
+                    Toast.makeText(context, "Request error", Toast.LENGTH_LONG).show();
+                    Log.i(TAG, "onErrorResponse: Didn't work");
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Authorization", serverKey);
+                params.put("Content-Type", contentType);
+                return params;
+            }
+        };
+        MySingleton.getInstance(context).addToRequestQueue(jsonObjectRequest);
     }
 
 }

@@ -1,9 +1,11 @@
 package com.example.social_distance_reminder.db.crudhelper;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.example.social_distance_reminder.auth.FirebaseAuthHelper;
 import com.example.social_distance_reminder.db.crudhelper.model.DeviceModel;
+import com.example.social_distance_reminder.helper.NotificationHelper;
 import com.example.social_distance_reminder.services.NotificationsFCMService;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -190,7 +192,7 @@ public class FirebaseCRUDHelper {
         return msgToken[0];
     }
 
-    public List<String> getTheCloseDevices() {
+    public List<String> getTheCloseDevices(Context context) {
         System.out.println("Phone Number:- " + FirebaseAuthHelper.getCurrentUser().getPhoneNumber());
        String bluetoothid = generateHash(FirebaseAuthHelper.getCurrentUser().getPhoneNumber());
         // String bluetoothid = generateHash("+1 650-555-2234");
@@ -219,7 +221,7 @@ public class FirebaseCRUDHelper {
                                     if (document.exists()) {
 //                                System.out.println("Keys in the document "+ document);
                                         String msgtoken =  document.get("message-token").toString();
-                                        //TODO:Put the send token here
+                                        NotificationHelper.sendWarningNotification(msgtoken, context);
                                         System.out.println("mt123:- " + msgtoken +"\nid:- " + id + " for " + bluetoothid);
                                     } else {
                                         System.out.println("No such document :- " + id);

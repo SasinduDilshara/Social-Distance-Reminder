@@ -10,17 +10,12 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.social_distance_reminder.R;
 import com.example.social_distance_reminder.databinding.FragmentHomeBinding;
 import com.example.social_distance_reminder.databinding.PopupDeclarationBinding;
@@ -28,34 +23,23 @@ import com.example.social_distance_reminder.db.crudhelper.FirebaseCRUDHelper;
 import com.example.social_distance_reminder.exceptions.BluetoothNotSupportException;
 import com.example.social_distance_reminder.helper.BluetoothHelper;
 import com.example.social_distance_reminder.helper.ServiceHelper;
-import com.example.social_distance_reminder.models.Notification;
-import com.example.social_distance_reminder.notifications.MySingleton;
 import com.example.social_distance_reminder.services.CustomBluetoothService;
 import com.example.social_distance_reminder.services.LocationService;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Random;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.constraintlayout.helper.widget.Carousel;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
-import static android.content.ContentValues.TAG;
 import static com.example.social_distance_reminder.helper.BluetoothHelper.getBroadcastReciever;
 import static com.example.social_distance_reminder.helper.BluetoothHelper.getIntentFilter;
 import static com.example.social_distance_reminder.helper.ServiceHelper.isMyServiceRunning;
@@ -63,22 +47,15 @@ import static com.example.social_distance_reminder.helper.ServiceHelper.setGeoCo
 
 public class HomeFragment extends Fragment implements EasyPermissions.PermissionCallbacks {
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     String[] requiredPermissions = ServiceHelper.getPermissions();
     private static final int REQUEST_CODE = 1;
     private LocationService gpsTracker;
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
-
-    final private String FCM_API = "https://fcm.googleapis.com/fcm/send";
-    final private String serverKey = "key=AAAA6NYYD9E:APA91bHkC_6fqKP8rh3_GaCK6mRRSKqBcZRRI7Nb_jzkjuFGgzjMJr38jn3khw7CHFKuJJNXF0l5qAK8jLBxsEO7X4YUTA53dJi4j9GshqPMRHdsKAC7HZKLMO1UuEPTXg8X4bjanAk9\t\n";
-    final private String contentType = "application/json";
     private FragmentHomeBinding homeBinding;
     private PopupDeclarationBinding popupBinding;
     private Dialog declarePopup;
-    int[] images = {R.drawable.covid_1, R.drawable.covid_2, R.drawable.covid_3, R.drawable.covid_4, R.drawable.covid_5, R.drawable.covid_6};
     private String TAG = "Testing";
+    private Boolean isServiceActive;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -86,12 +63,26 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         homeBinding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = homeBinding.getRoot();
 
+        isServiceActive = false;
+
         declarePopup = new Dialog(getActivity());
         popupBinding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.popup_declaration, null, false);
         declarePopup.setContentView(popupBinding.getRoot());
 
         homeBinding.btnHomeDeclare.setOnClickListener(v2 -> showDeclarationPopup());
-        homeBinding.btnHomeOnoff.setOnClickListener(v2-> setBluetoothOnButton());
+        homeBinding.btnHomeOnoff.setOnClickListener(v2 -> {
+            if (isServiceActive) {
+                isServiceActive = false;
+                Toast.makeText(getContext(), "Distanzia now running...", Toast.LENGTH_SHORT).show();
+                homeBinding.btnHomeOnoff.setImageResource(R.drawable.button_on);
+                deactivateService();
+            } else {
+                isServiceActive = true;
+                Toast.makeText(getContext(), "Distanzia now stopped", Toast.LENGTH_SHORT).show();
+                homeBinding.btnHomeOnoff.setImageResource(R.drawable.button_off);
+                activateService();
+            }
+        });
 
         AnimationDrawable anim_homeGraphic = new AnimationDrawable();
         anim_homeGraphic.addFrame(getResources().getDrawable(R.drawable.covid19_1), 4000);
@@ -108,14 +99,20 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         return root;
     }
 
+    private void activateService() {
+    }
+
+    private void deactivateService() {
+    }
+
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     private void setBluetoothOnButton() {
         try {
-            if (ContextCompat.checkSelfPermission(requireActivity().getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+            if (ContextCompat.checkSelfPermission(requireActivity().getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(requireActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -134,19 +131,15 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         try {
             BluetoothHelper.requestBluetooth(requireActivity());
         } catch (BluetoothNotSupportException e) {
-            System.out.println("\n\n\n" + e.getMessage()+"\n\n\n");
+            System.out.println("\n\n\n" + e.getMessage() + "\n\n\n");
         }
 
     }
 
-    private void setBluetoothOffButton() {
 
-    }
-
-
-    public void locationFinder(View view){
+    public void locationFinder(View view) {
         gpsTracker = new LocationService(requireActivity().getApplicationContext());
-        if(gpsTracker.canGetLocation()){
+        if (gpsTracker.canGetLocation()) {
             double latitude = gpsTracker.getLatitude();
             double longitude = gpsTracker.getLongitude();
             Location location = gpsTracker.getLocation();
@@ -169,7 +162,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
             System.out.println("lan:- " + latitude);
             System.out.println("lon:- " + longitude);
-        }else{
+        } else {
             gpsTracker.showSettingsAlert();
         }
     }
@@ -199,8 +192,8 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
             Log.d(TAG, "onResume: Scaning is not running, Starting it Now!");
             Intent serviceIntent = new Intent(requireActivity(), CustomBluetoothService.class);
             ContextCompat.startForegroundService(requireActivity(), serviceIntent);
-        } else if(isMyServiceRunning(requireActivity(), CustomBluetoothService.class) && !a) {
-    
+        } else if (isMyServiceRunning(requireActivity(), CustomBluetoothService.class) && !a) {
+
         }
     }
 
@@ -234,16 +227,13 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
     public void showDeclarationPopup() {
 
-//        new FirebaseCRUDHelper().getSample();
-        new FirebaseCRUDHelper().getTheCloseDevices();
         popupBinding.btnDeclareClose.setOnClickListener(v2 -> declarePopup.dismiss());
         popupBinding.lblDeclareRandom.setText(getRandomString(8));
         popupBinding.txtDeclareRandom.setText("");
         popupBinding.btnDeclareConfirm.setOnClickListener(v2 -> {
             if (popupBinding.lblDeclareRandom.getText().toString().equals(popupBinding.txtDeclareRandom.getText().toString())) {
                 Toast.makeText(getActivity(), "Declaration Succeeded", Toast.LENGTH_SHORT).show();
-                Notification declaration = new Notification("WARNING", new Date(),"A person who came near you has declared as a COVID patient",true);
-                sendDeclarationNotification(createNotificationObject(declaration));
+                new FirebaseCRUDHelper().getTheCloseDevices(getContext());
             } else {
                 Toast.makeText(getActivity(), "Wrong", Toast.LENGTH_SHORT).show();
             }
@@ -268,24 +258,6 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         }
 
         return sb.toString();
-    }
-
-    private void sendDeclarationNotification(JSONObject notification) {
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(FCM_API, notification,
-                response -> Log.i(TAG, "onResponse: " + response.toString()),
-                error -> {
-                    Toast.makeText(getContext(), "Request error", Toast.LENGTH_LONG).show();
-                    Log.i(TAG, "onErrorResponse: Didn't work");
-                }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("Authorization", serverKey);
-                params.put("Content-Type", contentType);
-                return params;
-            }
-        };
-        MySingleton.getInstance(getContext()).addToRequestQueue(jsonObjectRequest);
     }
 
     @Override

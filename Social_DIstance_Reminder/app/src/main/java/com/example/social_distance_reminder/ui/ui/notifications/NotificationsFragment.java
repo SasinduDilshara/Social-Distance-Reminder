@@ -63,7 +63,6 @@ public class NotificationsFragment extends Fragment {
     }
 
 
-
     public BroadcastReceiver onNotificationReceived = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
