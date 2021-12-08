@@ -56,6 +56,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     private Dialog declarePopup;
     private String TAG = "Testing";
     private Boolean isServiceActive;
+    Intent serviceIntent = null;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -100,9 +101,11 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     }
 
     private void activateService() {
+        onResume();
     }
 
     private void deactivateService() {
+        onResume();
     }
 
 
@@ -186,14 +189,15 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
     @Override
     public void onResume() {
-        boolean a = true;
         super.onResume();
-        if (!isMyServiceRunning(requireActivity(), CustomBluetoothService.class) && a) {
+        if (!isMyServiceRunning(requireActivity(), CustomBluetoothService.class) && isServiceActive) {
+            serviceIntent = new Intent(requireActivity(), CustomBluetoothService.class);
             Log.d(TAG, "onResume: Scaning is not running, Starting it Now!");
-            Intent serviceIntent = new Intent(requireActivity(), CustomBluetoothService.class);
             ContextCompat.startForegroundService(requireActivity(), serviceIntent);
-        } else if (isMyServiceRunning(requireActivity(), CustomBluetoothService.class) && !a) {
-
+        } else if (isMyServiceRunning(requireActivity(), CustomBluetoothService.class) && !isServiceActive) {
+            if (serviceIntent != null) {
+                getActivity().stopService(serviceIntent);
+            }
         }
     }
 
