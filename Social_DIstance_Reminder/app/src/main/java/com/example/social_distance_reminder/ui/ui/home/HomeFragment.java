@@ -193,11 +193,14 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
     @Override
     public void onResume() {
+        boolean a = true;
         super.onResume();
-        if (!isMyServiceRunning(requireActivity(), CustomBluetoothService.class)) {
+        if (!isMyServiceRunning(requireActivity(), CustomBluetoothService.class) && a) {
             Log.d(TAG, "onResume: Scaning is not running, Starting it Now!");
             Intent serviceIntent = new Intent(requireActivity(), CustomBluetoothService.class);
             ContextCompat.startForegroundService(requireActivity(), serviceIntent);
+        } else if(isMyServiceRunning(requireActivity(), CustomBluetoothService.class) && !a) {
+    
         }
     }
 
