@@ -3,14 +3,17 @@ package com.example.social_distance_reminder.ui;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -26,6 +29,9 @@ import com.example.social_distance_reminder.db.crudhelper.FirebaseCRUDHelper;
 import com.example.social_distance_reminder.db.crudhelper.SqlLiteHelper;
 import com.example.social_distance_reminder.services.NotificationsFCMService;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.helper.widget.Carousel;
@@ -40,6 +46,7 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
     Dialog termsPopup;
     String phoneNum = "";
     CountDownTimer timer = null;
+    String TAG = "LoginActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +91,16 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
             loginBinding.lnrLoginCode.setVisibility(View.GONE);
             loginBinding.lnrLoginPhone.setVisibility(View.VISIBLE);
         }));
+
+        AnimationDrawable anim_loginGraphic = new AnimationDrawable();
+        anim_loginGraphic.addFrame(getResources().getDrawable(R.drawable.login1), 4000);
+        anim_loginGraphic.addFrame(getResources().getDrawable(R.drawable.login2), 4000);
+        anim_loginGraphic.addFrame(getResources().getDrawable(R.drawable.login3), 4000);
+        anim_loginGraphic.addFrame(getResources().getDrawable(R.drawable.login4), 4000);
+        anim_loginGraphic.setOneShot(false);
+
+        loginBinding.imgLoginGraphic.setImageDrawable(anim_loginGraphic);
+        anim_loginGraphic.start();
 
     }
 

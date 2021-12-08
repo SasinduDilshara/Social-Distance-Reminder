@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.AnimationDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -91,6 +92,18 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
         homeBinding.btnHomeDeclare.setOnClickListener(v2 -> showDeclarationPopup());
         homeBinding.btnHomeOnoff.setOnClickListener(v2-> setBluetoothOnButton());
+
+        AnimationDrawable anim_homeGraphic = new AnimationDrawable();
+        anim_homeGraphic.addFrame(getResources().getDrawable(R.drawable.covid19_1), 4000);
+        anim_homeGraphic.addFrame(getResources().getDrawable(R.drawable.covid19_2), 4000);
+        anim_homeGraphic.addFrame(getResources().getDrawable(R.drawable.covid19_3), 4000);
+        anim_homeGraphic.addFrame(getResources().getDrawable(R.drawable.covid19_4), 4000);
+        anim_homeGraphic.addFrame(getResources().getDrawable(R.drawable.covid19_5), 4000);
+        anim_homeGraphic.addFrame(getResources().getDrawable(R.drawable.covid19_6), 4000);
+        anim_homeGraphic.setOneShot(false);
+
+        homeBinding.imgHomeGraphic.setImageDrawable(anim_homeGraphic);
+        anim_homeGraphic.start();
 
         return root;
     }
@@ -263,7 +276,8 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
             notificationBody.put("date",notification.getDate());
             notificationBody.put("importance",notification.isImportant());
 //                notification.put("to", "cJBFXY1FQzCcqHjmepWc_t:APA91bEaSjUd5wzC0dUc-NOBTTaFIDKv1fBW2ZrN3o5uayfzqRl4RJbkhpo4IEGOOEtZlCF5ZwjmHuXIRYQaz5BtPK1s1l_AAiiqiG1yWWq2KCjS7Oi20Ad2ddTWJC7rM2XtjnP3kYs_");
-            notificationObject.put("to", "/topics/All");
+            notificationObject.put("to", "fJrDs-yQTDqW0EexSZRT26");
+//            notificationObject.put("to", "/topics/All");
             notificationObject.put("data", notificationBody);
         } catch (JSONException e) {
             Log.e(TAG, "onCreate: " + e.getMessage());
