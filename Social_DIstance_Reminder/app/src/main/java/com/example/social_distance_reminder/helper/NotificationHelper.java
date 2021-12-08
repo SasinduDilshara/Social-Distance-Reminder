@@ -14,8 +14,8 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.social_distance_reminder.R;
-import com.example.social_distance_reminder.ui.ViewNotificationsActivity;
 import com.example.social_distance_reminder.exceptions.NotificationManagerException;
+import com.example.social_distance_reminder.ui.PrimeActivity;
 
 import static com.example.social_distance_reminder.helper.RandomIDGenerator.getNotifictionID;
 
@@ -223,7 +223,7 @@ public class NotificationHelper {
 
     private PendingIntent getPendingIntent() {
         //TODO: Pending activity can change by if conditions or parameters
-        Intent intent = new Intent(this.context, ViewNotificationsActivity.class);
+        Intent intent = new Intent(this.context, PrimeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this.context, 0, intent, 0);
         return pendingIntent;

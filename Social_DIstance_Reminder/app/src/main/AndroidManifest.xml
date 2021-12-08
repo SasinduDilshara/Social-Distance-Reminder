@@ -32,8 +32,6 @@
         android:theme="@style/Theme.Social_Distance_Reminder"
         android:usesCleartextTraffic="true">
 
-        <activity android:name=".UI.TestActivity"></activity>
-
         <service
             android:name=".services.CustomBluetoothService"
             android:enabled="true"
@@ -58,15 +56,11 @@
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
 
-        <activity android:name=".ui.BluetoothTestActivity" />
-
         <service
             android:name=".services.BackgroundServiceHandler"
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".ui.ViewNotificationsActivity" />
-        <activity android:name=".ui.TestActivity" />
         <activity
             android:name=".ui.PrimeActivity"
             android:label="@string/title_activity_prime" />

@@ -270,6 +270,7 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
     private void ResendOTP() {
         Toast.makeText(this, "OTP Resent", Toast.LENGTH_SHORT).show();
         startResendCountDown();
+        //TODO setup resending OTP
     }
 
     public void addPhone(View view) {

@@ -70,8 +70,6 @@ public class PrimeActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-        retrieveToken();
-
     }
 
     @Override
@@ -95,39 +93,12 @@ public class PrimeActivity extends AppCompatActivity {
     }
 
     private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.channel_name);
-            String description = getString(R.string.channel_description);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(getString(R.string.default_notification_channel_id), name, importance);
-            channel.setDescription(description);
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
-
-    private void retrieveToken(){
-        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
-            @Override
-            public void onComplete(@NonNull Task<String> task) {
-                if(task.isSuccessful()){
-                    Log.d(TAG, "onComplete: "+task.getResult());
-                    //db.getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(task.getResult());
-//                    db.collection("users")
-//                            .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-//                            .collection(FirebaseAuth.getInstance().getCurrentUser().getUid())
-//                            .document()
-//                            .set(task.getResult())
-//                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                @Override
-//                                public void onSuccess(Void aVoid) {
-//                                    Log.d(TAG, "onSuccess: ");
-//                                }
-//                            });
-                }else{
-                    Log.d(TAG, "onComplete: failed");
-                }
-            }
-        });
+        CharSequence name = getString(R.string.channel_name);
+        String description = getString(R.string.channel_description);
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        NotificationChannel channel = new NotificationChannel(getString(R.string.default_notification_channel_id), name, importance);
+        channel.setDescription(description);
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
     }
 }
