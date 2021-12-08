@@ -7,13 +7,19 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
+import android.provider.ContactsContract;
 import android.util.Log;
 
+import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 //import com.example.social_distance_reminder.UI.LandingActivity;
 import com.example.social_distance_reminder.db.crudhelper.model.DeviceModel;
 import com.example.social_distance_reminder.db.crudhelper.model.LocalNotification;
+import com.example.social_distance_reminder.models.Notification;
 
 import static android.content.ContentValues.TAG;
 
@@ -27,6 +33,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
     private static String USER_LOG_TABLE_NAME = "user_logs";
     private static String APP_DATA_TABLE_NAME = "app_data";
     private static String LOCAL_NOTIFICATION_TABLE_NAME = "local_notification_data";
+    public static  String DECLARE_NOTIFICATION_TABLE_NAME = "declare_notification_table";
     private static int update_time = 2;
     private static String TEMPORARY_LOG_TABLE_NAME = "temp_log";
 
@@ -52,7 +59,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String query_user_log, query_app_data, query_temp_log, query_local_notification;
+        String query_user_log, query_app_data, query_temp_log, query_local_notification, query_declare_notification;
         //creating table
         query_user_log = "CREATE TABLE " + USER_LOG_TABLE_NAME +
                 "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -75,11 +82,18 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
                 " TIMESTAMP DATETIME DEFAULT CURRENT_TIMESTAMP," +
                 " LOCATION TEXT, RSSI INT )";
 
+        query_declare_notification = "CREATE TABLE " + DECLARE_NOTIFICATION_TABLE_NAME +
+                "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "TITLE TEXT," +
+                " DATE TEXT," +
+                "CONTENT TEXT," +
+                " IMPORTANT TEXT)";
 
         db.execSQL(query_user_log);
         db.execSQL(query_app_data);
         db.execSQL(query_temp_log);
         db.execSQL(query_local_notification);
+        db.execSQL(query_declare_notification);
 
         db.execSQL("INSERT INTO " + APP_DATA_TABLE_NAME + " (ID) " + " VALUES (1)");
 
@@ -97,6 +111,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + APP_DATA_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TEMPORARY_LOG_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + LOCAL_NOTIFICATION_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + DECLARE_NOTIFICATION_TABLE_NAME);
 
         onCreate(db);
     }
@@ -348,6 +363,51 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         new InsertLocalNotificationAsync(this).execute(localNotification);
     }
 
+    public void addDeclareNotification(Notification notification) {
+
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("TITLE", notification.getTitle());
+        values.put("DATE", notification.getDate());
+        values.put("CONTENT", notification.getDescription());
+        values.put("IMPORTANT", notification.isImportant());
+
+        long newRowId;
+        try {
+            long success = sqLiteDatabase.insert(DECLARE_NOTIFICATION_TABLE_NAME, null, values);
+
+            Log.e(TAG, "doInBackground: database inserted is " + success);
+        } catch (Exception e) {
+            Log.d(TAG, "addNotes: " + e.getMessage());
+        }
+    }
+
+    public ArrayList<Notification> getNotifications() {
+        ArrayList<Notification> arrayList = new ArrayList<>();
+        String select_query = "SELECT * FROM " + DECLARE_NOTIFICATION_TABLE_NAME;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_query, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+                Date date = new Date();
+                try {
+                    date = formatter.parse(cursor.getString(2));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Notification notification = new Notification(cursor.getString(1), date,cursor.getString(3), Boolean.parseBoolean(cursor.getString(4)));
+                arrayList.add(notification);
+            } while (cursor.moveToNext());
+        }
+        // db.close();
+        cursor.close();
+        return arrayList;
+    }
+
     public ArrayList<LocalNotification> getLocalNotifications() {
         ArrayList<LocalNotification> arrayList = new ArrayList<>();
         String select_query = "SELECT * FROM " + LOCAL_NOTIFICATION_TABLE_NAME;
@@ -403,6 +463,5 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
             return null;
         }
     }
-
 
 }
