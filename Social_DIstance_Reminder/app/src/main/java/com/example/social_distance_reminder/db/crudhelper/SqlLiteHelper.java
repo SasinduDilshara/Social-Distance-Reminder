@@ -19,6 +19,7 @@ import java.util.Date;
 //import com.example.social_distance_reminder.UI.LandingActivity;
 import com.example.social_distance_reminder.db.crudhelper.model.DeviceModel;
 import com.example.social_distance_reminder.db.crudhelper.model.LocalNotification;
+import com.example.social_distance_reminder.db.crudhelper.model.Stats;
 import com.example.social_distance_reminder.models.Notification;
 
 import static android.content.ContentValues.TAG;
@@ -34,6 +35,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
     private static String APP_DATA_TABLE_NAME = "app_data";
     private static String LOCAL_NOTIFICATION_TABLE_NAME = "local_notification_data";
     public static  String DECLARE_NOTIFICATION_TABLE_NAME = "declare_notification_table";
+    public static  String STAT_TABLE_NAME = "stat_table";
     private static int update_time = 2;
     private static String TEMPORARY_LOG_TABLE_NAME = "temp_log";
 
@@ -59,7 +61,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String query_user_log, query_app_data, query_temp_log, query_local_notification, query_declare_notification;
+        String query_user_log, query_app_data, query_temp_log, query_local_notification, query_declare_notification, stat_query;
         //creating table
         query_user_log = "CREATE TABLE " + USER_LOG_TABLE_NAME +
                 "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -89,13 +91,22 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
                 "CONTENT TEXT," +
                 " IMPORTANT TEXT)";
 
+        stat_query = "CREATE TABLE " + STAT_TABLE_NAME +
+                "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "MINDISTANCE TEXT," +
+                " CLOSECOUNT INT," +
+                "LASTMEETUPTIME TEXT," +
+                " NUMDECLARATION INT)";
+
         db.execSQL(query_user_log);
         db.execSQL(query_app_data);
         db.execSQL(query_temp_log);
         db.execSQL(query_local_notification);
         db.execSQL(query_declare_notification);
+        db.execSQL(stat_query);
 
         db.execSQL("INSERT INTO " + APP_DATA_TABLE_NAME + " (ID) " + " VALUES (1)");
+        db.execSQL("INSERT INTO " + STAT_TABLE_NAME + " (ID, MINDISTANCE, CLOSECOUNT, LASTMEETUPTIME, NUMDECLARATION) " + " VALUES (1, '5', 0, '-', 0)");
 
         //db.execSQL("DROP TRIGGER IF EXISTS validate");
         /*db.execSQL(" CREATE TRIGGER  validate BEFORE INSERT ON " + USER_LOG_TABLE_NAME +
@@ -406,6 +417,59 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         // db.close();
         cursor.close();
         return arrayList;
+    }
+
+    public void addStats(Stats st) {
+
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        Stats res = getStats();
+
+        values.put("MINDISTANCE", res.getMinDistance());
+        values.put("CLOSECOUNT", res.getCloseCount() + st.getCloseCount());
+        values.put("LASTMEETUPTIME", res.getLastMeetupTime());
+        values.put("NUMDECLARATION", res.getNumDeclaration() + st.getNumDeclaration());
+
+        if (Integer.valueOf(res.getMinDistance()) > Integer.valueOf(st.getMinDistance())) {
+            values.put("MINDISTANCE", st.getMinDistance());
+        }
+        if (st.getLastMeetupTime() != null) {
+            values.put("LASTMEETUPTIME", st.getLastMeetupTime());
+        }
+
+        try {
+            int success = sqLiteDatabase.update(STAT_TABLE_NAME, values, "ID=" + 1, null);
+//            sqLiteDatabase.close();
+
+            Log.e(TAG, "doInBackground: database inserted is " + success);
+        } catch (Exception e) {
+            Log.d(TAG, "addNotes: " + e.getMessage());
+        }
+    }
+
+    public Stats getStats() {
+        Stats stats = null;
+        String select_query = "SELECT * FROM " + STAT_TABLE_NAME + " WHERE ID = 1";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_query, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+                Date date = new Date();
+                try {
+                    date = formatter.parse(cursor.getString(2));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                stats = new Stats(cursor.getString(1), cursor.getInt(2),cursor.getString(3), cursor.getInt(4));
+            } while (cursor.moveToNext());
+        }
+        // db.close();
+        cursor.close();
+        return stats;
     }
 
     public ArrayList<LocalNotification> getLocalNotifications() {

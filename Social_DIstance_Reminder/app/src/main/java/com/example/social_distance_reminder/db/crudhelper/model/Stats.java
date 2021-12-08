@@ -1,15 +1,23 @@
 package com.example.social_distance_reminder.db.crudhelper.model;
 
 public class Stats {
-    private double minDistance = 0.0;
+    private String minDistance = "0.0";
     public int closeCount = 0;
     public String lastMeetupTime = "";
+    public int numDeclaration = 0;
 
-    public double getMinDistance() {
+    public Stats(String minDistance, int closeCount, String lastMeetupTime, int numDeclaration) {
+        this.minDistance = minDistance;
+        this.closeCount = closeCount;
+        this.lastMeetupTime = lastMeetupTime;
+        this.numDeclaration = numDeclaration;
+    }
+
+    public String getMinDistance() {
         return minDistance;
     }
 
-    public void setMinDistance(double minDistance) {
+    public void setMinDistance(String minDistance) {
         this.minDistance = minDistance;
     }
 
@@ -19,7 +27,7 @@ public class Stats {
                 "minDistance=" + minDistance +
                 ", closeCount=" + closeCount +
                 ", lastMeetupTime='" + lastMeetupTime + '\'' +
-                ", lastPersonDistance=" + lastPersonDistance +
+                ", lastPersonDistance=" + numDeclaration +
                 '}';
     }
 
@@ -39,13 +47,11 @@ public class Stats {
         this.lastMeetupTime = lastMeetupTime;
     }
 
-    public double getLastPersonDistance() {
-        return lastPersonDistance;
+    public int getNumDeclaration() {
+        return numDeclaration;
     }
 
-    public void setLastPersonDistance(double lastPersonDistance) {
-        this.lastPersonDistance = lastPersonDistance;
+    public void setNumDeclaration(int numDeclaration) {
+        this.numDeclaration = numDeclaration;
     }
-
-    public double lastPersonDistance = 0.0;
 }

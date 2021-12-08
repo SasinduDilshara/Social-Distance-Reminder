@@ -20,6 +20,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.social_distance_reminder.broadcastrecievers.NetworkStateReceiver;
 import com.example.social_distance_reminder.db.crudhelper.SqlLiteHelper;
+import com.example.social_distance_reminder.db.crudhelper.model.Stats;
 import com.example.social_distance_reminder.exceptions.BeaconNotSupportedException;
 import com.example.social_distance_reminder.exceptions.BluetoothNotSupportException;
 import com.example.social_distance_reminder.helper.BackgroundTaskHelper;
@@ -334,6 +335,7 @@ public class CustomBluetoothService extends Service implements BeaconConsumer, N
                     NotificationHelper.sendIdentifiedNotification("Caution!", "You are near to a person in " + location, getApplicationContext());
                     Notification notification = new Notification("Caution!", Calendar.getInstance().getTime(), "You are near to a person in " + location, false);
                     SqlLiteHelper.getInstance(getApplicationContext()).addDeclareNotification(notification);
+                    SqlLiteHelper.getInstance(getApplicationContext()).addStats(new Stats(String.valueOf(distance), 1, String.valueOf(System.currentTimeMillis()), 0))
                     System.out.println("Devices are\n" + sqlLiteHelper.getDevices());
                     System.out.println("Devices are\n" + sqlLiteHelper.getLocalNotifications());
 
