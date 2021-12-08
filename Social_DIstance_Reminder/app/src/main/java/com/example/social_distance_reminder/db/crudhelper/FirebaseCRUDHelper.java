@@ -116,6 +116,7 @@ public class FirebaseCRUDHelper {
 
         Map<String, Object> data = new HashMap<>();
         data.put("message-token", token);
+
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         db.collection("users")

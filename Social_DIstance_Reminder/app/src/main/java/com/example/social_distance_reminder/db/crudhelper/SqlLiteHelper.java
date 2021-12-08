@@ -11,7 +11,6 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import com.example.social_distance_reminder.UI.LandingActivity;
 import com.example.social_distance_reminder.db.crudhelper.model.DeviceModel;
 import com.example.social_distance_reminder.db.crudhelper.model.LocalNotification;
 

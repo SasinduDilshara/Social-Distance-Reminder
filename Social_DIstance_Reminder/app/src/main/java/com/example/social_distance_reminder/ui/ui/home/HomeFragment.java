@@ -166,7 +166,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     public void onDestroy() {
         super.onDestroy();
         // Don't forget to unregister the ACTION_FOUND receiver.
-        requireActivity().unregisterReceiver(getBroadcastReciever());
+        //requireActivity().unregisterReceiver(getBroadcastReciever());
     }
 
     public void startBluetoothDiscovery(View view) {

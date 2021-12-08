@@ -1,4 +1,4 @@
-package com.example.social_distance_reminder.UI;
+package com.example.social_distance_reminder.ui;
 
 import android.content.pm.PackageManager;
 import android.location.Address;
