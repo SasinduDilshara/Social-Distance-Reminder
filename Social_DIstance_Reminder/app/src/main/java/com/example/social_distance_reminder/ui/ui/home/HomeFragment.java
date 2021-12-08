@@ -101,6 +101,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     }
 
     private void activateService() {
+        setBluetoothOnButton();
         onResume();
     }
 
