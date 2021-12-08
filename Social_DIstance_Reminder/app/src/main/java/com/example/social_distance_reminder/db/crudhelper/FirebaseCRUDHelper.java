@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.social_distance_reminder.auth.FirebaseAuthHelper;
 import com.example.social_distance_reminder.db.crudhelper.model.DeviceModel;
+import com.example.social_distance_reminder.services.NotificationsFCMService;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -91,6 +92,7 @@ public class FirebaseCRUDHelper {
     }
 
     public void onCreteUser(String id){
+        System.out.println("Inside onCreteUser(String id) :- " + id);
         Map<String, Object> data = new HashMap<>();
         data.put("bluetooth identifier",id);
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -102,6 +104,7 @@ public class FirebaseCRUDHelper {
                     @Override
                     public void onSuccess(Void aVoid) {
                         System.out.println("Success");
+                        NotificationsFCMService.setFCMToken(id);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -133,6 +136,31 @@ public class FirebaseCRUDHelper {
                 System.out.println("fail");
             }
         });
+    }
+
+    public void updateMessageToken(String token, String id) {
+        System.out.println("Inside (String token, String id) token :- " + token + "\nbluetooth id:- " + id);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("message-token", token);
+        data.put("bluetooth-identifier", id);
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        db.collection("users")
+                .document(firebaseUser.getUid())
+                .set(data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        System.out.println("Success");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("fail");
+                    }
+                });
     }
 
     public String getUserMessageTokenFromUserId(String id) {

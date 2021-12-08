@@ -296,12 +296,13 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
     @Override
     public void onAuthComplete(String phonenumber) {
         Toast.makeText(getApplicationContext(), " YOU SUCCESSFULLY COMPLETED THE AUTHENTICATION ", Toast.LENGTH_SHORT).show();
-        redirectPrime();
+
         String userId = generateHash(phonenumber);
         Context context = this;
         SqlLiteHelper.getInstance(context).insertUserId(userId);
-        NotificationsFCMService.setFCMToken();
         new FirebaseCRUDHelper().onCreteUser(userId);
+        redirectPrime();
+//        NotificationsFCMService.setFCMToken();
     }
 
     @Override

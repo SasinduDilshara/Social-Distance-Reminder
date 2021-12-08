@@ -11,11 +11,14 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import com.example.social_distance_reminder.UI.LandingActivity;
+//import com.example.social_distance_reminder.UI.LandingActivity;
 import com.example.social_distance_reminder.db.crudhelper.model.DeviceModel;
 import com.example.social_distance_reminder.db.crudhelper.model.LocalNotification;
 
 import static android.content.ContentValues.TAG;
+
+//TODO: Decide the time interval between each interaction with same user
+//TODO: Decide the distance
 
 public class SqlLiteHelper extends SQLiteOpenHelper {
 

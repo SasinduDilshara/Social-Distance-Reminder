@@ -57,6 +57,36 @@ public class NotificationsFCMService extends FirebaseMessagingService {
 //        );
     }
 
+    public static void setFCMToken(String id) {
+        System.out.println("Inside setFCMToken(String id) :- " + id);
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("FCM", "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+                        // Get new FCM registration token
+                        String token = task.getResult();
+                        new FirebaseCRUDHelper().updateMessageToken(token, id);
+                        // Log and toast
+//                        String msg = getString(R.string.msg_token_fmt, token);
+//                        Log.d("FCM", msg);
+                    }
+
+
+                });
+//        FirebaseInstallations.getInstance().getId().addOnCompleteListener(
+//                task -> {
+//                    if (task.isSuccessful()) {
+//                        String token = task.getResult();
+//                        new FirebaseCRUDHelper().updateMessageToken(token);
+//                    }
+//                }
+//        );
+    }
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.d(TAG, "onMessageReceived: " + remoteMessage.getData());
