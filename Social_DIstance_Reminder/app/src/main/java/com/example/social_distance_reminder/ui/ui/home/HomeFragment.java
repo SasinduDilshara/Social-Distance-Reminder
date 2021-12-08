@@ -74,12 +74,12 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         homeBinding.btnHomeOnoff.setOnClickListener(v2 -> {
             if (isServiceActive) {
                 isServiceActive = false;
-                Toast.makeText(getContext(), "Distanzia now running...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Distanzia now stopped", Toast.LENGTH_SHORT).show();
                 homeBinding.btnHomeOnoff.setImageResource(R.drawable.button_on);
                 deactivateService();
             } else {
                 isServiceActive = true;
-                Toast.makeText(getContext(), "Distanzia now stopped", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Distanzia now running...", Toast.LENGTH_SHORT).show();
                 homeBinding.btnHomeOnoff.setImageResource(R.drawable.button_off);
                 activateService();
             }

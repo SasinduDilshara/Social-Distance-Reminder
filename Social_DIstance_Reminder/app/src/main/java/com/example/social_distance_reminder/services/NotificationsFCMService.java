@@ -11,6 +11,8 @@ import android.widget.Toast;
 import com.example.social_distance_reminder.R;
 import com.example.social_distance_reminder.auth.FirebaseAuthHelper;
 import com.example.social_distance_reminder.db.crudhelper.FirebaseCRUDHelper;
+import com.example.social_distance_reminder.db.crudhelper.SqlLiteHelper;
+import com.example.social_distance_reminder.models.Notification;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.installations.FirebaseInstallations;
@@ -18,6 +20,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.Calendar;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
@@ -91,12 +94,15 @@ public class NotificationsFCMService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.d(TAG, "onMessageReceived: " + remoteMessage.getData());
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, getString(R.string.default_notification_channel_id));
-        notifyFragment(remoteMessage.getData());
-
-        builder.setContentTitle(remoteMessage.getData().get("title"));
-        builder.setContentText(remoteMessage.getData().get("message"));
+        String title = remoteMessage.getData().get("title");
+        String content = remoteMessage.getData().get("message");
+        builder.setContentTitle(title);
+        builder.setContentText(content);
         builder.setSmallIcon(R.drawable.distanzia_logo_foreground_original);
         builder.setChannelId(getString(R.string.default_notification_channel_id));
+
+        Notification notification = new Notification(title, Calendar.getInstance().getTime(), content, true);
+        SqlLiteHelper.getInstance(getApplicationContext()).addDeclareNotification(notification);
 
         NotificationManager nm = (NotificationManager) (getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE));
         nm.notify(100, builder.build());
