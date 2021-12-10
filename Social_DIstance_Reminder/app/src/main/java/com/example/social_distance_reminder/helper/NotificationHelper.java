@@ -271,8 +271,6 @@ public class NotificationHelper {
     public static void sendWarningNotification(String msgToken, Context context) {
         com.example.social_distance_reminder.models.Notification declaration = new com.example.social_distance_reminder.models.Notification("WARNING", new Date(), "A person who came near you has declared as a COVID patient", true);
         sendDeclarationNotification(createNotificationObject(declaration,msgToken),context);
-        SqlLiteHelper.getInstance(context).addStats(new Stats("100",0,null,1,0,2,2));
-
     }
 
     private static void sendDeclarationNotification(JSONObject notification, Context context) {

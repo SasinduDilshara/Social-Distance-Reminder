@@ -12,6 +12,7 @@ import com.example.social_distance_reminder.R;
 import com.example.social_distance_reminder.auth.FirebaseAuthHelper;
 import com.example.social_distance_reminder.db.crudhelper.FirebaseCRUDHelper;
 import com.example.social_distance_reminder.db.crudhelper.SqlLiteHelper;
+import com.example.social_distance_reminder.db.crudhelper.model.Stats;
 import com.example.social_distance_reminder.models.Notification;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -103,6 +104,9 @@ public class NotificationsFCMService extends FirebaseMessagingService {
 
         Notification notification = new Notification(title, Calendar.getInstance().getTime(), content, true);
         SqlLiteHelper.getInstance(getApplicationContext()).addDeclareNotification(notification);
+
+        SqlLiteHelper.getInstance(getApplicationContext()).addStats(new Stats("100",0,null,1,0,2,2));
+
 
         NotificationManager nm = (NotificationManager) (getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE));
         nm.notify(100, builder.build());
