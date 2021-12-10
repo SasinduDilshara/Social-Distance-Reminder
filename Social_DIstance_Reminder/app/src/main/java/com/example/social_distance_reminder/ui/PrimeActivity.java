@@ -37,9 +37,9 @@ import static android.content.ContentValues.TAG;
 public class PrimeActivity extends AppCompatActivity {
 
     private ActivityPrimeBinding binding;
-    private PopupSettingsBinding settingsBinding;
+
     private PopupAboutBinding aboutBinding;
-    private Dialog settingsPopup, aboutPopup;
+    private Dialog aboutPopup;
     private String TAG = "Prime";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -52,9 +52,7 @@ public class PrimeActivity extends AppCompatActivity {
 
         createNotificationChannel();
 
-        settingsPopup = new Dialog(this);
-        settingsBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.popup_settings, null, false);
-        settingsPopup.setContentView(settingsBinding.getRoot());
+
 
         aboutPopup = new Dialog(this);
         aboutBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.popup_about, null, false);
@@ -72,26 +70,6 @@ public class PrimeActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.options_menu, menu);
-        super.onCreateOptionsMenu(menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.mnu_Settings) {
-            settingsBinding.btnSettingsClose.setOnClickListener(v2 -> settingsPopup.dismiss());
-            settingsBinding.minDistance.setText("");
-            settingsPopup.show();
-        } else if (id == R.id.mnu_About) {
-            aboutBinding.btnAboutClose.setOnClickListener(v2 -> aboutPopup.dismiss());
-            aboutPopup.show();
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     private void createNotificationChannel() {
         CharSequence name = getString(R.string.channel_name);

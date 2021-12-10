@@ -20,12 +20,12 @@ import com.example.social_distance_reminder.R;
 import com.example.social_distance_reminder.databinding.FragmentHomeBinding;
 import com.example.social_distance_reminder.databinding.PopupBlacklistBinding;
 import com.example.social_distance_reminder.databinding.PopupDeclarationBinding;
+import com.example.social_distance_reminder.databinding.PopupSettingsBinding;
 import com.example.social_distance_reminder.db.crudhelper.FirebaseCRUDHelper;
 import com.example.social_distance_reminder.db.crudhelper.SqlLiteHelper;
 import com.example.social_distance_reminder.exceptions.BluetoothNotSupportException;
 import com.example.social_distance_reminder.helper.BlacklistViewAdapter;
 import com.example.social_distance_reminder.helper.BluetoothHelper;
-import com.example.social_distance_reminder.helper.NotificationsViewAdapter;
 import com.example.social_distance_reminder.helper.ServiceHelper;
 import com.example.social_distance_reminder.models.BlacklistItem;
 import com.example.social_distance_reminder.services.CustomBluetoothService;
@@ -60,7 +60,8 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     private FragmentHomeBinding homeBinding;
     private PopupDeclarationBinding popupBinding;
     private PopupBlacklistBinding blacklistBinding;
-    private Dialog declarePopup, blacklistPopup;
+    private Dialog declarePopup, blacklistPopup, settingsPopup;
+    private PopupSettingsBinding settingsBinding;
     private ArrayList<BlacklistItem> blacklistItems;
     private String TAG = "Testing";
     private Boolean isServiceActive;
@@ -75,6 +76,10 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
         isServiceActive = false;
 
+        settingsPopup = new Dialog(getActivity());
+        settingsBinding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.popup_settings, null, false);
+        settingsPopup.setContentView(settingsBinding.getRoot());
+
         declarePopup = new Dialog(getActivity());
         popupBinding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.popup_declaration, null, false);
         declarePopup.setContentView(popupBinding.getRoot());
@@ -85,6 +90,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
         homeBinding.btnHomeDeclare.setOnClickListener(v2 -> showDeclarationPopup());
         homeBinding.btnHomeBlacklist.setOnClickListener(v1 -> showBlacklistPopup());
+        homeBinding.btnHomeSettings.setOnClickListener(v3 -> showSettingsPopup());
         homeBinding.btnHomeOnoff.setOnClickListener(v2 -> {
             if (isServiceActive) {
                 isServiceActive = false;
@@ -248,20 +254,26 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
         blacklistBinding.btnBlacklistClose.setOnClickListener(v2 -> blacklistPopup.dismiss());
         blacklistItems = SqlLiteHelper.getInstance(getContext()).getBlackListPhoneNumbers();
-        Log.d(TAG, "showBlacklistPopup: "+blacklistItems.size());
+        Log.d(TAG, "showBlacklistPopup: " + blacklistItems.size());
         blacklistViewAdapter = new BlacklistViewAdapter(getActivity(), blacklistItems);
         blacklistBinding.setBlacklistAdapter(blacklistViewAdapter);
         blacklistBinding.btnBlacklistAdd.setOnClickListener(v3 -> {
             String num = blacklistBinding.edtBlacklistAdd.getText().toString();
-            if(!num.equals("")){
+            if (!num.equals("")) {
                 SqlLiteHelper.getInstance(getContext()).addBlacklistDevice(num);
                 blacklistItems.add(new BlacklistItem(num));
-                blacklistViewAdapter.notifyItemChanged(blacklistItems.size()-1);
+                blacklistViewAdapter.notifyItemChanged(blacklistItems.size() - 1);
                 blacklistBinding.edtBlacklistAdd.setText("");
-                Toast.makeText(getContext(), num+" was added to the blacklist", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), num + " was added to the blacklist", Toast.LENGTH_SHORT).show();
             }
         });
         blacklistPopup.show();
+    }
+
+    public void showSettingsPopup() {
+        settingsBinding.btnSettingsClose.setOnClickListener(v2 -> settingsPopup.dismiss());
+        settingsBinding.minDistance.setText("");
+        settingsPopup.show();
     }
 
     public void showDeclarationPopup() {
