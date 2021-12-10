@@ -20,6 +20,7 @@ import java.util.Date;
 import com.example.social_distance_reminder.db.crudhelper.model.DeviceModel;
 import com.example.social_distance_reminder.db.crudhelper.model.LocalNotification;
 import com.example.social_distance_reminder.db.crudhelper.model.Stats;
+import com.example.social_distance_reminder.models.BlacklistItem;
 import com.example.social_distance_reminder.models.Notification;
 
 import static android.content.ContentValues.TAG;
@@ -497,10 +498,10 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-    public ArrayList<String> getBlackListDevices() {
+    public ArrayList<BlacklistItem> getBlackListDevices() {
         Stats stats = null;
         String select_query = "SELECT * FROM " + BLACKLIST_TABLE_NAME;
-        ArrayList<String> devices = new ArrayList<>();
+        ArrayList<BlacklistItem> devices = new ArrayList<>();
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(select_query, null);
@@ -508,7 +509,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                devices.add(cursor.getString(2));
+                devices.add(new BlacklistItem(cursor.getString(2)));
             } while (cursor.moveToNext());
         }
         // db.close();

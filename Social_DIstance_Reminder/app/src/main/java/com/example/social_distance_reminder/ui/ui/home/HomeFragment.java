@@ -18,15 +18,21 @@ import android.widget.Toast;
 
 import com.example.social_distance_reminder.R;
 import com.example.social_distance_reminder.databinding.FragmentHomeBinding;
+import com.example.social_distance_reminder.databinding.PopupBlacklistBinding;
 import com.example.social_distance_reminder.databinding.PopupDeclarationBinding;
 import com.example.social_distance_reminder.db.crudhelper.FirebaseCRUDHelper;
+import com.example.social_distance_reminder.db.crudhelper.SqlLiteHelper;
 import com.example.social_distance_reminder.exceptions.BluetoothNotSupportException;
+import com.example.social_distance_reminder.helper.BlacklistViewAdapter;
 import com.example.social_distance_reminder.helper.BluetoothHelper;
+import com.example.social_distance_reminder.helper.NotificationsViewAdapter;
 import com.example.social_distance_reminder.helper.ServiceHelper;
+import com.example.social_distance_reminder.models.BlacklistItem;
 import com.example.social_distance_reminder.services.CustomBluetoothService;
 import com.example.social_distance_reminder.services.LocationService;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -53,9 +59,12 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     private LocationService gpsTracker;
     private FragmentHomeBinding homeBinding;
     private PopupDeclarationBinding popupBinding;
-    private Dialog declarePopup;
+    private PopupBlacklistBinding blacklistBinding;
+    private Dialog declarePopup, blacklistPopup;
+    private ArrayList<BlacklistItem> blacklistItems;
     private String TAG = "Testing";
     private Boolean isServiceActive;
+    private BlacklistViewAdapter blacklistViewAdapter;
     Intent serviceIntent = null;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -70,7 +79,12 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         popupBinding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.popup_declaration, null, false);
         declarePopup.setContentView(popupBinding.getRoot());
 
+        blacklistPopup = new Dialog(getActivity());
+        blacklistBinding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.popup_blacklist, null, false);
+        blacklistPopup.setContentView(blacklistBinding.getRoot());
+
         homeBinding.btnHomeDeclare.setOnClickListener(v2 -> showDeclarationPopup());
+        homeBinding.btnHomeBlacklist.setOnClickListener(v1 -> showBlacklistPopup());
         homeBinding.btnHomeOnoff.setOnClickListener(v2 -> {
             if (isServiceActive) {
                 isServiceActive = false;
@@ -96,6 +110,8 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
 
         homeBinding.imgHomeGraphic.setImageDrawable(anim_homeGraphic);
         anim_homeGraphic.start();
+
+        SqlLiteHelper.getInstance(getContext()).addBlacklistDevice("632628461287");
 
         return root;
     }
@@ -229,6 +245,16 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public void showBlacklistPopup() {
+
+        blacklistBinding.btnBlacklistClose.setOnClickListener(v2 -> blacklistPopup.dismiss());
+        blacklistItems = SqlLiteHelper.getInstance(getContext()).getBlackListDevices();
+        Log.d(TAG, "showBlacklistPopup: "+blacklistItems.size());
+        blacklistViewAdapter = new BlacklistViewAdapter(getActivity(), blacklistItems);
+        blacklistBinding.setBlacklistAdapter(blacklistViewAdapter);
+        blacklistPopup.show();
+    }
 
     public void showDeclarationPopup() {
 

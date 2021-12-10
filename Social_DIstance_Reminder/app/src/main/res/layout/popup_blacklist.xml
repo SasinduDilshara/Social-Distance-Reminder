@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="blacklistAdapter"
+            type="com.example.social_distance_reminder.helper.BlacklistViewAdapter" />
+    </data>
+    <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?popupBackgroundColor"
+        app:cardCornerRadius="?popupCornerRadius"
+        app:cardElevation="?popupElevation"
+        app:contentPadding="?popupPadding"
+        tools:context=".ui.ui.home.HomeFragment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnBlacklistClose"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:text="X" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/txvCompleteReceiptName"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="0.55"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txvCompleteReceiptTelephone"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="0.45"
+                android:textSize="18sp"
+                android:textStyle="italic" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewBook"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:adapter="@{blacklistAdapter}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/guidelineH5"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineV6"
+            app:layout_constraintStart_toEndOf="@+id/guidelineV1"
+            app:layout_constraintTop_toBottomOf="@id/guidelineH1" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:scrollX="0dp">
+
+            <Button
+                android:id="@+id/btnBlacklistAdd"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:text="ADD" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>
