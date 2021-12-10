@@ -249,7 +249,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     public void showBlacklistPopup() {
 
         blacklistBinding.btnBlacklistClose.setOnClickListener(v2 -> blacklistPopup.dismiss());
-        blacklistItems = SqlLiteHelper.getInstance(getContext()).getBlackListDevices();
+        blacklistItems = SqlLiteHelper.getInstance(getContext()).getBlackListPhoneNumbers();
         Log.d(TAG, "showBlacklistPopup: "+blacklistItems.size());
         blacklistViewAdapter = new BlacklistViewAdapter(getActivity(), blacklistItems);
         blacklistBinding.setBlacklistAdapter(blacklistViewAdapter);

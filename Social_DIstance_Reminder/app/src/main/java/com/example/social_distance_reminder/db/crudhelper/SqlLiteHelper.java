@@ -491,7 +491,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         String bluetoothid = generateHash(FirebaseAuthHelper.getCurrentUser().getPhoneNumber());
-
+        Log.d(TAG, "addBlacklistDevice: "+bluetoothid+ phn);
         values.put("BLUETOOTHID", bluetoothid);
         values.put("PHONENUMBER", phn);
 
@@ -499,32 +499,13 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
             long success = sqLiteDatabase.insert(BLACKLIST_TABLE_NAME, null, values);
 //            sqLiteDatabase.close();
 
-            Log.e(TAG, "doInBackground: database inserted is " + success);
+            Log.e(TAG, "add blaclist: database inserted is " + success);
         } catch (Exception e) {
             Log.d(TAG, "addNotes: " + e.getMessage());
         }
     }
 
-    public ArrayList<BlacklistItem> getBlackListDevices() {
-        Stats stats = null;
-        String select_query = "SELECT * FROM " + BLACKLIST_TABLE_NAME;
-        ArrayList<BlacklistItem> devices = new ArrayList<>();
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(select_query, null);
-
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                devices.add(new BlacklistItem(cursor.getString(1)));
-            } while (cursor.moveToNext());
-        }
-        // db.close();
-        cursor.close();
-        return devices;
-    }
-
-    public ArrayList<String> getBlackListPhoneNumbers() {
+    public ArrayList<String> getBlackListDevices() {
         Stats stats = null;
         String select_query = "SELECT * FROM " + BLACKLIST_TABLE_NAME;
         ArrayList<String> devices = new ArrayList<>();
@@ -535,7 +516,26 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                devices.add(cursor.getString(2));
+                devices.add(cursor.getString(1));
+            } while (cursor.moveToNext());
+        }
+        // db.close();
+        cursor.close();
+        return devices;
+    }
+
+    public ArrayList<BlacklistItem> getBlackListPhoneNumbers() {
+        Stats stats = null;
+        String select_query = "SELECT * FROM " + BLACKLIST_TABLE_NAME;
+        ArrayList<BlacklistItem> devices = new ArrayList<>();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_query, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                devices.add(new BlacklistItem(cursor.getString(2)));
             } while (cursor.moveToNext());
         }
         // db.close();
