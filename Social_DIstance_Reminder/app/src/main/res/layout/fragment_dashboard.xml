@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <variable
             name="element"
             type="com.example.social_distance_reminder.models.DashboardElement" />
@@ -92,7 +93,7 @@
             app:layout_constraintVertical_bias="1.0">
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/LibraryCard"
+                android:id="@+id/MinDistanceCard"
                 style="@style/DashboardCardType2"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -105,100 +106,17 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="5dp"
-                    android:textAlignment="center">
-
-                    <Button
-                        android:id="@+id/button_dashboard"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:text="tesing" />
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_margin="5dp"
-                        android:layout_weight="0.4"
-                        android:scaleType="fitCenter"
-                        app:srcCompat="@drawable/ic_stats_black_24dp" />
-                </LinearLayout>
-
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/TextDetectorCard"
-                style="@style/DashboardCardType1"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:layout_margin="10dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="4dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:padding="5dp">
+                    android:padding="10dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_margin="5dp"
                         android:layout_weight="0.3"
-                        android:text="You have been in close proximity with"
-                        android:textAlignment="center"
-                        android:textColor="@color/white" />
-
-                    <TextView
-                        android:id="@+id/lbl_Dashboard_card2"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_margin="5dp"
-                        android:layout_weight="0.5"
-                        android:text="@{element.proximity_device_count}"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="50sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_margin="5dp"
-                        android:layout_weight="0.2"
-                        android:text="devices in last 24 hours"
-                        android:textAlignment="center"
-                        android:textColor="@color/white" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/SavedItemsCard"
-                style="@style/DashboardCardType1"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:layout_margin="10dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="4dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="5dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_margin="5dp"
-                        android:layout_weight="0.3"
-                        android:text="You have been in close proximity with"
+                        android:autoSizeMaxTextSize="20sp"
+                        android:autoSizeTextType="uniform"
+                        android:text="You have been in close proximity of"
                         android:textAlignment="center"
                         android:textColor="@color/white" />
 
@@ -208,24 +126,26 @@
                         android:layout_height="0dp"
                         android:layout_margin="5dp"
                         android:layout_weight="0.5"
-                        android:text="@{element.val3}"
+                        android:autoSizeTextType="uniform"
+                        android:text="@{element.min_distance}"
                         android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="50sp" />
+                        android:textColor="@color/white" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_margin="5dp"
                         android:layout_weight="0.2"
-                        android:text="devices in last 24 hours"
+                        android:autoSizeMaxTextSize="17sp"
+                        android:autoSizeTextType="uniform"
+                        android:text="in meters to a person"
                         android:textAlignment="center"
                         android:textColor="@color/white" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/AlphaGameCard"
+                android:id="@+id/CloseCountCard"
                 style="@style/DashboardCardType1"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -239,13 +159,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:padding="5dp">
+                    android:padding="10dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_margin="5dp"
                         android:layout_weight="0.3"
+                        android:autoSizeMaxTextSize="17sp"
+                        android:autoSizeTextType="uniform"
                         android:text="You have been in close proximity with"
                         android:textAlignment="center"
                         android:textColor="@color/white" />
@@ -256,24 +178,26 @@
                         android:layout_height="0dp"
                         android:layout_margin="5dp"
                         android:layout_weight="0.5"
-                        android:text="@{element.val4}"
+                        android:autoSizeTextType="uniform"
+                        android:text="@{element.proximity_device_count}"
                         android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="50sp" />
+                        android:textColor="@color/white" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_margin="5dp"
                         android:layout_weight="0.2"
-                        android:text="devices in last 24 hours"
+                        android:autoSizeMaxTextSize="17sp"
+                        android:autoSizeTextType="uniform"
+                        android:text="devices"
                         android:textAlignment="center"
                         android:textColor="@color/white" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/AddBookCard"
+                android:id="@+id/LastDetectTimeCard"
                 style="@style/DashboardCardType1"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -287,14 +211,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:padding="5dp">
+                    android:padding="10dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_margin="5dp"
                         android:layout_weight="0.3"
-                        android:text="You have been in close proximity with"
+                        android:autoSizeMaxTextSize="17sp"
+                        android:autoSizeTextType="uniform"
+                        android:text="You have been in close proximity of another person at"
                         android:textAlignment="center"
                         android:textColor="@color/white" />
 
@@ -304,17 +230,21 @@
                         android:layout_height="0dp"
                         android:layout_margin="5dp"
                         android:layout_weight="0.5"
-                        android:text="@{element.val5}"
+                        android:autoSizeTextType="uniform"
+                        android:text="@{element.last_meetup}"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textSize="50sp" />
+
+                        />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_margin="5dp"
                         android:layout_weight="0.2"
-                        android:text="devices in last 24 hours"
+                        android:autoSizeMaxTextSize="20sp"
+                        android:autoSizeTextType="uniform"
+                        android:text="as last detected"
                         android:textAlignment="center"
                         android:textColor="@color/white" />
 
@@ -322,7 +252,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/SettingsCard"
+                android:id="@+id/DeclationCountCard"
                 style="@style/DashboardCardType2"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -336,14 +266,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:padding="5dp">
+                    android:padding="10dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_margin="5dp"
                         android:layout_weight="0.3"
-                        android:text="You have been in close proximity with"
+                        android:autoSizeMaxTextSize="20sp"
+                        android:autoSizeTextType="uniform"
+                        android:text="People using Distanzia have made"
                         android:textAlignment="center"
                         android:textColor="@color/white" />
 
@@ -353,17 +285,21 @@
                         android:layout_height="0dp"
                         android:layout_margin="5dp"
                         android:layout_weight="0.5"
-                        android:text="@{element.val6}"
+                        android:autoSizeTextType="uniform"
+                        android:text="@{element.declare_count}"
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textSize="50sp" />
+
+                        />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_margin="5dp"
                         android:layout_weight="0.2"
-                        android:text="devices in last 24 hours"
+                        android:autoSizeMaxTextSize="20sp"
+                        android:autoSizeTextType="uniform"
+                        android:text="declarations upto now"
                         android:textAlignment="center"
                         android:textColor="@color/white" />
 

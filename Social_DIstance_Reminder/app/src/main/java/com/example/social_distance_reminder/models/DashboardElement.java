@@ -2,43 +2,31 @@ package com.example.social_distance_reminder.models;
 
 
 public class DashboardElement {
+    private String min_distance;
     private int proximity_device_count;
-    private int val1;
-    private int val3;
-    private int val4;
-    private int val5;
-    private int val6;
+    private String last_meetup;
+    private int declare_count;
 
-    public DashboardElement(int a,int proximity, int b, int c, int d, int e){
-        this.val1 = a;
-        this.proximity_device_count = proximity;
-        this.val3 = b;
-        this.val4 = c;
-        this.val5 = d;
-        this.val6 = e;
+    public DashboardElement(String minDistance,int proximity_count, String last_meetup, int dec_count){
+        this.min_distance = minDistance;
+        this.proximity_device_count = proximity_count;
+        this.last_meetup = last_meetup;
+        this.declare_count = dec_count;
     }
 
     public String getProximity_device_count() {
         return String.valueOf(proximity_device_count);
     }
 
-    public String getVal1() {
-        return String.valueOf(val1);
+    public String getMin_distance() {
+        return min_distance;
     }
 
-    public String getVal3() {
-        return String.valueOf(val3);
+    public String getLast_meetup() {
+        return last_meetup;
     }
 
-    public String getVal4() {
-        return String.valueOf(val4);
-    }
-
-    public String getVal5() {
-        return String.valueOf(val5);
-    }
-
-    public String getVal6() {
-        return String.valueOf(val6);
+    public String getDeclare_count() {
+        return String.valueOf(declare_count);
     }
 }

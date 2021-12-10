@@ -27,7 +27,7 @@ public class DashboardFragment extends Fragment {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        DashboardElement de = new DashboardElement(4,9,3,6,2,5);
+        DashboardElement de = new DashboardElement("4",9,"3",6);
         binding.setElement(de);
         return root;
     }

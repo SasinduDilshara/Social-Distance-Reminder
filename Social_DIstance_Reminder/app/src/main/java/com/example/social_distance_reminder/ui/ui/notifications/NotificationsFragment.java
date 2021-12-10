@@ -41,13 +41,13 @@ public class NotificationsFragment extends Fragment {
         View root = binding.getRoot();
         sqlLiteHelper = SqlLiteHelper.getInstance(getContext());
 
-        sqlLiteHelper.addDeclareNotification(new Notification("Test1", Calendar.getInstance().getTime(), "qwertyudfghjcvbnfghjvbn", true));
-        sqlLiteHelper.addDeclareNotification(new Notification("Test3", Calendar.getInstance().getTime(), "qwertyudfghjcvbnfdhahrhahadheghjvbn", false));
-        sqlLiteHelper.addDeclareNotification(new Notification("Test4", Calendar.getInstance().getTime(), "qwertyudfghjsdhserhsehwehrsehsdhfnstrjsrtjsjhsrjrtjstrjsryjcvbnfghjvbn", false));
-        sqlLiteHelper.addDeclareNotification(new Notification("Test2", Calendar.getInstance().getTime(), "sdhsdhsdhsdfhsrhqshaha", false));
-        sqlLiteHelper.addDeclareNotification(new Notification("Test1", Calendar.getInstance().getTime(), "qwertyudfghjcvbnfghjvbn", true));
-        sqlLiteHelper.addDeclareNotification(new Notification("Test2", Calendar.getInstance().getTime(), "sdhsdhsdhsdfhsrhqshaha", false));
-        sqlLiteHelper.addDeclareNotification(new Notification("Test3", Calendar.getInstance().getTime(), "qwertyudfghjcvbnfdhahrhahadheghjvbn", false));
+//        sqlLiteHelper.addDeclareNotification(new Notification("Test1", Calendar.getInstance().getTime(), "qwertyudfghjcvbnfghjvbn", true));
+//        sqlLiteHelper.addDeclareNotification(new Notification("Test3", Calendar.getInstance().getTime(), "qwertyudfghjcvbnfdhahrhahadheghjvbn", false));
+//        sqlLiteHelper.addDeclareNotification(new Notification("Test4", Calendar.getInstance().getTime(), "qwertyudfghjsdhserhsehwehrsehsdhfnstrjsrtjsjhsrjrtjstrjsryjcvbnfghjvbn", false));
+//        sqlLiteHelper.addDeclareNotification(new Notification("Test2", Calendar.getInstance().getTime(), "sdhsdhsdhsdfhsrhqshaha", false));
+//        sqlLiteHelper.addDeclareNotification(new Notification("Test1", Calendar.getInstance().getTime(), "qwertyudfghjcvbnfghjvbn", true));
+//        sqlLiteHelper.addDeclareNotification(new Notification("Test2", Calendar.getInstance().getTime(), "sdhsdhsdhsdfhsrhqshaha", false));
+//        sqlLiteHelper.addDeclareNotification(new Notification("Test3", Calendar.getInstance().getTime(), "qwertyudfghjcvbnfdhahrhahadheghjvbn", false));
         sqlLiteHelper.addDeclareNotification(new Notification("Test4", Calendar.getInstance().getTime(), "qwertyudfghjsdhserhsehwehrsehsdhfnstrjsrtjsjhsrjrtjstrjsryjcvbnfghjvbn", false));
 
         notifications = sqlLiteHelper.getNotifications();
