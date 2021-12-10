@@ -343,7 +343,9 @@ public class CustomBluetoothService extends Service implements BeaconConsumer, N
                     SqlLiteHelper.getInstance(getApplicationContext()).addDeclareNotification(notification);
                     System.out.println("Before addStats");
                     SqlLiteHelper.getInstance(getApplicationContext()).addStats(new Stats(String.valueOf(distance), 1, String.valueOf(System.currentTimeMillis()), 0, 0));
-                    AudioHelper.play();
+                    for (int i = 0; i < 10; i++) {
+                        AudioHelper.play();
+                    }
                     System.out.println("Devices are\n" + sqlLiteHelper.getDevices());
                     System.out.println("Devices are\n" + sqlLiteHelper.getLocalNotifications());
 
