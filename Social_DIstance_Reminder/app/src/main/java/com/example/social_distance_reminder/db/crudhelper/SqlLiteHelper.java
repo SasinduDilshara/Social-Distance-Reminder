@@ -102,9 +102,9 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
                 "LASTMEETUPTIME TEXT," +
                 "NUMDECLARATION INT," +
                 " SELECTEDDISTANCE INT)";
-        blacklist_query = "CREATE TABLE " + BLACKLIST_TABLE_NAME +
-                "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "PHNNUMBER TEXT)";
+//        blacklist_query = "CREATE TABLE " + BLACKLIST_TABLE_NAME +
+//                "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+//                "PHNNUMBER TEXT)";
         blacklist_query = "CREATE TABLE " + BLACKLIST_TABLE_NAME +
                 "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "BLUETOOTHID TEXT," +
@@ -516,7 +516,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                devices.add(new BlacklistItem(cursor.getString(2)));
+                devices.add(new BlacklistItem(cursor.getString(1)));
             } while (cursor.moveToNext());
         }
         // db.close();
@@ -535,7 +535,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                devices.add(cursor.getString(3));
+                devices.add(cursor.getString(2));
             } while (cursor.moveToNext());
         }
         // db.close();

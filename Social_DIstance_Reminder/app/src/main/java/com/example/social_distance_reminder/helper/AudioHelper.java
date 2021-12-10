@@ -14,7 +14,7 @@ public class AudioHelper {
         AudioHelper.isContinue = isContinue;
     }
 
-    private static MediaPlayer getInstance() {
+    public static MediaPlayer getInstance() {
         if (mp == null) {
             final MediaPlayer mp=new MediaPlayer();
             try{
