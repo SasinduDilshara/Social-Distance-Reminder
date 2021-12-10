@@ -446,7 +446,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         values.put("LASTMEETUPTIME", res.getLastMeetupTime());
         values.put("NUMDECLARATION", res.getNumDeclaration() + st.getNumDeclaration());
 
-        if (Integer.valueOf(res.getMinDistance()) > Integer.valueOf(st.getMinDistance())) {
+        if (Float.valueOf(res.getMinDistance()) > Float.valueOf(st.getMinDistance())) {
             values.put("MINDISTANCE", st.getMinDistance());
         }
         if (st.getLastMeetupTime() != null) {

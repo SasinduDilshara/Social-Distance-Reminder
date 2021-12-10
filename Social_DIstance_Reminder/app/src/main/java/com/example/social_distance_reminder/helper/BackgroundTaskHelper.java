@@ -18,6 +18,7 @@ public class BackgroundTaskHelper {
 
         @Override
         protected Context doInBackground(Context... contexts) {
+            System.out.println("Do in Background to update FB");
             Context context = contexts[0];
             SqlLiteHelper databaseHelper = SqlLiteHelper.getInstance(context);
             list = databaseHelper.getDevices();
@@ -30,6 +31,7 @@ public class BackgroundTaskHelper {
 
         @Override
         protected void onPostExecute(Context context) {
+            System.out.println("Do in onPostExecute to update FB");
             super.onPostExecute(context);
             if (context != null) {
                 SqlLiteHelper databaseHelper = SqlLiteHelper.getInstance(context);

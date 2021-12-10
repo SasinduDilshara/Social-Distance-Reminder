@@ -311,7 +311,7 @@ public class CustomBluetoothService extends Service implements BeaconConsumer, N
                     int minUserDistance = SqlLiteHelper.getInstance(getApplicationContext()).getStats().getSelctedDistance();
 
                     //TODO:CHECK FOR DISTANCE
-                    if (distance < minUserDistance) {
+                    if (distance > minUserDistance) {
                         continue;
                     }
 
@@ -333,12 +333,17 @@ public class CustomBluetoothService extends Service implements BeaconConsumer, N
                         }
                     }
                     sqlLiteHelper.addDevice(beacon.getId1().toString(), latitude, longitude, beacon.getRssi());
+                    System.out.println("Size of the SQL lit Devices =" + sqlLiteHelper.getDevices().size());
+                    System.out.println("Before addLocalNotification");
                     sqlLiteHelper.addLocalNotification(beacon.getId1().toString(), location, beacon.getRssi());
+                    System.out.println("Before sendIdentifiedNotification");
                     NotificationHelper.sendIdentifiedNotification("Caution!", "You are near to a person in " + location, getApplicationContext());
                     Notification notification = new Notification("Caution!", Calendar.getInstance().getTime(), "You are near to a person in " + location, false);
+                    System.out.println("Before addDeclareNotification");
                     SqlLiteHelper.getInstance(getApplicationContext()).addDeclareNotification(notification);
+                    System.out.println("Before addStats");
                     SqlLiteHelper.getInstance(getApplicationContext()).addStats(new Stats(String.valueOf(distance), 1, String.valueOf(System.currentTimeMillis()), 0, 0));
-                    AudioHelper.getInstance().start();
+                    AudioHelper.play();
                     System.out.println("Devices are\n" + sqlLiteHelper.getDevices());
                     System.out.println("Devices are\n" + sqlLiteHelper.getLocalNotifications());
 
@@ -367,6 +372,8 @@ public class CustomBluetoothService extends Service implements BeaconConsumer, N
 
     @Override
     public void onNetworkUnavailable() {
+
+        System.out.println("Network is available\n");
         Log.d(TAG, "networkUnavailable: ");
     }
 }
