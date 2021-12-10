@@ -29,6 +29,7 @@ import com.example.social_distance_reminder.helper.BlacklistViewAdapter;
 import com.example.social_distance_reminder.helper.BluetoothHelper;
 import com.example.social_distance_reminder.helper.ServiceHelper;
 import com.example.social_distance_reminder.models.BlacklistItem;
+import com.example.social_distance_reminder.models.SettingsItem;
 import com.example.social_distance_reminder.services.CustomBluetoothService;
 import com.example.social_distance_reminder.services.LocationService;
 
@@ -75,7 +76,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         homeBinding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = homeBinding.getRoot();
 
-        isServiceActive = SqlLiteHelper.getInstance(requireActivity().getApplicationContext()).getStats().isBluetoothOn;
+        isServiceActive = SqlLiteHelper.getInstance(requireActivity().getApplicationContext()).getStats().getIsBluetoothOn();
 
         settingsPopup = new Dialog(getActivity());
         settingsBinding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.popup_settings, null, false);
@@ -93,8 +94,9 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         homeBinding.btnHomeBlacklist.setOnClickListener(v1 -> showBlacklistPopup());
         homeBinding.btnHomeSettings.setOnClickListener(v3 -> showSettingsPopup());
         homeBinding.btnHomeOnoff.setOnClickListener(v2 -> {
-            if (SqlLiteHelper.getInstance(requireActivity().getApplicationContext()).getStats().isBluetoothOn == 1) {
-                SqlLiteHelper.getInstance(requireActivity().getApplicationContext()).addStats(new Stats("100", 0, null, 0, 0, 2, 0));
+            SqlLiteHelper sq = SqlLiteHelper.getInstance(getContext());
+            if (sq.getStats().isBluetoothOn == 1) {
+                sq.addStats(new Stats("100", 0, null, 0, 0, 2, 0));
                 Toast.makeText(getContext(), "Distanzia now stopped", Toast.LENGTH_SHORT).show();
                 homeBinding.btnHomeOnoff.setImageResource(R.drawable.button_on);
                 deactivateService();
@@ -176,7 +178,6 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
                 String cityName = addresses.get(0).getAddressLine(0);
                 String stateName = addresses.get(0).getAddressLine(1);
                 String countryName = addresses.get(0).getAddressLine(2);
-
 
                 System.out.println("cityName:- " + cityName);
                 System.out.println("stateName:- " + stateName);
@@ -272,8 +273,15 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     }
 
     public void showSettingsPopup() {
+        Stats stats = SqlLiteHelper.getInstance(getContext()).getStats();
         settingsBinding.btnSettingsClose.setOnClickListener(v2 -> settingsPopup.dismiss());
-        settingsBinding.minDistance.setText("");
+        SettingsItem settingsItem = new SettingsItem(String.valueOf(stats.getSelctedDistance()),stats.getIsSoundOn());
+        settingsBinding.setSettingsItem(settingsItem);
+        settingsBinding.btnSettingsApply.setOnClickListener(v1 -> {
+            SqlLiteHelper.getInstance(getContext()).addStats(new Stats("100",0,null,0,Integer.parseInt(settingsBinding.minDistance.getText().toString()),settingsBinding.SettingsThemeSwitch.isChecked()?1:0,2));
+            Log.d(TAG, "showSettingsPopup: "+SqlLiteHelper.getInstance(getContext()).getStats().getSelctedDistance());
+            settingsPopup.dismiss();
+        });
         settingsPopup.show();
     }
 

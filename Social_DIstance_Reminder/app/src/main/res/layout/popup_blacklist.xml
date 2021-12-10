@@ -10,7 +10,7 @@
 
     <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="450dp"
+        android:layout_width="350dp"
         android:layout_height="500dp"
         android:backgroundTint="?popupBackgroundColor"
         app:cardCornerRadius="?popupCornerRadius"
@@ -19,7 +19,7 @@
         tools:context=".ui.PrimeActivity">
 
         <LinearLayout
-            android:layout_width="350dp"
+            android:layout_width="250dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:orientation="vertical">
@@ -85,7 +85,7 @@
 
                 <EditText
                     android:id="@+id/edtBlacklistAdd"
-                    android:layout_width="300dp"
+                    android:layout_width="200dp"
                     android:inputType="phone"
                     android:hint="enter with + mark (+94)"
                     android:layout_height="wrap_content" />

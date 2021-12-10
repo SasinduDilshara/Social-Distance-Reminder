@@ -101,9 +101,9 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
                 " CLOSECOUNT INT," +
                 "LASTMEETUPTIME TEXT," +
                 "NUMDECLARATION INT," +
-                "SOUND TEXT," +
-                "BLUETOOTH INT," +
-                " SELECTEDDISTANCE INT)";
+                " SELECTEDDISTANCE INT," +
+                "SOUND INTEGER," +
+                "BLUETOOTH INTEGER)";
 //        blacklist_query = "CREATE TABLE " + BLACKLIST_TABLE_NAME +
 //                "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
 //                "PHNNUMBER TEXT)";
@@ -438,6 +438,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
     public void addStats(Stats st) {
 
+        Log.d(TAG, "addStats: "+st.getSelctedDistance());
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         Stats res = getStats();
@@ -456,7 +457,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         if (st.getLastMeetupTime() != null) {
             values.put("LASTMEETUPTIME", st.getLastMeetupTime());
         }
-        if (st.getSelctedDistance() != 0) {
+        if (st.getSelctedDistance() != 0 && st.getSelctedDistance()<= 5) {
             values.put("SELECTEDDISTANCE", st.getSelctedDistance());
         }
         if (st.getIsSoundOn() <= 1) {
