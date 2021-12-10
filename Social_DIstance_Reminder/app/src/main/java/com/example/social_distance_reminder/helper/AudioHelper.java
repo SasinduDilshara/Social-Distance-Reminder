@@ -7,6 +7,7 @@ import android.media.ToneGenerator;
 public class AudioHelper {
     private static MediaPlayer mp = null;
     private static boolean isContinue = true;
+    private final static ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, 400);
 
     public static boolean isIsContinue() {
         return isContinue;
@@ -35,8 +36,7 @@ public class AudioHelper {
     public static void play() {
         if (isIsContinue()) {
 //            getInstance().start();
-            ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);
-            toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP,150);
+            AudioHelper.toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP,10000);
         }
     }
 
