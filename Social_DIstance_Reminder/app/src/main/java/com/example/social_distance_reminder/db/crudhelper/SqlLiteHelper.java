@@ -425,6 +425,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         Stats res = getStats();
 
+        values.put("SELECTEDDISTANCE", res.getSelctedDistance());
         values.put("MINDISTANCE", res.getMinDistance());
         values.put("CLOSECOUNT", res.getCloseCount() + st.getCloseCount());
         values.put("LASTMEETUPTIME", res.getLastMeetupTime());
@@ -435,6 +436,9 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         }
         if (st.getLastMeetupTime() != null) {
             values.put("LASTMEETUPTIME", st.getLastMeetupTime());
+        }
+        if (st.getSelctedDistance() != 0) {
+            values.put("SELECTEDDISTANCE", st.getSelctedDistance());
         }
 
         try {
@@ -457,14 +461,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-                Date date = new Date();
-                try {
-                    date = formatter.parse(cursor.getString(2));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                stats = new Stats(cursor.getString(1), cursor.getInt(2),cursor.getString(3), cursor.getInt(4));
+                stats = new Stats(cursor.getString(1), cursor.getInt(2),cursor.getString(3), cursor.getInt(4), cursor.getInt(5));
             } while (cursor.moveToNext());
         }
         // db.close();

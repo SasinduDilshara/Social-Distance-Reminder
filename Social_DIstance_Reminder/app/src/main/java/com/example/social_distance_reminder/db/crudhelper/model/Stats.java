@@ -5,12 +5,14 @@ public class Stats {
     public int closeCount = 0;
     public String lastMeetupTime = "";
     public int numDeclaration = 0;
+    public int selctedDistance = 0;
 
-    public Stats(String minDistance, int closeCount, String lastMeetupTime, int numDeclaration) {
+    public Stats(String minDistance, int closeCount, String lastMeetupTime, int numDeclaration, int selctedDistance) {
         this.minDistance = minDistance;
         this.closeCount = closeCount;
         this.lastMeetupTime = lastMeetupTime;
         this.numDeclaration = numDeclaration;
+        this.selctedDistance = selctedDistance;
     }
 
     public String getMinDistance() {
@@ -29,6 +31,14 @@ public class Stats {
                 ", lastMeetupTime='" + lastMeetupTime + '\'' +
                 ", lastPersonDistance=" + numDeclaration +
                 '}';
+    }
+
+    public int getSelctedDistance() {
+        return selctedDistance;
+    }
+
+    public void setSelctedDistance(int selctedDistance) {
+        this.selctedDistance = selctedDistance;
     }
 
     public int getCloseCount() {

@@ -335,7 +335,7 @@ public class CustomBluetoothService extends Service implements BeaconConsumer, N
                     NotificationHelper.sendIdentifiedNotification("Caution!", "You are near to a person in " + location, getApplicationContext());
                     Notification notification = new Notification("Caution!", Calendar.getInstance().getTime(), "You are near to a person in " + location, false);
                     SqlLiteHelper.getInstance(getApplicationContext()).addDeclareNotification(notification);
-                    SqlLiteHelper.getInstance(getApplicationContext()).addStats(new Stats(String.valueOf(distance), 1, String.valueOf(System.currentTimeMillis()), 0))
+                    SqlLiteHelper.getInstance(getApplicationContext()).addStats(new Stats(String.valueOf(distance), 1, String.valueOf(System.currentTimeMillis()), 0, 0));
                     System.out.println("Devices are\n" + sqlLiteHelper.getDevices());
                     System.out.println("Devices are\n" + sqlLiteHelper.getLocalNotifications());
 
