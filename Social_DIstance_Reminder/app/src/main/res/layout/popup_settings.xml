@@ -2,7 +2,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
+        <variable
+            name="settings_item"
+            type="com.example.social_distance_reminder.models.SettingsItem" />
     </data>
 
     <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -73,6 +75,7 @@
                     android:layout_weight="0.3"
                     android:inputType="number"
                     android:layout_height="wrap_content"
+                    android:text="@{settings_item.distance_threshold}"
                     android:maxLength="1"
                     />
 
@@ -82,7 +85,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
+                android:layout_marginBottom="10dp"
                 android:gravity="center_vertical">
 
                 <TextView
@@ -94,14 +97,24 @@
                     android:text="Warning sound"
                     android:textSize="15sp" />
 
-                <Switch
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/SettingsThemeSwitch"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:checked="@{settings_item.alarm_on}"
                     android:layout_weight="0.4"
                     android:gravity="center" />
 
             </LinearLayout>
+
+            <Button
+                android:id="@+id/btnSettingsApply"
+                android:layout_marginTop="20dp"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="30dp"
+                android:layout_gravity="center"
+                android:text="APPLY" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
