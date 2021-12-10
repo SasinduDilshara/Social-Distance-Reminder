@@ -38,6 +38,7 @@ import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
@@ -63,6 +64,7 @@ public class CustomBluetoothService extends Service implements BeaconConsumer, N
     private double longitude, latitude;
     private String location;
     Geocoder geocoder = null;
+    ArrayList<String> blacklistDevices = new ArrayList<>();
 
     private NetworkStateReceiver networkStateReceiver;
     private SqlLiteHelper sqlLiteHelper;
@@ -332,13 +334,18 @@ public class CustomBluetoothService extends Service implements BeaconConsumer, N
                             e.printStackTrace();
                         }
                     }
+
+                    blacklistDevices = SqlLiteHelper.getInstance(getApplicationContext()).getBlackListDevices();
+                    if (blacklistDevices.contains(beacon.getId1())) {
+                        continue;
+                    }
                     sqlLiteHelper.addDevice(beacon.getId1().toString(), latitude, longitude, beacon.getRssi());
                     System.out.println("Size of the SQL lit Devices =" + sqlLiteHelper.getDevices().size());
                     System.out.println("Before addLocalNotification");
                     sqlLiteHelper.addLocalNotification(beacon.getId1().toString(), location, beacon.getRssi());
                     System.out.println("Before sendIdentifiedNotification");
                     NotificationHelper.sendIdentifiedNotification("Caution!", "You are near to a person in " + location, getApplicationContext());
-                    Notification notification = new Notification("Caution!", Calendar.getInstance().getTime(), "You are near to a person in " + location, false);
+                    Notification notification = new Notification("Caution!", Calendar.getInstance().getTime(), "You are near to a person", false);
                     System.out.println("Before addDeclareNotification");
                     SqlLiteHelper.getInstance(getApplicationContext()).addDeclareNotification(notification);
                     System.out.println("Before addStats");
