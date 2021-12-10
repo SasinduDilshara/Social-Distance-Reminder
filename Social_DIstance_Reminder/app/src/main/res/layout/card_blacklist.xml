@@ -23,14 +23,16 @@
         app:cardElevation="3dp"
         tools:context=".ui.PrimeActivity">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/txvAcceptCardTitle"
                 android:layout_width="0dp"
+                android:layout_weight="0.7"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="7dp"
                 android:padding="2dp"
@@ -41,19 +43,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageButton
-                android:id="@+id/btnAcceptCardComplete"
-                android:layout_width="40dp"
-                android:layout_height="30dp"
-                android:contentDescription="accept"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_close"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 

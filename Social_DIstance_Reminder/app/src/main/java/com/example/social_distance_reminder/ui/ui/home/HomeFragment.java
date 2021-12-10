@@ -111,8 +111,6 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         homeBinding.imgHomeGraphic.setImageDrawable(anim_homeGraphic);
         anim_homeGraphic.start();
 
-        SqlLiteHelper.getInstance(getContext()).addBlacklistDevice("632628461287");
-
         return root;
     }
 
@@ -253,6 +251,16 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         Log.d(TAG, "showBlacklistPopup: "+blacklistItems.size());
         blacklistViewAdapter = new BlacklistViewAdapter(getActivity(), blacklistItems);
         blacklistBinding.setBlacklistAdapter(blacklistViewAdapter);
+        blacklistBinding.btnBlacklistAdd.setOnClickListener(v3 -> {
+            String num = blacklistBinding.edtBlacklistAdd.getText().toString();
+            if(!num.equals("")){
+                SqlLiteHelper.getInstance(getContext()).addBlacklistDevice(num);
+                blacklistItems.add(new BlacklistItem(num));
+                blacklistViewAdapter.notifyItemChanged(blacklistItems.size()-1);
+                blacklistBinding.edtBlacklistAdd.setText("");
+                Toast.makeText(getContext(), num+" was added to the blacklist", Toast.LENGTH_SHORT).show();
+            }
+        });
         blacklistPopup.show();
     }
 
