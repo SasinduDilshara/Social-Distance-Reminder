@@ -1,6 +1,7 @@
 package com.example.social_distance_reminder.helper;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ public class BlacklistViewAdapter extends RecyclerView.Adapter<BlacklistViewAdap
 
     private ArrayList<BlacklistItem> blackListDetails;
     private Context context;
+    String TAG = "Testing";
 
     public BlacklistViewAdapter(Context context, ArrayList<BlacklistItem> objects) {
         this.blackListDetails = objects;
@@ -50,6 +52,7 @@ public class BlacklistViewAdapter extends RecyclerView.Adapter<BlacklistViewAdap
 
     @Override
     public int getItemCount() {
+        Log.d(TAG, "getItemCount: "+String.valueOf(blackListDetails.size()));
         return blackListDetails.size();
     }
 
