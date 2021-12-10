@@ -107,7 +107,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         blacklist_query = "CREATE TABLE " + BLACKLIST_TABLE_NAME +
                 "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "BLUETOOTHID TEXT," +
-                "PHNNUMBER TEXT)";
+                "PHONENUMBER TEXT)";
 
         db.execSQL(query_user_log);
         db.execSQL(query_app_data);
