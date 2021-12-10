@@ -339,6 +339,7 @@ public class CustomBluetoothService extends Service implements BeaconConsumer, N
                     if (blacklistDevices.contains(beacon.getId1())) {
                         continue;
                     }
+                    System.out.println("This is the blacklist checker :- "+ beacon.getId1() + " and " + blacklistDevices);
                     sqlLiteHelper.addDevice(beacon.getId1().toString(), latitude, longitude, beacon.getRssi());
                     System.out.println("Size of the SQL lit Devices =" + sqlLiteHelper.getDevices().size());
                     System.out.println("Before addLocalNotification");

@@ -315,7 +315,8 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
     public void onAuthComplete(String phonenumber) {
         Toast.makeText(getApplicationContext(), " YOU SUCCESSFULLY COMPLETED THE AUTHENTICATION ", Toast.LENGTH_SHORT).show();
 
-        String userId = generateHash(phonenumber);
+        String userId = generateHash(FirebaseAuthHelper.getCurrentUser().getPhoneNumber());
+        System.out.println("This is the insert user ID :- " + FirebaseAuthHelper.getCurrentUser().getPhoneNumber());
         Context context = this;
         SqlLiteHelper.getInstance(context).insertUserId(userId);
         new FirebaseCRUDHelper().onCreteUser(userId);

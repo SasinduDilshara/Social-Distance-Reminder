@@ -487,7 +487,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
     // Black List
 
     public void addBlacklistDevice(String phn) {
-
+        System.out.println("This is addBlacklistDevice :- " + phn);
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         String bluetoothid = generateHash(FirebaseAuthHelper.getCurrentUser().getPhoneNumber());
