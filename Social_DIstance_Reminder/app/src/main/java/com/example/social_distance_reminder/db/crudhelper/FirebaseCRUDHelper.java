@@ -96,7 +96,7 @@ public class FirebaseCRUDHelper {
     public void onCreteUser(String id){
         System.out.println("Inside onCreteUser(String id) :- " + id);
         Map<String, Object> data = new HashMap<>();
-        data.put("bluetooth identifier",id);
+        data.put("bluetooth-identifier",id);
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         db.collection("users")
@@ -197,6 +197,7 @@ public class FirebaseCRUDHelper {
        String bluetoothid = generateHash(FirebaseAuthHelper.getCurrentUser().getPhoneNumber());
         // String bluetoothid = generateHash("+1 650-555-2234");
         System.out.println("the bluetooth id to find:- " + bluetoothid);
+        ArrayList<String> blacklistDevices = SqlLiteHelper.getInstance(context).getBlackListDevices();
 
         List<String> closeDevices = new ArrayList<>();
         Task<QuerySnapshot> task1 = db.collectionGroup(bluetoothid).get().addOnSuccessListener(queryDocumentSnapshots -> {
@@ -221,8 +222,13 @@ public class FirebaseCRUDHelper {
                                     if (document.exists()) {
 //                                System.out.println("Keys in the document "+ document);
                                         String msgtoken =  document.get("message-token").toString();
-                                        NotificationHelper.sendWarningNotification(msgtoken, context);
-                                        System.out.println("mt123:- " + msgtoken +"\nid:- " + id + " for " + bluetoothid);
+                                        String blutid =  document.get("bluetooth-identifier").toString();
+                                        if (!blacklistDevices.contains(blutid)) {
+                                            NotificationHelper.sendWarningNotification(msgtoken, context);
+                                            System.out.println("mt123:- " + msgtoken + "\nid:- " + id + " for " + bluetoothid);
+                                        } else {
+                                            System.out.println("This is a Blacklisted Device\n");
+                                        }
                                     } else {
                                         System.out.println("No such document :- " + id);
                                     }

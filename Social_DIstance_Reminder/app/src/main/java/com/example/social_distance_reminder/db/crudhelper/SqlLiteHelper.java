@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 //import com.example.social_distance_reminder.UI.LandingActivity;
+import com.example.social_distance_reminder.auth.FirebaseAuthHelper;
 import com.example.social_distance_reminder.db.crudhelper.model.DeviceModel;
 import com.example.social_distance_reminder.db.crudhelper.model.LocalNotification;
 import com.example.social_distance_reminder.db.crudhelper.model.Stats;
@@ -24,6 +25,7 @@ import com.example.social_distance_reminder.models.BlacklistItem;
 import com.example.social_distance_reminder.models.Notification;
 
 import static android.content.ContentValues.TAG;
+import static com.example.social_distance_reminder.helper.ServiceHelper.generateHash;
 
 //TODO: Decide the time interval between each interaction with same user
 //TODO: Decide the distance
@@ -103,6 +105,10 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         blacklist_query = "CREATE TABLE " + BLACKLIST_TABLE_NAME +
                 "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "PHNNUMBER TEXT)";
+        blacklist_query = "CREATE TABLE " + BLACKLIST_TABLE_NAME +
+                "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "BLUETOOTHID TEXT," +
+                "PHONENUMBER TEXT)";
 
         db.execSQL(query_user_log);
         db.execSQL(query_app_data);
@@ -484,9 +490,10 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        String bluetoothid = generateHash(FirebaseAuthHelper.getCurrentUser().getPhoneNumber());
 
+        values.put("BLUETOOTHID", bluetoothid);
         values.put("PHONENUMBER", phn);
-
 
         try {
             long success = sqLiteDatabase.insert(BLACKLIST_TABLE_NAME, null, values);
@@ -517,6 +524,29 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         return devices;
     }
 
+    public ArrayList<String> getBlackListPhoneNumbers() {
+        Stats stats = null;
+        String select_query = "SELECT * FROM " + BLACKLIST_TABLE_NAME;
+        ArrayList<String> devices = new ArrayList<>();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_query, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                devices.add(cursor.getString(3));
+            } while (cursor.moveToNext());
+        }
+        // db.close();
+        cursor.close();
+        return devices;
+    }
+
+    public void deleteBlacklistDevice(String phn) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        sqLiteDatabase.delete(BLACKLIST_TABLE_NAME, "PHNNUMBER = " + phn, null);
+    }
 
     public ArrayList<LocalNotification> getLocalNotifications() {
         ArrayList<LocalNotification> arrayList = new ArrayList<>();
