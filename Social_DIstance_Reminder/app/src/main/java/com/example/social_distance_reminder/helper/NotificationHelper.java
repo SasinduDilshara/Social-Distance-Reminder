@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.android.volley.AuthFailureError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.social_distance_reminder.R;
+import com.example.social_distance_reminder.db.crudhelper.model.Stats;
 import com.example.social_distance_reminder.exceptions.NotificationManagerException;
 import com.example.social_distance_reminder.notifications.MySingleton;
 import com.example.social_distance_reminder.ui.PrimeActivity;
@@ -30,6 +31,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import static com.example.social_distance_reminder.helper.RandomIDGenerator.getNotifictionID;
+import com.example.social_distance_reminder.db.crudhelper.SqlLiteHelper;
 
 public class NotificationHelper {
     private Context context;
@@ -269,6 +271,8 @@ public class NotificationHelper {
     public static void sendWarningNotification(String msgToken, Context context) {
         com.example.social_distance_reminder.models.Notification declaration = new com.example.social_distance_reminder.models.Notification("WARNING", new Date(), "A person who came near you has declared as a COVID patient", true);
         sendDeclarationNotification(createNotificationObject(declaration,msgToken),context);
+        SqlLiteHelper.getInstance(context).addStats(new Stats("100",0,null,1,0));
+
     }
 
     private static void sendDeclarationNotification(JSONObject notification, Context context) {

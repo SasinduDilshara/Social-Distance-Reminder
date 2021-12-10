@@ -129,6 +129,8 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TEMPORARY_LOG_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + LOCAL_NOTIFICATION_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + DECLARE_NOTIFICATION_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + STAT_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + BLACKLIST_TABLE_NAME);
 
         onCreate(db);
     }

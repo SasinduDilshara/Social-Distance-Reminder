@@ -13,13 +13,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import com.example.social_distance_reminder.db.crudhelper.SqlLiteHelper;
 
 import com.example.social_distance_reminder.databinding.FragmentDashboardBinding;
+import com.example.social_distance_reminder.db.crudhelper.model.Stats;
 import com.example.social_distance_reminder.models.DashboardElement;
 
 public class DashboardFragment extends Fragment {
 
     private FragmentDashboardBinding binding;
+    private Stats stat;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -27,7 +30,9 @@ public class DashboardFragment extends Fragment {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        DashboardElement de = new DashboardElement("4",9,"3",6);
+        stat = SqlLiteHelper.getInstance(getContext()).getStats();
+        DashboardElement de =
+                new DashboardElement(stat.getMinDistance(), stat.getCloseCount(), stat.getLastMeetupTime(), stat.getNumDeclaration());
         binding.setElement(de);
         return root;
     }
