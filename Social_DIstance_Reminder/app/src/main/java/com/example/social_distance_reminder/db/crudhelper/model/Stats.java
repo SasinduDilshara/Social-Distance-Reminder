@@ -6,13 +6,33 @@ public class Stats {
     public String lastMeetupTime = "";
     public int numDeclaration = 0;
     public int selctedDistance = 0;
+    public int isSoundOn = 0;
+    public int isBluetoothOn = 0;
 
-    public Stats(String minDistance, int closeCount, String lastMeetupTime, int numDeclaration, int selctedDistance) {
+    public Stats(String minDistance, int closeCount, String lastMeetupTime, int numDeclaration, int selctedDistance, int isSoundOn, int isBluetoothOn) {
         this.minDistance = minDistance;
         this.closeCount = closeCount;
         this.lastMeetupTime = lastMeetupTime;
         this.numDeclaration = numDeclaration;
         this.selctedDistance = selctedDistance;
+        this.isSoundOn = isSoundOn;
+        this.isBluetoothOn = isBluetoothOn;
+    }
+
+    public int getIsSoundOn() {
+        return isSoundOn;
+    }
+
+    public void setIsSoundOn(int isSoundOn) {
+        this.isSoundOn = isSoundOn;
+    }
+
+    public int getIsBluetoothOn() {
+        return isBluetoothOn;
+    }
+
+    public void setIsBluetoothOn(int isBluetoothOn) {
+        this.isBluetoothOn = isBluetoothOn;
     }
 
     public String getMinDistance() {

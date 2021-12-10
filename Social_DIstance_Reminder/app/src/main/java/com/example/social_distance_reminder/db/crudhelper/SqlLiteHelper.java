@@ -101,6 +101,8 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
                 " CLOSECOUNT INT," +
                 "LASTMEETUPTIME TEXT," +
                 "NUMDECLARATION INT," +
+                "SOUND TEXT," +
+                "BLUETOOTH INT," +
                 " SELECTEDDISTANCE INT)";
 //        blacklist_query = "CREATE TABLE " + BLACKLIST_TABLE_NAME +
 //                "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -445,6 +447,8 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         values.put("CLOSECOUNT", res.getCloseCount() + st.getCloseCount());
         values.put("LASTMEETUPTIME", res.getLastMeetupTime());
         values.put("NUMDECLARATION", res.getNumDeclaration() + st.getNumDeclaration());
+        values.put("SOUND", res.getIsSoundOn());
+        values.put("BLUETOOTH", res.getIsBluetoothOn());
 
         if (Float.valueOf(res.getMinDistance()) > Float.valueOf(st.getMinDistance())) {
             values.put("MINDISTANCE", st.getMinDistance());
@@ -454,6 +458,12 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         }
         if (st.getSelctedDistance() != 0) {
             values.put("SELECTEDDISTANCE", st.getSelctedDistance());
+        }
+        if (st.getIsSoundOn() <= 1) {
+            values.put("SOUND", st.getIsSoundOn());
+        }
+        if (st.getIsBluetoothOn() <= 1) {
+            values.put("BLUETOOTH", st.getIsBluetoothOn());
         }
 
         try {
@@ -476,7 +486,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                stats = new Stats(cursor.getString(1), cursor.getInt(2),cursor.getString(3), cursor.getInt(4), cursor.getInt(5));
+                stats = new Stats(cursor.getString(1), cursor.getInt(2),cursor.getString(3), cursor.getInt(4), cursor.getInt(5), cursor.getInt(6), cursor.getInt(7));
             } while (cursor.moveToNext());
         }
         // db.close();
@@ -490,7 +500,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         System.out.println("This is addBlacklistDevice :- " + phn);
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        String bluetoothid = generateHash(FirebaseAuthHelper.getCurrentUser().getPhoneNumber());
+        String bluetoothid = generateHash(phn);
         Log.d(TAG, "addBlacklistDevice: "+bluetoothid+ phn);
         values.put("BLUETOOTHID", bluetoothid);
         values.put("PHONENUMBER", phn);

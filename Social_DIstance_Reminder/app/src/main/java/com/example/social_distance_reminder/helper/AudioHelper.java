@@ -1,8 +1,11 @@
 package com.example.social_distance_reminder.helper;
 
+import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.ToneGenerator;
+
+import com.example.social_distance_reminder.db.crudhelper.SqlLiteHelper;
 
 public class AudioHelper {
     private static MediaPlayer mp = null;
@@ -33,8 +36,8 @@ public class AudioHelper {
         return mp;
     }
 
-    public static void play() {
-        if (isIsContinue()) {
+    public static void play(Context context) {
+        if ( SqlLiteHelper.getInstance(context).getStats().getIsSoundOn() == 1) {
 //            getInstance().start();
             AudioHelper.toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP,10000);
         }

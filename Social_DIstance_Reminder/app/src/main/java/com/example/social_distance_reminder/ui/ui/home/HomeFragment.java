@@ -23,6 +23,7 @@ import com.example.social_distance_reminder.databinding.PopupDeclarationBinding;
 import com.example.social_distance_reminder.databinding.PopupSettingsBinding;
 import com.example.social_distance_reminder.db.crudhelper.FirebaseCRUDHelper;
 import com.example.social_distance_reminder.db.crudhelper.SqlLiteHelper;
+import com.example.social_distance_reminder.db.crudhelper.model.Stats;
 import com.example.social_distance_reminder.exceptions.BluetoothNotSupportException;
 import com.example.social_distance_reminder.helper.BlacklistViewAdapter;
 import com.example.social_distance_reminder.helper.BluetoothHelper;
@@ -64,7 +65,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     private PopupSettingsBinding settingsBinding;
     private ArrayList<BlacklistItem> blacklistItems;
     private String TAG = "Testing";
-    private Boolean isServiceActive;
+    private int isServiceActive;
     private BlacklistViewAdapter blacklistViewAdapter;
     Intent serviceIntent = null;
 
@@ -74,7 +75,7 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         homeBinding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = homeBinding.getRoot();
 
-        isServiceActive = false;
+        isServiceActive = SqlLiteHelper.getInstance(requireActivity().getApplicationContext()).getStats().isBluetoothOn;
 
         settingsPopup = new Dialog(getActivity());
         settingsBinding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.popup_settings, null, false);
@@ -92,13 +93,13 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
         homeBinding.btnHomeBlacklist.setOnClickListener(v1 -> showBlacklistPopup());
         homeBinding.btnHomeSettings.setOnClickListener(v3 -> showSettingsPopup());
         homeBinding.btnHomeOnoff.setOnClickListener(v2 -> {
-            if (isServiceActive) {
-                isServiceActive = false;
+            if (SqlLiteHelper.getInstance(requireActivity().getApplicationContext()).getStats().isBluetoothOn == 1) {
+                SqlLiteHelper.getInstance(requireActivity().getApplicationContext()).addStats(new Stats("100", 0, null, 0, 0, 2, 0));
                 Toast.makeText(getContext(), "Distanzia now stopped", Toast.LENGTH_SHORT).show();
                 homeBinding.btnHomeOnoff.setImageResource(R.drawable.button_on);
                 deactivateService();
             } else {
-                isServiceActive = true;
+                SqlLiteHelper.getInstance(requireActivity().getApplicationContext()).addStats(new Stats("100", 0, null, 0, 0, 2, 1));
                 Toast.makeText(getContext(), "Distanzia now running...", Toast.LENGTH_SHORT).show();
                 homeBinding.btnHomeOnoff.setImageResource(R.drawable.button_off);
                 activateService();
@@ -211,11 +212,11 @@ public class HomeFragment extends Fragment implements EasyPermissions.Permission
     @Override
     public void onResume() {
         super.onResume();
-        if (!isMyServiceRunning(requireActivity(), CustomBluetoothService.class) && isServiceActive) {
+        if (!isMyServiceRunning(requireActivity(), CustomBluetoothService.class) && SqlLiteHelper.getInstance(requireActivity().getApplicationContext()).getStats().isBluetoothOn == 1) {
             serviceIntent = new Intent(requireActivity(), CustomBluetoothService.class);
             Log.d(TAG, "onResume: Scaning is not running, Starting it Now!");
             ContextCompat.startForegroundService(requireActivity(), serviceIntent);
-        } else if (isMyServiceRunning(requireActivity(), CustomBluetoothService.class) && !isServiceActive) {
+        } else if (isMyServiceRunning(requireActivity(), CustomBluetoothService.class) && SqlLiteHelper.getInstance(requireActivity().getApplicationContext()).getStats().isBluetoothOn == 0) {
             if (serviceIntent != null) {
                 getActivity().stopService(serviceIntent);
             }

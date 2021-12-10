@@ -16,7 +16,7 @@ public class DashboardElement {
 
         if(minDistance.contains(".")){
             int index = minDistance.indexOf('.');
-            minDistance = min_distance.substring(0,index+2);
+            minDistance = minDistance.substring(0,3);
         }
 
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd\nhh:mm");

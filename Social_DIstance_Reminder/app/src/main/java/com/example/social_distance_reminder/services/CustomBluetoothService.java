@@ -336,24 +336,26 @@ public class CustomBluetoothService extends Service implements BeaconConsumer, N
                     }
 
                     blacklistDevices = SqlLiteHelper.getInstance(getApplicationContext()).getBlackListDevices();
-                    if (blacklistDevices.contains(beacon.getId1())) {
-                        continue;
+                    if (!blacklistDevices.contains(beacon.getId1().toString())) {
+
+                        System.out.println("This is the blacklist checker :- " + beacon.getId1() + " and " + blacklistDevices);
+                        sqlLiteHelper.addDevice(beacon.getId1().toString(), latitude, longitude, beacon.getRssi());
+                        System.out.println("Size of the SQL lit Devices =" + sqlLiteHelper.getDevices().size());
+                        System.out.println("Before addLocalNotification");
+                        sqlLiteHelper.addLocalNotification(beacon.getId1().toString(), location, beacon.getRssi());
+                        System.out.println("Before sendIdentifiedNotification");
+                        NotificationHelper.sendIdentifiedNotification("Caution!", "You are near to a person in " + location, getApplicationContext());
+                        Notification notification = new Notification("Caution!", Calendar.getInstance().getTime(), "You are near to a person", false);
+                        System.out.println("Before addDeclareNotification");
+                        SqlLiteHelper.getInstance(getApplicationContext()).addDeclareNotification(notification);
+                        System.out.println("Before addStats");
+                        SqlLiteHelper.getInstance(getApplicationContext()).addStats(new Stats(String.valueOf(distance), 1, String.valueOf(System.currentTimeMillis()), 0, 0, 2, 2));
+                        AudioHelper.play(getApplicationContext());
+                        System.out.println("Devices are\n" + sqlLiteHelper.getDevices());
+                        System.out.println("Devices are\n" + sqlLiteHelper.getLocalNotifications());
+                    } else {
+                        System.out.println("Blacklist Number found. Ignored!!!!");
                     }
-                    System.out.println("This is the blacklist checker :- "+ beacon.getId1() + " and " + blacklistDevices);
-                    sqlLiteHelper.addDevice(beacon.getId1().toString(), latitude, longitude, beacon.getRssi());
-                    System.out.println("Size of the SQL lit Devices =" + sqlLiteHelper.getDevices().size());
-                    System.out.println("Before addLocalNotification");
-                    sqlLiteHelper.addLocalNotification(beacon.getId1().toString(), location, beacon.getRssi());
-                    System.out.println("Before sendIdentifiedNotification");
-                    NotificationHelper.sendIdentifiedNotification("Caution!", "You are near to a person in " + location, getApplicationContext());
-                    Notification notification = new Notification("Caution!", Calendar.getInstance().getTime(), "You are near to a person", false);
-                    System.out.println("Before addDeclareNotification");
-                    SqlLiteHelper.getInstance(getApplicationContext()).addDeclareNotification(notification);
-                    System.out.println("Before addStats");
-                    SqlLiteHelper.getInstance(getApplicationContext()).addStats(new Stats(String.valueOf(distance), 1, String.valueOf(System.currentTimeMillis()), 0, 0));
-                    AudioHelper.play();
-                    System.out.println("Devices are\n" + sqlLiteHelper.getDevices());
-                    System.out.println("Devices are\n" + sqlLiteHelper.getLocalNotifications());
 
                     if (networkStateReceiver.ismConnected()) {
                         onNetworkAvailable();
