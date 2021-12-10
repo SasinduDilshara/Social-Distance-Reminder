@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -211,6 +212,10 @@ public class FirebaseCRUDHelper {
 //                String t = getUserMessageTokenFromUserId(doc.get("userid").toString());
 //                System.out.println("Results got from mt:- " + t);
                 String id = doc.get("userid").toString();
+                long timestamp =Long.valueOf(((Timestamp) doc.get("timestamp")).getNanoseconds()/10000);
+                if (System.currentTimeMillis() - timestamp > 1209600 * 1000) {
+                    continue;
+                }
                 FirebaseFirestore.getInstance()
                         .collection("users")
                         .document(id).get()

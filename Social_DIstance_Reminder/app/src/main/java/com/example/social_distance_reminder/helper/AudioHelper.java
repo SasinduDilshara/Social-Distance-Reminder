@@ -37,6 +37,7 @@ public class AudioHelper {
     }
 
     public static void play(Context context) {
+        System.out.println("this is pkay method:- " + SqlLiteHelper.getInstance(context).getStats().getIsSoundOn());
         if ( SqlLiteHelper.getInstance(context).getStats().getIsSoundOn() == 1) {
 //            getInstance().start();
             AudioHelper.toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP,10000);
