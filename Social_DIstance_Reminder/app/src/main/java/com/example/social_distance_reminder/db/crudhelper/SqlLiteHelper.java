@@ -36,6 +36,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
     private static String LOCAL_NOTIFICATION_TABLE_NAME = "local_notification_data";
     public static  String DECLARE_NOTIFICATION_TABLE_NAME = "declare_notification_table";
     public static  String STAT_TABLE_NAME = "stat_table";
+    public static  String BLACKLIST_TABLE_NAME = "blacklist_table";
     private static int update_time = 2;
     private static String TEMPORARY_LOG_TABLE_NAME = "temp_log";
 
@@ -61,7 +62,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String query_user_log, query_app_data, query_temp_log, query_local_notification, query_declare_notification, stat_query;
+        String query_user_log, query_app_data, query_temp_log, query_local_notification, query_declare_notification, stat_query, blacklist_query;
         //creating table
         query_user_log = "CREATE TABLE " + USER_LOG_TABLE_NAME +
                 "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -98,6 +99,9 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
                 "LASTMEETUPTIME TEXT," +
                 "NUMDECLARATION INT," +
                 " SELECTEDDISTANCE INT)";
+        blacklist_query = "CREATE TABLE " + BLACKLIST_TABLE_NAME +
+                "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "PHNNUMBER TEXT)";
 
         db.execSQL(query_user_log);
         db.execSQL(query_app_data);
@@ -105,6 +109,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         db.execSQL(query_local_notification);
         db.execSQL(query_declare_notification);
         db.execSQL(stat_query);
+        db.execSQL(blacklist_query);
 
         db.execSQL("INSERT INTO " + APP_DATA_TABLE_NAME + " (ID) " + " VALUES (1)");
         db.execSQL("INSERT INTO " + STAT_TABLE_NAME + " (ID, MINDISTANCE, CLOSECOUNT, LASTMEETUPTIME, NUMDECLARATION, SELECTEDDISTANCE) " + " VALUES (1, '5', 0, '-', 0, 2)");
@@ -469,6 +474,46 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         cursor.close();
         return stats;
     }
+
+    // Black List
+
+    public void addBlacklistDevice(String phn) {
+
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("PHONENUMBER", phn);
+
+
+        try {
+            long success = sqLiteDatabase.insert(BLACKLIST_TABLE_NAME, null, values);
+//            sqLiteDatabase.close();
+
+            Log.e(TAG, "doInBackground: database inserted is " + success);
+        } catch (Exception e) {
+            Log.d(TAG, "addNotes: " + e.getMessage());
+        }
+    }
+
+    public ArrayList<String> getBlackListDevices() {
+        Stats stats = null;
+        String select_query = "SELECT * FROM " + BLACKLIST_TABLE_NAME;
+        ArrayList<String> devices = new ArrayList<>();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_query, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                devices.add(cursor.getString(2));
+            } while (cursor.moveToNext());
+        }
+        // db.close();
+        cursor.close();
+        return devices;
+    }
+
 
     public ArrayList<LocalNotification> getLocalNotifications() {
         ArrayList<LocalNotification> arrayList = new ArrayList<>();
