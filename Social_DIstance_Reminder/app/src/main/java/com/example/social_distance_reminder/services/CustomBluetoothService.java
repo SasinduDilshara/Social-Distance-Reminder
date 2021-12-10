@@ -307,9 +307,10 @@ public class CustomBluetoothService extends Service implements BeaconConsumer, N
                     latitude = 0.0;
                     longitude = 0.0;
                     addresses = null;
+                    int minUserDistance = SqlLiteHelper.getInstance(getApplicationContext()).getStats().getSelctedDistance();
 
                     //TODO:CHECK FOR DISTANCE
-                    if (distance < 5) {
+                    if (distance < minUserDistance) {
                         continue;
                     }
 

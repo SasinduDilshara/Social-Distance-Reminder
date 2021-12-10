@@ -96,7 +96,8 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
                 "MINDISTANCE TEXT," +
                 " CLOSECOUNT INT," +
                 "LASTMEETUPTIME TEXT," +
-                " NUMDECLARATION INT)";
+                "NUMDECLARATION INT," +
+                " SELECTEDDISTANCE INT)";
 
         db.execSQL(query_user_log);
         db.execSQL(query_app_data);
@@ -106,7 +107,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         db.execSQL(stat_query);
 
         db.execSQL("INSERT INTO " + APP_DATA_TABLE_NAME + " (ID) " + " VALUES (1)");
-        db.execSQL("INSERT INTO " + STAT_TABLE_NAME + " (ID, MINDISTANCE, CLOSECOUNT, LASTMEETUPTIME, NUMDECLARATION) " + " VALUES (1, '5', 0, '-', 0)");
+        db.execSQL("INSERT INTO " + STAT_TABLE_NAME + " (ID, MINDISTANCE, CLOSECOUNT, LASTMEETUPTIME, NUMDECLARATION, SELECTEDDISTANCE) " + " VALUES (1, '5', 0, '-', 0, 2)");
 
         //db.execSQL("DROP TRIGGER IF EXISTS validate");
         /*db.execSQL(" CREATE TRIGGER  validate BEFORE INSERT ON " + USER_LOG_TABLE_NAME +
