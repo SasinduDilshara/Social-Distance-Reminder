@@ -84,6 +84,7 @@ public class PrimeActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.mnu_Settings) {
             settingsBinding.btnSettingsClose.setOnClickListener(v2 -> settingsPopup.dismiss());
+            settingsBinding.minDistance.setText("");
             settingsPopup.show();
         } else if (id == R.id.mnu_About) {
             aboutBinding.btnAboutClose.setOnClickListener(v2 -> aboutPopup.dismiss());
