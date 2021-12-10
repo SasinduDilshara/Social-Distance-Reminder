@@ -89,7 +89,7 @@ public class NotificationHelper {
     private void showNormalNotification(String textTitle, String textContent) throws Exception {
         this.createNormalNotificationChannel();
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this.context, normalNotificationID)
-                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                .setSmallIcon(R.drawable.distanzia_logo_foreground_original)
                 .setContentTitle(textTitle)
                 .setContentText(textContent)
                 .setContentIntent(getPendingIntent())
@@ -101,7 +101,7 @@ public class NotificationHelper {
     private void showIdentifiedNotification(String textTitle, String textContent) throws Exception {
         this.createIdentifiedNotificationChannel();
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this.context, identifiedNotificationID)
-                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                .setSmallIcon(R.drawable.distanzia_logo_foreground_original)
                 .setContentTitle(textTitle)
                 .setContentText(textContent)
                 .setContentIntent(getPendingIntent())
@@ -114,7 +114,7 @@ public class NotificationHelper {
     private int showBackgroundNotification(String textTitle, String textContent) throws Exception {
         this.createBackgroundNotificationChannel();
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this.context, backgroundNotificationID)
-                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                .setSmallIcon(R.drawable.distanzia_logo_foreground_original)
                 .setContentTitle(textTitle)
                 .setContentText(textContent)
                 .setContentIntent(getPendingIntent())
@@ -128,7 +128,7 @@ public class NotificationHelper {
     private Notification showBackgroundNotificationForService(String textTitle, String textContent) throws Exception {
         this.createBackgroundNotificationChannel();
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this.context, backgroundNotificationID)
-                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                .setSmallIcon(R.drawable.distanzia_logo_foreground_original)
                 .setContentTitle(textTitle)
                 .setContentText(textContent)
                 .setContentIntent(getPendingIntent())

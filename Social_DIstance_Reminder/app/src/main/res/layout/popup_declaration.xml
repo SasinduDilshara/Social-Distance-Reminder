@@ -53,9 +53,7 @@
                 Duis ipsum turpis, euismod et elit in, ultricies fermentum magna. Donec vehicula elit in risus finibus ornare. \n
                 Maecenas facilisis accumsan mi sit amet suscipit. In at dignissim tellus, vel tempor mauris. \n
                 Nullam in augue tincidunt, blandit elit sit amet, blandit quam.
-                \n Ut imperdiet, libero at vestibulum maximus, nisl felis sodales lectus, quis consectetur metus ante id turpis. Suspendisse potenti.\n
-                Integer non lectus elementum, egestas ligula et, congue sem. \n
-                Maecenas a lacus lacinia, tincidunt diam ut, tempus turpis." />
+                \n Ut imperdiet" />
 
             <TextView
                 android:layout_marginStart="20dp"
@@ -79,7 +77,7 @@
                 />
 
             <LinearLayout
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
