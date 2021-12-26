@@ -83,7 +83,9 @@ public class LoginActivity extends AppCompatActivity implements AuthRedirectHand
                 loginBinding.btnLoginPhone.setEnabled(b);
             }
         });
-        loginBinding.txtLoginPhone.setText("+1 650-555-3434");
+        // loginBinding.txtLoginPhone.setText("+1 650-555-3434");
+        
+        loginBinding.txtLoginPhone.setText("");
         loginBinding.btnLoginPhone.setOnClickListener(this::addPhone);
         loginBinding.btnLoginCode.setOnClickListener(this::verifyPhone);
         loginBinding.btnLoginResend.setOnClickListener((view) -> ResendOTP());
