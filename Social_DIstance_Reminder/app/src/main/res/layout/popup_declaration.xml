@@ -48,12 +48,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?popupDefaultTextColor"
-                android:text="Lorem ipsum dolor sit amet, \nconsectetur adipiscing elit. Pellentesque rhoncus sed quam a commodo. \nNam tempor, felis ut finibus ullamcorper, nisl erat porttitor libero, eget tincidunt massa erat non nulla. \n
-                Morbi vel diam nulla. Nam a ex rhoncus, vehicula orci et, egestas massa.\n
-                Duis ipsum turpis, euismod et elit in, ultricies fermentum magna. Donec vehicula elit in risus finibus ornare. \n
-                Maecenas facilisis accumsan mi sit amet suscipit. In at dignissim tellus, vel tempor mauris. \n
-                Nullam in augue tincidunt, blandit elit sit amet, blandit quam.
-                \n Ut imperdiet" />
+                android:text="By declaring as a covid patient, all the close contacts of yourself, who had been tracked by Distanzia will be notied through the app.
+\nAll the consequences you facelater will not be our responsibility as well." />
 
             <TextView
                 android:layout_marginStart="20dp"
