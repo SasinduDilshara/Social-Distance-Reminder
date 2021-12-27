@@ -8,6 +8,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -18,11 +20,14 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.social_distance_reminder.broadcastrecievers.NetworkStateReceiver;
 import com.example.social_distance_reminder.db.crudhelper.SqlLiteHelper;
+import com.example.social_distance_reminder.db.crudhelper.model.Stats;
 import com.example.social_distance_reminder.exceptions.BeaconNotSupportedException;
 import com.example.social_distance_reminder.exceptions.BluetoothNotSupportException;
+import com.example.social_distance_reminder.helper.AudioHelper;
 import com.example.social_distance_reminder.helper.BackgroundTaskHelper;
 import com.example.social_distance_reminder.helper.BluetoothHelper;
 import com.example.social_distance_reminder.helper.NotificationHelper;
+import com.example.social_distance_reminder.models.Notification;
 
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
@@ -32,14 +37,20 @@ import org.altbeacon.beacon.BeaconTransmitter;
 import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.ContentValues.TAG;
 import static com.example.social_distance_reminder.helper.RandomIDGenerator.getForegroundID;
+import static com.example.social_distance_reminder.helper.ServiceHelper.getGeocoder;
 
 public class CustomBluetoothService extends Service implements BeaconConsumer, NetworkStateReceiver.NetworkStateReceiverListener {
     private static String deviceId;
@@ -49,9 +60,15 @@ public class CustomBluetoothService extends Service implements BeaconConsumer, N
     private BeaconParser beaconParser = new BeaconParser()
             .setBeaconLayout(BEACON_LAYOUT);
     private BeaconManager beaconManager;
+    private List<Address> addresses = null;
+    private double longitude, latitude;
+    private String location;
+    Geocoder geocoder = null;
+    ArrayList<String> blacklistDevices = new ArrayList<>();
 
-    private final NetworkStateReceiver networkStateReceiver = new NetworkStateReceiver();
+    private NetworkStateReceiver networkStateReceiver;
     private SqlLiteHelper sqlLiteHelper;
+    private LocationService locationService;
 
     public CustomBluetoothService() {
     }
@@ -186,6 +203,9 @@ public class CustomBluetoothService extends Service implements BeaconConsumer, N
     @Override
     public void onCreate() {
         super.onCreate();
+
+        locationService = new LocationService(getApplicationContext());
+        networkStateReceiver = new NetworkStateReceiver(getApplicationContext());
         IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
 //        registerBroadcastReceivers();
         registerReceiver(mReceiver, filter);
@@ -202,30 +222,32 @@ public class CustomBluetoothService extends Service implements BeaconConsumer, N
         Log.d(TAG, "Bluetooth Service is Going to Destroy");
         try {
             unregisterReceiver(mReceiver);
+            networkStateReceiver.removeListener(this);
+            this.unregisterReceiver(networkStateReceiver);
         } catch (IllegalArgumentException iae) {
             Log.d(TAG, "No Reciever got registered"); // check how this cause
         }
         beaconManager.unbind(this);
     }
 
-//    private void registerBroadcastReceivers() {
-//        // Create a new broadcast intent filter that will filter and
-//        // receive ACTION_VIEW_LOCAL intents.
+    private void registerBroadcastReceivers() {
+        // Create a new broadcast intent filter that will filter and
+        // receive ACTION_VIEW_LOCAL intents.
 //        IntentFilter intentFilter =
 //                new IntentFilter(CustomBluetoothService.ACTION_LOCATION_ACCESS_STATE_CHANGE);
-//
-//        // Call the Activity class helper method to register this
-//        // local receiver instance.
+
+        // Call the Activity class helper method to register this
+        // local receiver instance.
 //        LocalBroadcastManager.getInstance(this)
 //                .registerReceiver(locationAccessStateChangeReceiver,
 //                        intentFilter);
-//
-//        registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
-//
+
+        registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+
 //        registerReceiver(mGpsSwitchStateReceiver, new IntentFilter(ACTION_PROVIDERS_CHANGED));
-//
+
 //        LocalBroadcastManager.getInstance(this).registerReceiver(keepTransmitterAliveReceiver, new IntentFilter(ACTION_KEEP_TRANSMITTER_ALIVE));
-//    }
+    }
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
@@ -284,8 +306,62 @@ public class CustomBluetoothService extends Service implements BeaconConsumer, N
                     double distance = beacon.getDistance();
                     System.out.println("Beacon Detected - " + beacon.getId1().toString());
 
+                    location = "unknown";
+                    latitude = 0.0;
+                    longitude = 0.0;
+                    addresses = null;
+                    int minUserDistance = SqlLiteHelper.getInstance(getApplicationContext()).getStats().getSelctedDistance();
+
                     //TODO:CHECK FOR DISTANCE
-                    sqlLiteHelper.addDevice(beacon.getId1().toString(), 0, 0);
+                    if (distance > minUserDistance) {
+                        continue;
+                    }
+
+                    if(locationService.canGetLocation()) {
+                        locationService.getLocation();
+                        latitude = locationService.getLatitude();
+                        longitude = locationService.getLongitude();
+                        System.out.println("Locations are - " + latitude + " , " + longitude);
+                        try {
+                            geocoder = getGeocoder();
+                            if (geocoder != null) {
+                                addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                                System.out.println("Address " + addresses);
+                                if (addresses.size() > 0)
+                                    location = addresses.get(0).getAddressLine(0);
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    blacklistDevices = SqlLiteHelper.getInstance(getApplicationContext()).getBlackListDevices();
+                    if (!blacklistDevices.contains(beacon.getId1().toString())) {
+
+                        System.out.println("This is the blacklist checker :- " + beacon.getId1() + " and " + blacklistDevices);
+                        sqlLiteHelper.addDevice(beacon.getId1().toString(), latitude, longitude, beacon.getRssi());
+                        System.out.println("Size of the SQL lit Devices =" + sqlLiteHelper.getDevices().size());
+                        System.out.println("Before addLocalNotification");
+                        sqlLiteHelper.addLocalNotification(beacon.getId1().toString(), location, beacon.getRssi());
+                        System.out.println("Before sendIdentifiedNotification");
+                        NotificationHelper.sendIdentifiedNotification("Caution!", "You are near to a person in " + location, getApplicationContext());
+                        Notification notification = new Notification("Caution!", Calendar.getInstance().getTime(), "You are near to a person", false);
+                        System.out.println("Before addDeclareNotification");
+                        SqlLiteHelper.getInstance(getApplicationContext()).addDeclareNotification(notification);
+                        System.out.println("Before addStats");
+                        SqlLiteHelper.getInstance(getApplicationContext()).addStats(new Stats(String.valueOf(distance), 1, String.valueOf(System.currentTimeMillis()), 0, 0, 2, 2));
+                        AudioHelper.play(getApplicationContext());
+                        System.out.println("Devices are\n" + sqlLiteHelper.getDevices());
+                        System.out.println("Devices are\n" + sqlLiteHelper.getLocalNotifications());
+                    } else {
+                        System.out.println("Blacklist Number found. Ignored!!!!");
+                    }
+
+                    if (networkStateReceiver.ismConnected()) {
+                        onNetworkAvailable();
+                    } else {
+                        onNetworkUnavailable();
+                    }
                 }
         });
         try {
@@ -299,12 +375,15 @@ public class CustomBluetoothService extends Service implements BeaconConsumer, N
     }
 
     @Override
-    public void networkAvailable() {
+    public void onNetworkAvailable() {
+        System.out.println("Network is available\n");
         new BackgroundTaskHelper.UploadTask().execute(this); // called after network state changed from disable to enable
     }
 
     @Override
-    public void networkUnavailable() {
+    public void onNetworkUnavailable() {
+
+        System.out.println("Network is available\n");
         Log.d(TAG, "networkUnavailable: ");
     }
 }

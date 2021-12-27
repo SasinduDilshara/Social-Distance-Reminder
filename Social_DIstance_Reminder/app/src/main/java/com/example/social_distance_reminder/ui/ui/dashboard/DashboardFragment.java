@@ -13,41 +13,30 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import com.example.social_distance_reminder.db.crudhelper.SqlLiteHelper;
 
-import com.example.social_distance_reminder.R;
 import com.example.social_distance_reminder.databinding.FragmentDashboardBinding;
-import com.example.social_distance_reminder.ui.HomeActivity;
-import com.example.social_distance_reminder.ui.PrimeActivity;
+import com.example.social_distance_reminder.db.crudhelper.model.Stats;
+import com.example.social_distance_reminder.models.DashboardElement;
 
 public class DashboardFragment extends Fragment {
 
-    private DashboardViewModel dashboardViewModel;
     private FragmentDashboardBinding binding;
+    private Stats stat;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
 
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textDashboard;
-        Button button = binding.buttonDashboard;
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-                button.setOnClickListener(DashboardFragment.this::redirectToHome);
-            }
-        });
+        stat = SqlLiteHelper.getInstance(getContext()).getStats();
+        DashboardElement de =
+                new DashboardElement(stat.getMinDistance(), stat.getCloseCount(), stat.getLastMeetupTime(), stat.getNumDeclaration());
+        binding.setElement(de);
         return root;
     }
 
-    public void redirectToHome(View view) {
-        Intent homePage = new Intent(getActivity(), HomeActivity.class);
-        startActivity(homePage);
-    }
 
     @Override
     public void onDestroyView() {

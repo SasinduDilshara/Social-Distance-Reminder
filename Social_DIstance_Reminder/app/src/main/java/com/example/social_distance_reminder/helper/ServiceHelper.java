@@ -3,14 +3,29 @@ package com.example.social_distance_reminder.helper;
 import android.Manifest;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.location.Geocoder;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.util.Locale;
 import java.util.UUID;
 
 public class ServiceHelper {
+    private static Geocoder geocoder = null;
+
+    public static void setGeoCoder(Context context) {
+        if (geocoder == null) {
+            geocoder = new Geocoder(context, Locale.getDefault());
+        }
+    }
+
+    public static Geocoder getGeocoder() {
+        if (geocoder != null)
+            return geocoder;
+        return null;
+    }
 
     @SuppressWarnings("deprecation")
     public static  boolean isMyServiceRunning(Context context , Class<?> serviceClass) {
@@ -51,10 +66,21 @@ public class ServiceHelper {
         } catch (IOException e) { return false; }
     }
 
-    public static String generateHash(String string,Context context){
-        //TODO: Implement
-        String s = new String(UUID.randomUUID().toString()); // refer string resource file in java_resource.xml
-        return s;
+    public static String cleanPhoneNumber(String phonenumber) {
+        String included = "+1234567890";
+        char c;
+        String cleanedPhoneNumber = "";
+        for (int i = 0; i < phonenumber.length(); i++){
+            c = phonenumber.charAt(i);
+            if(included.contains(String.valueOf(c))) {
+                cleanedPhoneNumber += String.valueOf(c);
+            }
+        }
+        return cleanedPhoneNumber;
+    }
+
+    public static String generateHash(String string){
+        return UUID.nameUUIDFromBytes(cleanPhoneNumber(string).getBytes()).toString();
 
     }
 }

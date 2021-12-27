@@ -1,9 +1,35 @@
 <resources>
     <string name="app_name">Social_Distance_Reminder</string>
+    <string name="app_identifier">Distanzia</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">LoginActivity</string>
-    <string name="title_activity_prime">PrimeActivity</string>
+    <string name="title_activity_prime">Distanzia</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Statistics</string>
     <string name="title_notifications">Notifications</string>
+    <string name="channel_name">Distanzia</string>
+    <string name="channel_description">Distanzia_app_notifications</string>
+    <string name="default_notification_channel_id">Distanzia_Channel</string>
+    <string name="termsTex">These are the Terms and Conditions governing the use of this Service and the
+agreement that operates between You and the Company. These Terms and
+Conditions set out the rights and obligations of all users regarding the use
+of the Service.
+
+Your access to and use of the Service is conditioned on Your acceptance of and
+compliance with these Terms and Conditions. These Terms and Conditions apply
+to all visitors, users and others who access or use the Service.
+
+By accessing or using the Service You agree to be bound by these Terms and
+Conditions. If You disagree with any part of these Terms and Conditions then
+You may not access the Service.
+
+You represent that you are over the age of 18. The Company does not permit
+those under 18 to use the Service.
+
+Your access to and use of the Service is also conditioned on Your acceptance
+of and compliance with the Privacy Policy of the Company. Our Privacy Policy
+describes Our policies and procedures on the collection, use and disclosure of
+Your personal information when You use the Application or the Website and
+tells You about Your privacy rights and how the law protects You. Please read
+Our Privacy Policy carefully before using Our Service.</string>
 </resources>

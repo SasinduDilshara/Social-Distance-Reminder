@@ -2,15 +2,52 @@
     <!-- Base application theme. -->
     <style name="Theme.Social_Distance_Reminder" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/light_Blue_800_light</item>
+        <item name="colorPrimaryVariant">@color/light_Blue_800_dark</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorSecondary">@color/orange_400_light</item>
+        <item name="colorSecondaryVariant">@color/orange_400_lighter</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+
+        <!-- POPUP -->
+        <item name="popupBackgroundColor">@color/popup_dark_background</item>
+        <item name="popupDefaultTextColor">@color/light_background</item>
+        <item name="popupTitleTextColor">@color/orange_400_light</item>
+        <item name="popupTitleTextSize">@dimen/popup_title_text_size</item>
+        <item name="popupElevation">@dimen/popup_elevation</item>
+        <item name="popupCornerRadius">@dimen/popup_corner_radius</item>
+        <item name="popupPadding">@dimen/popup_padding</item>
+
+        <!-- BUTTONS -->
+        <item name="accentButtonBackgroundColor">@color/accent_button_dark</item>
+        <item name="accentButtonTextColor">@color/accent_button_text_dark</item>
+        <item name="primaryButtonBackgroundColor">@color/primary_button_dark</item>
+        <item name="primaryButtonTextColor">@color/primary_button_text_dark</item>
+
         <!-- Customize your theme here. -->
+    </style>
+
+    <style name="NotificationCard">
+        <item name="android:backgroundTint">@color/light_Blue_800_lighter</item>
+        <item name="android:elevation">5dp</item>
+    </style>
+
+    <style name="NotificationCardTitle">
+        <item name="android:textColor">@color/orange_400_dark</item>
+    </style>
+
+    <style name="NotificationCardText">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="DashboardCardType1">
+        <item name="android:backgroundTint">@color/light_Blue_800_lighter</item>
+    </style>
+
+    <style name="DashboardCardType2">
+        <item name="android:backgroundTint">@color/light_Blue_800_light</item>
     </style>
 </resources>

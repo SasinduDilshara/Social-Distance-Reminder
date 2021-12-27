@@ -25,25 +25,42 @@
     <application
         android:allowBackup="true"
         android:fullBackupContent="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/ic_launcher_distanzia"
+        android:label="@string/app_identifier"
+        android:roundIcon="@mipmap/ic_launcher_distanzia_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Social_Distance_Reminder">
+        android:theme="@style/Theme.Social_Distance_Reminder"
+        android:usesCleartextTraffic="true">
+
         <service
             android:name=".services.CustomBluetoothService"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="true" />
 
-        <activity android:name=".ui.BluetoothTestActivity" />
+        <service
+            android:name=".services.NotificationsFCMService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_baseline_close_24" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/orange_400_light" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
 
         <service
             android:name=".services.BackgroundServiceHandler"
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".ui.ViewNotificationsActivity" />
-        <activity android:name=".ui.HomeActivity" />
         <activity
             android:name=".ui.PrimeActivity"
             android:label="@string/title_activity_prime" />
@@ -52,7 +69,7 @@
             android:label="@string/title_activity_login"
             android:theme="@style/Theme.Social_Distance_Reminder.NoActionBar" />
         <activity
-            android:name=".MainActivity"
+            android:name=".WelcomeActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Social_Distance_Reminder.NoActionBar">

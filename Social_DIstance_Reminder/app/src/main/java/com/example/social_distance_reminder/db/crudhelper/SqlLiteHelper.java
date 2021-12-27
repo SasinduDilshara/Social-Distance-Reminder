@@ -7,13 +7,28 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
+import android.provider.ContactsContract;
 import android.util.Log;
 
+import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
+//import com.example.social_distance_reminder.UI.LandingActivity;
+import com.example.social_distance_reminder.auth.FirebaseAuthHelper;
 import com.example.social_distance_reminder.db.crudhelper.model.DeviceModel;
+import com.example.social_distance_reminder.db.crudhelper.model.LocalNotification;
+import com.example.social_distance_reminder.db.crudhelper.model.Stats;
+import com.example.social_distance_reminder.models.BlacklistItem;
+import com.example.social_distance_reminder.models.Notification;
 
 import static android.content.ContentValues.TAG;
+import static com.example.social_distance_reminder.helper.ServiceHelper.generateHash;
+
+//TODO: Decide the time interval between each interaction with same user
+//TODO: Decide the distance
 
 public class SqlLiteHelper extends SQLiteOpenHelper {
 
@@ -21,7 +36,11 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
     private static int DATABASE_VERSION = 1;
     private static String USER_LOG_TABLE_NAME = "user_logs";
     private static String APP_DATA_TABLE_NAME = "app_data";
-    private static int update_time = 10;
+    private static String LOCAL_NOTIFICATION_TABLE_NAME = "local_notification_data";
+    public static  String DECLARE_NOTIFICATION_TABLE_NAME = "declare_notification_table";
+    public static  String STAT_TABLE_NAME = "stat_table";
+    public static  String BLACKLIST_TABLE_NAME = "blacklist_table";
+    private static int update_time = 2;
     private static String TEMPORARY_LOG_TABLE_NAME = "temp_log";
 
     private SqlLiteHelper(Context context) {
@@ -46,29 +65,63 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String query_user_log, query_app_data, query_temp_log;
+        String query_user_log, query_app_data, query_temp_log, query_local_notification, query_declare_notification, stat_query, blacklist_query;
         //creating table
         query_user_log = "CREATE TABLE " + USER_LOG_TABLE_NAME +
                 "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "USERID TEXT," +
                 " TIMESTAMP_UP DATETIME DEFAULT CURRENT_TIMESTAMP," +
-                " LATITUDE DOUBLE, LONGITUDE DOUBLE )";
+                " LATITUDE DOUBLE, LONGITUDE DOUBLE, RSSI INT )";
 
         query_app_data = "CREATE TABLE " + APP_DATA_TABLE_NAME +
                 "(ID INTEGER PRIMARY KEY , " +
-                "USER_ID TEXT TYPE UNIQUE, IS_ALLOWED INTEGER DEFAULT 0 CHECK(IS_ALLOWED == 1 OR IS_ALLOWED == 0), " +
+                "USER_ID TEXT UNIQUE, IS_ALLOWED INTEGER DEFAULT 0 CHECK(IS_ALLOWED == 1 OR IS_ALLOWED == 0), " +
                 "IS_LOCATION_TRACKABLE INTEGER DEFAULT 0 CHECK(IS_LOCATION_TRACKABLE == 1 OR IS_LOCATION_TRACKABLE == 0))";
 
         query_temp_log = "CREATE TABLE " + TEMPORARY_LOG_TABLE_NAME +
                 "( USER_ID TEXT PRIMARY KEY," +
                 " TIMESTAMP_UP INTEGER )";
 
+        query_local_notification = "CREATE TABLE " + LOCAL_NOTIFICATION_TABLE_NAME +
+                "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "USERID TEXT," +
+                " TIMESTAMP DATETIME DEFAULT CURRENT_TIMESTAMP," +
+                " LOCATION TEXT, RSSI INT )";
+
+        query_declare_notification = "CREATE TABLE " + DECLARE_NOTIFICATION_TABLE_NAME +
+                "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "TITLE TEXT," +
+                " DATE TEXT," +
+                "CONTENT TEXT," +
+                " IMPORTANT TEXT)";
+
+        stat_query = "CREATE TABLE " + STAT_TABLE_NAME +
+                "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "MINDISTANCE TEXT," +
+                " CLOSECOUNT INT," +
+                "LASTMEETUPTIME TEXT," +
+                "NUMDECLARATION INT," +
+                " SELECTEDDISTANCE INT," +
+                "SOUND INTEGER," +
+                "BLUETOOTH INTEGER)";
+//        blacklist_query = "CREATE TABLE " + BLACKLIST_TABLE_NAME +
+//                "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+//                "PHNNUMBER TEXT)";
+        blacklist_query = "CREATE TABLE " + BLACKLIST_TABLE_NAME +
+                "(ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "BLUETOOTHID TEXT," +
+                "PHONENUMBER TEXT)";
 
         db.execSQL(query_user_log);
         db.execSQL(query_app_data);
         db.execSQL(query_temp_log);
+        db.execSQL(query_local_notification);
+        db.execSQL(query_declare_notification);
+        db.execSQL(stat_query);
+        db.execSQL(blacklist_query);
 
         db.execSQL("INSERT INTO " + APP_DATA_TABLE_NAME + " (ID) " + " VALUES (1)");
+        db.execSQL("INSERT INTO " + STAT_TABLE_NAME + " (ID, MINDISTANCE, CLOSECOUNT, LASTMEETUPTIME, NUMDECLARATION, SELECTEDDISTANCE) " + " VALUES (1, '5', 0, '-', 0, 2)");
 
         //db.execSQL("DROP TRIGGER IF EXISTS validate");
         /*db.execSQL(" CREATE TRIGGER  validate BEFORE INSERT ON " + USER_LOG_TABLE_NAME +
@@ -83,11 +136,15 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + USER_LOG_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + APP_DATA_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TEMPORARY_LOG_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + LOCAL_NOTIFICATION_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + DECLARE_NOTIFICATION_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + STAT_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + BLACKLIST_TABLE_NAME);
 
         onCreate(db);
     }
 
-    public void addDevice(String userId, double latitude, double longitude) {
+    public void addDevice(String userId, double latitude, double longitude, int rssi) {
 
         String select_query = "SELECT * FROM " + TEMPORARY_LOG_TABLE_NAME + " WHERE USER_ID = '" + userId + "'";
 
@@ -109,6 +166,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
                     deviceModel.setLatitude(latitude);
                     deviceModel.setLongitude(longitude);
                 }
+                deviceModel.setRssi(rssi);
                 new InsertDeviceAsync(this).execute(deviceModel);
                 ContentValues cv = new ContentValues();
                 cv.put("USER_ID", userId);
@@ -134,11 +192,12 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
                 deviceModel.setLatitude(latitude);
                 deviceModel.setLongitude(longitude);
             }
+            deviceModel.setRssi(rssi);
             new InsertDeviceAsync(this).execute(deviceModel);
 
         }
 
-        db.close();
+        // db.close();
         cursor.close();
 
 
@@ -160,10 +219,11 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
                 deviceModel.setTimeStamp(cursor.getString(2));
                 deviceModel.setLatitude(cursor.getDouble(cursor.getColumnIndex("LATITUDE")));
                 deviceModel.setLongitude(cursor.getDouble(cursor.getColumnIndex("LONGITUDE")));
+                deviceModel.setRssi(cursor.getInt(cursor.getColumnIndex("RSSI")));
                 arrayList.add(deviceModel);
             } while (cursor.moveToNext());
         }
-        db.close();
+        // db.close();
         cursor.close();
         return arrayList;
     }
@@ -273,7 +333,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
             SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
             //deleting row
             sqLiteDatabase.delete(USER_LOG_TABLE_NAME, "ID = " + integers[0], null);
-            sqLiteDatabase.close();
+//            sqLiteDatabase.close();
             return null;
         }
     }
@@ -310,11 +370,249 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
             //close database connection
 
-            sqLiteDatabase.close();
+//            sqLiteDatabase.close();
 
             return null;
         }
     }
 
+    public void closeDB() {
+
+    }
+
+    public void addLocalNotification(String userId, String location, int rssi) {
+
+        LocalNotification localNotification = new LocalNotification();
+        localNotification.setUserID(userId);
+        if (location != null) {
+            localNotification.setLocation(location);
+        }
+        localNotification.setRssi(rssi);
+        new InsertLocalNotificationAsync(this).execute(localNotification);
+    }
+
+    public void addDeclareNotification(Notification notification) {
+
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("TITLE", notification.getTitle());
+        values.put("DATE", notification.getDate());
+        values.put("CONTENT", notification.getDescription());
+        values.put("IMPORTANT", notification.isImportant());
+
+        long newRowId;
+        try {
+            long success = sqLiteDatabase.insert(DECLARE_NOTIFICATION_TABLE_NAME, null, values);
+
+            Log.e(TAG, "doInBackground: database inserted is " + success);
+        } catch (Exception e) {
+            Log.d(TAG, "addNotes: " + e.getMessage());
+        }
+    }
+
+    public ArrayList<Notification> getNotifications() {
+        ArrayList<Notification> arrayList = new ArrayList<>();
+        String select_query = "SELECT * FROM " + DECLARE_NOTIFICATION_TABLE_NAME;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_query, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+                Date date = new Date();
+                try {
+                    date = formatter.parse(cursor.getString(2));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Notification notification = new Notification(cursor.getString(1), date,cursor.getString(3), Boolean.parseBoolean(cursor.getString(4)));
+                arrayList.add(notification);
+            } while (cursor.moveToNext());
+        }
+        // db.close();
+        cursor.close();
+        return arrayList;
+    }
+
+    public void addStats(Stats st) {
+
+        Log.d(TAG, "addStats: "+st.getSelctedDistance());
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        Stats res = getStats();
+
+        values.put("SELECTEDDISTANCE", res.getSelctedDistance());
+        values.put("MINDISTANCE", res.getMinDistance());
+        values.put("CLOSECOUNT", res.getCloseCount() + st.getCloseCount());
+        values.put("LASTMEETUPTIME", res.getLastMeetupTime());
+        values.put("NUMDECLARATION", res.getNumDeclaration() + st.getNumDeclaration());
+        values.put("SOUND", res.getIsSoundOn());
+        values.put("BLUETOOTH", res.getIsBluetoothOn());
+
+        if (Float.valueOf(res.getMinDistance()) > Float.valueOf(st.getMinDistance())) {
+            values.put("MINDISTANCE", st.getMinDistance());
+        }
+        if (st.getLastMeetupTime() != null) {
+            values.put("LASTMEETUPTIME", st.getLastMeetupTime());
+        }
+        if (st.getSelctedDistance() != 0 && st.getSelctedDistance()<= 5) {
+            values.put("SELECTEDDISTANCE", st.getSelctedDistance());
+        }
+        if (st.getIsSoundOn() <= 1) {
+            values.put("SOUND", st.getIsSoundOn());
+        }
+        if (st.getIsBluetoothOn() <= 1) {
+            values.put("BLUETOOTH", st.getIsBluetoothOn());
+        }
+
+        try {
+            int success = sqLiteDatabase.update(STAT_TABLE_NAME, values, "ID=" + 1, null);
+//            sqLiteDatabase.close();
+
+            Log.e(TAG, "doInBackground: database inserted is " + success);
+        } catch (Exception e) {
+            Log.d(TAG, "addNotes: " + e.getMessage());
+        }
+    }
+
+    public Stats getStats() {
+        Stats stats = null;
+        String select_query = "SELECT * FROM " + STAT_TABLE_NAME + " WHERE ID = 1";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_query, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                stats = new Stats(cursor.getString(1), cursor.getInt(2),cursor.getString(3), cursor.getInt(4), cursor.getInt(5), cursor.getInt(6), cursor.getInt(7));
+            } while (cursor.moveToNext());
+        }
+        // db.close();
+        cursor.close();
+        return stats;
+    }
+
+    // Black List
+
+    public void addBlacklistDevice(String phn) {
+        System.out.println("This is addBlacklistDevice :- " + phn);
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        String bluetoothid = generateHash(phn);
+        Log.d(TAG, "addBlacklistDevice: "+bluetoothid+ phn);
+        values.put("BLUETOOTHID", bluetoothid);
+        values.put("PHONENUMBER", phn);
+
+        try {
+            long success = sqLiteDatabase.insert(BLACKLIST_TABLE_NAME, null, values);
+//            sqLiteDatabase.close();
+
+            Log.e(TAG, "add blaclist: database inserted is " + success);
+        } catch (Exception e) {
+            Log.d(TAG, "addNotes: " + e.getMessage());
+        }
+    }
+
+    public ArrayList<String> getBlackListDevices() {
+        Stats stats = null;
+        String select_query = "SELECT * FROM " + BLACKLIST_TABLE_NAME;
+        ArrayList<String> devices = new ArrayList<>();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_query, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                devices.add(cursor.getString(1));
+            } while (cursor.moveToNext());
+        }
+        // db.close();
+        cursor.close();
+        return devices;
+    }
+
+    public ArrayList<BlacklistItem> getBlackListPhoneNumbers() {
+        Stats stats = null;
+        String select_query = "SELECT * FROM " + BLACKLIST_TABLE_NAME;
+        ArrayList<BlacklistItem> devices = new ArrayList<>();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_query, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                devices.add(new BlacklistItem(cursor.getString(2)));
+            } while (cursor.moveToNext());
+        }
+        // db.close();
+        cursor.close();
+        return devices;
+    }
+
+    public void deleteBlacklistDevice(String phn) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        sqLiteDatabase.delete(BLACKLIST_TABLE_NAME, "PHNNUMBER = " + phn, null);
+    }
+
+    public ArrayList<LocalNotification> getLocalNotifications() {
+        ArrayList<LocalNotification> arrayList = new ArrayList<>();
+        String select_query = "SELECT * FROM " + LOCAL_NOTIFICATION_TABLE_NAME;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(select_query, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                LocalNotification localNotification = new LocalNotification();
+                localNotification.setID(cursor.getInt(cursor.getColumnIndex("ID")));
+                localNotification.setUserID(cursor.getString(1));
+                localNotification.setLocation(cursor.getString(cursor.getColumnIndex("LOCATION")));
+                localNotification.setTimeStamp(cursor.getString(2));
+                localNotification.setRssi(cursor.getInt(cursor.getColumnIndex("RSSI")));
+                arrayList.add(localNotification);
+            } while (cursor.moveToNext());
+        }
+        // db.close();
+        cursor.close();
+        return arrayList;
+    }
+
+    private static class InsertLocalNotificationAsync extends AsyncTask<LocalNotification, Void, Void> {
+        SqlLiteHelper database;
+
+        public InsertLocalNotificationAsync(SqlLiteHelper database) {
+            this.database = database;
+        }
+
+        @Override
+        protected Void doInBackground(LocalNotification... notifications) {
+
+            SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put("USERID", notifications[0].getUserID());
+            values.put("LOCATION", notifications[0].getLocation());
+            values.put("RSSI", notifications[0].getRssi());
+
+            //inserting new row
+            long newRowId;
+            try {
+                long success = sqLiteDatabase.insert(LOCAL_NOTIFICATION_TABLE_NAME, null, values);
+
+                Log.e(TAG, "doInBackground: database inserted is " + success);
+            } catch (Exception e) {
+                Log.d(TAG, "addNotes: " + e.getMessage());
+            }
+            //close database connection
+//            sqLiteDatabase.close();
+            return null;
+        }
+    }
 
 }

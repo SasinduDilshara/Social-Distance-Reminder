@@ -3,22 +3,39 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/drawable/ic_close.xml" value="0.11666666666666667" />
+        <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/activity_bluetooth_test.xml" value="0.1" />
         <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/activity_dash.xml" value="0.16032608695652173" />
         <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/activity_landing.xml" value="0.16032608695652173" />
-        <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/activity_login.xml" value="0.10552536231884058" />
+        <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/activity_login.xml" value="0.17" />
         <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/activity_main.xml" value="0.16032608695652173" />
         <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/activity_prime.xml" value="0.1" />
         <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/activity_tabbed.xml" value="0.1" />
+        <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/activity_test.xml" value="0.21" />
         <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/activity_view_notifications.xml" value="0.1" />
+        <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/activity_welcome.xml" value="0.1140625" />
+        <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/card_accept.xml" value="0.22" />
+        <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/card_blacklist.xml" value="0.1" />
         <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/card_book.xml" value="0.17239583333333333" />
         <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/card_notifications.xml" value="0.1421875" />
         <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/content_main2.xml" value="0.1" />
         <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/fragment_books.xml" value="0.17239583333333333" />
         <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/fragment_dashboard.xml" value="0.17239583333333333" />
+        <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/fragment_home.xml" value="0.16621376811594202" />
         <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/fragment_notifications.xml" value="0.17239583333333333" />
         <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/fragment_tabbed.xml" value="0.1" />
+        <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/popup_Declare.xml" value="0.16" />
+        <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/popup_about.xml" value="0.14266304347826086" />
+        <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/popup_blacklist.xml" value="0.1203125" />
+        <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/popup_completereceipt.xml" value="0.1203125" />
+        <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/popup_declaration.xml" value="0.1" />
+        <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/popup_settings.xml" value="0.1" />
+        <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/layout/popup_terms.xml" value="0.15677083333333333" />
         <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/menu/bottom_nav_menu.xml" value="0.17239583333333333" />
         <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/menu/menu_main.xml" value="0.13489583333333333" />
+        <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/menu/options_menu.xml" value="0.1" />
+        <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/mipmap-anydpi-v26/ic_launcher_distanzia.xml" value="0.17291666666666666" />
+        <entry key="..\:/Engineering/Modules/Semester 7/Mobile Computing/Social_Distance_Reminder/Social_DIstance_Reminder/app/src/main/res/mipmap-anydpi-v26/ic_launcher_distanzia_round.xml" value="0.1" />
       </map>
     </option>
   </component>

@@ -9,6 +9,15 @@ public class DeviceModel {
     private String timeStamp;
     private double latitude;
     private double longitude;
+    private int rssi;
+
+    public int getRssi() {
+        return rssi;
+    }
+
+    public void setRssi(int rssi) {
+        this.rssi = rssi;
+    }
 
     public void setLatitude(double latitude) {
         this.latitude = latitude;
@@ -54,9 +63,15 @@ public class DeviceModel {
         this.timeStamp = timeStamp;
     }
 
-    @NonNull
     @Override
     public String toString() {
-        return "id - " + ID + String.format("\nisAllowed -%s", UserID) + "\nthis device id - "+ timeStamp;
+        return "DeviceModel{" +
+                "ID=" + ID +
+                ", UserID='" + UserID + '\'' +
+                ", timeStamp='" + timeStamp + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", rssi=" + rssi +
+                '}';
     }
 }
